@@ -1,5 +1,2 @@
-/TestClient.class
-/com/
 /db-active.properties
-/sec.properties
-/sql.properties
+/db.properties
