@@ -1,9 +1,10 @@
 Nutzung der Anwendung
 --------------------------------------------------------------------------------
 - Starts der Anwendung im Browser: 	http://localhost:8080/documents
-- Nutzung der API: 					http://localhost:8080/documents/api/login
 - Swagger-Dokumentation: 			http://localhost:8080/documents/Swagger
+- Nutzung der API: 					http://localhost:8080/documents/api/login
 - Swagger-Spec: 					http://localhost:8080/documents/api/swagger.json
+- GitHub							https://github.com/rembli/documents 
 
 TODOS
 --------------------------------------------------------------------------------
