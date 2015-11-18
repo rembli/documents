@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	
+	<link rel="stylesheet" href="./css/bootstrap.min.css">
+	<link rel="stylesheet" href="./css/bootstrap-theme.min.css">
+	<link rel="stylesheet" href="./css/style.css">	
+	
+	<script type="text/javascript" src="./js/rembli-authentication-check.js"></script>
+	<script type="text/javascript" src="./js/rembli.js"></script>
+	<script type="text/javascript" src="./js/rembli-tools.js"></script>
+	<script type="text/javascript" src="./js-lib/jquery.min.js"></script>	
+	<script type="text/javascript" src="./js-lib/bootstrap.min.js"></script>	
+
+	<script type="text/javascript" src="edit.js"></script>	
+</head>
+<body>
+<R-HEADER></R-HEADER>
+<div class="container">
+
+<!-- **************************************************************** -->	
+
+<form name="docForm">
+	<h2>Document: #
+	<script type="text/javascript">
+	window.document.write ("ID: "+getParameterByName("id")+"<br>"); 
+	</script>
+	</h2>
+	
+	<div class="input-group input-group-lg">
+		<input type="text" name="note" class="form-control" placeholder="Text input">
+  		<span class="input-group-btn">
+        <button type="button" onClick="javascript:updateDocument();" class="btn btn-default">Change</button>
+      </span>		
+	</div>	
+</form>
+<script type="text/javascript">
+	readDocument (getParameterByName("id"));
+</script>
+<p>
+
+<!-- **************************************************************** -->	
+
+<div>
+  <!-- Nav tabs -->
+  <ul class="nav nav-tabs" role="tablist">
+    <li role="presentation" class="active"><a href="#filesTab" aria-controls="filesTab" role="tab" data-toggle="tab">Files</a></li>
+    <li role="presentation"><a href="#logTab" aria-controls="logTab" role="tab" data-toggle="tab">Log</a></li>
+  </ul>
+
+  <!-- Tab panes -->
+  <div class="tab-content">
+    <div role="tabpanel" class="tab-pane fade in active" id="filesTab">
+    
+		<p>
+		<table class="table">
+		<script type="text/javascript">
+			writeFilesToTable ();
+		</script>
+		</table>
+
+		<div class="well">
+		<form name="uploadFileForm" action="./api/documents/123/files" method="post" enctype="multipart/form-data">
+		   <input type="file" onchange="javascript:attachFile();" name="RemoteFile" size="45"></input> 
+		</form>
+		</div>
+    </div>
+
+    <div role="tabpanel" class="tab-pane fade" id="logTab">
+		<p>
+		<div id="logEntryTable" style="overflow: scroll; height: 200px;">
+		</div>
+    </div>
+
+	<script type="text/javascript">
+		writeLogEntriesToTable();
+	</script>
+
+  </div>
+</div>
+
+<br>
+<input type="button" class="btn btn-secondary" value="< Back to list" onclick="window.open ('index.html','_self');" class="btn btn-default" />
+
+<!-- **************************************************************** -->	
+
+</div>
+<R-FOOTER></R-FOOTER>
+</body>
+</html>
+
+

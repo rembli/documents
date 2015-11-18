@@ -1,0 +1,14 @@
+
+ <div class="container">	
+	  <hr>
+      <p>&copy; rembli 2015</p>
+      <p>API: <a href="./swagger" target="new">Swagger-Docs</a> | <a href="./api/swagger.json" target="new">Swagger-Spec (JSON)</a></p>
+      <div id="r-token"></div>
+      <script type="text/javascript">
+    		if (isAuthenticated()) {
+    			$("#r-token").append("Using token: <b>"+getToken()+"</b>");      			
+    		}
+       </script>
+</div>
+
+

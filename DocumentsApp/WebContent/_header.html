@@ -1,0 +1,39 @@
+
+ <div class="navbar navbar-inverse navbar-fixed-top">
+   <div class="container">
+     <div class="navbar-header">
+       <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+         <span class="icon-bar"></span>
+         <span class="icon-bar"></span>
+         <span class="icon-bar"></span>
+       </button>
+       <a class="navbar-brand" href="http://www.rembli.com">rembli</a>
+     </div>
+     <div class="navbar-collapse collapse">
+       <ul class="nav navbar-nav">
+         <li class="active">
+			<a href="./index.html"><span class="glyphicon glyphicon-home"></span> Home</a>
+		</li>
+		<li class="active">
+			<a href="./scan.html"><span class="glyphicon glyphicon-download-alt"></span> Scan</a>
+		</li> 		
+		<li class="active">
+			<a href="./about.html"><span class="glyphicon glyphicon-info-sign"></span> About</a>
+		</li>
+       </ul>
+       <div class="form-group" style="color:#ffffff">
+       	<R-LOGOUT></R-LOGOUT>
+       </div>
+     </div>
+   </div>
+ </div>
+
+<script type="text/javascript">
+if (isAuthenticated()) {
+	  $.get("_logout.html", function(data) {
+	    $("R-LOGOUT").html(data);
+	  });
+}
+</script>
+        
+ 

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tomcatProjectProperties>
+    <rootDir>/</rootDir>
+    <workDir>/work</workDir>
+    <exportSource>true</exportSource>
+    <reloadable>true</reloadable>
+    <redirectLogger>true</redirectLogger>
+    <updateXml>true</updateXml>
+    <warLocation>D:\Dev\EclipseWorkspace2015\documents.war</warLocation>
+    <extraInfo></extraInfo>
+    <webPath>http://localhost:8080/documents</webPath>
+</tomcatProjectProperties>

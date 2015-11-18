@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" id="WebApp_ID" version="3.0">
+  <display-name>DocumentsApp</display-name>
+  
+  <servlet>
+    <servlet-name>DocumentsAPI</servlet-name>
+    <servlet-class>org.glassfish.jersey.servlet.ServletContainer</servlet-class>
+    <init-param>
+      <param-name>jersey.config.server.provider.packages</param-name>
+      <param-value>
+           io.swagger.jaxrs.listing,
+           com.rembli
+      </param-value>      
+    </init-param>
+	<init-param>
+    	<param-name>jersey.config.server.provider.classnames</param-name>
+    	<param-value>org.glassfish.jersey.media.multipart.MultiPartFeature</param-value>
+	</init-param>    
+    <load-on-startup>1</load-on-startup>
+    <multipart-config>
+        <max-file-size>10485760</max-file-size>
+        <max-request-size>20971520</max-request-size>
+        <file-size-threshold>5242880</file-size-threshold>
+    </multipart-config>    
+  </servlet>
+  
+   <servlet>
+       <servlet-name>Swagger</servlet-name>
+       <servlet-class>io.swagger.jersey.config.JerseyJaxrsConfig</servlet-class>
+       <init-param>
+           <param-name>api.version</param-name>
+           <param-value>1</param-value>
+       </init-param>
+       <init-param>
+           <param-name>swagger.api.basepath</param-name>
+           <param-value>/documents/api</param-value>
+       </init-param>
+       <load-on-startup>2</load-on-startup>
+   </servlet>  
+  
+  <servlet-mapping>
+    <servlet-name>DocumentsAPI</servlet-name>
+    <url-pattern>/api/*</url-pattern>
+  </servlet-mapping>
+  
+</web-app>
