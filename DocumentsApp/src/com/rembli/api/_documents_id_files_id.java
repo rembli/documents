@@ -45,6 +45,6 @@ public class _documents_id_files_id {
 		String token = AuthenticationFilter.getTokenFromRequest (httpRequest);
 		DocumentManagementSystem dms = new DocumentManagementSystem (token);
 		dms.deleteFile(idDocument, idFile);
-		return Response.status(204).entity("OK").build();
+		return Response.status(204).build();
 	}	
 }

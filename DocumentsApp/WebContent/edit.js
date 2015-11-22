@@ -28,6 +28,7 @@ function writeFilesToTable () {
 		window.document.write ("<tr>");
 		window.document.write ("<td>"+fileInfo.idFile+"</td>");
 		window.document.write ("<td><a href='"+host+"/api/documents/"+getParameterByName("id")+"/files/"+fileInfo.idFile+"' target='_new'>"+fileInfo.fileName+"</a></td>");		
+		window.document.write ("<td><img src='"+host+"/api/documents/"+getParameterByName("id")+"/files/"+fileInfo.idFile+"/thumbnail' onError='this.src = \"./img/thumbnail_not_available.jpg\"'></td>");		
 		window.document.write ("<td><a href='javascript:deleteFile(\""+fileInfo.idFile+"\")'><span class='glyphicon glyphicon-trash'></span></a></td></tr>");		
 		window.document.write ("</tr>");
 	}

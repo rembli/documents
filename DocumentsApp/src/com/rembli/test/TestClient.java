@@ -1,10 +1,7 @@
-import java.math.BigInteger;
-import java.security.SecureRandom;
+package com.rembli.test;
 import java.util.Random;
-
 import com.rembli.dms.*;
-import com.rembli.ums.UserInfo;
-import com.rembli.ums.UserManagementSystem;
+import com.rembli.ums.*;
 
 public class TestClient {
 
@@ -35,7 +32,7 @@ public class TestClient {
 		System.out.println ("ZWEITER VERSUCH -------------- ");		
 		try { // Mit Authentifizierung
 			
-			String tokenSignature = ums.login("gboegerl", "123");
+			String tokenSignature = ums.login("testClient", "123");
 			if (tokenSignature==null) {
 				System.out.println ("FATAL: Authorization failed!");
 				return;

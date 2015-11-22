@@ -8,7 +8,6 @@ Nutzung der Anwendung
 
 TODOS
 --------------------------------------------------------------------------------
-- Erstellung von Thumbnails von Images
 - Tags
 - Mehrsprachigkeit
 - Mehrmandantenfähigkeit
@@ -23,6 +22,7 @@ EVENTUELL
 
 ERLEDIGT
 --------------------------------------------------------------------------------
+- Erstellung von Thumbnails von Images
 - GitHub
 - Beim FileUpload via DropZone kommt der Dateiname nicht mehr mit
 - Links (bisher nur self) wird als Struktur zurück gegeben
@@ -68,7 +68,8 @@ Lombok - um sich viel "Boilerplate"-Code (v.a. Setter und Getter) zu sparen (htt
 JAXB - XML aus Java Objekten erzeugen
 Genson - um Java-Objekte in JSON zu konvertieren (sehr gut mit JAXB integriert!) http://owlike.github.io/genson/
 mimepull - braucht man für MediaTypes, wenn man Dateien (Multi-part) hochladen/runterladen will
-Swagger Core Jersey 2.X - zur Erzeugung der Swagger-Spec aus der JAX-RS-Annotation (Ab hier: MAVEN wegen massiver Abhängigkeiten) 
+Swagger Core Jersey 2.X - zur Erzeugung der Swagger-Spec aus der JAX-RS-Annotation (Ab hier: MAVEN wegen massiver Abhängigkeiten)
+thumbnailator - zur Erzeugung der Thumbnails 
 
 *** JAVASCRIPT ***
 jQuery

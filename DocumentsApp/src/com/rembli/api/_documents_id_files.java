@@ -42,7 +42,7 @@ public class _documents_id_files {
 		String fileType = "application/octet-stream";
 		if (fileInfo != null) fileName = fileInfo.getFileName();
 		if (fileBody != null) fileType = fileBody.getMediaType().getType()+"/"+fileBody.getMediaType().getSubtype();
-		int idfile = dms.attachFile(idDocument, fileName, fileType, uploadedInputStream);
+		long idfile = dms.attachFile(idDocument, fileName, fileType, uploadedInputStream);
 		
 		return Response.status(200).entity(""+idfile).build();		
 	}
