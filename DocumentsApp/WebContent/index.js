@@ -14,7 +14,7 @@ function writeDocumentsTable () {
 	    var doc = documents[i];
 		window.document.write ("<tr><td>"+doc.idDocument+"</td>");
 		window.document.write ("<td><a href='edit.html?id="+doc.idDocument+"'>"+doc.note+"</a></td>");
-		window.document.write ("<td><img src='"+host+"/api/documents/"+doc.idDocument+"/thumbnail' onError='this.src = \"./img/thumbnail_not_available.jpg\"'></td>");
+		window.document.write ("<td><img src='"+host+"/api/documents/"+doc.idDocument+"/thumbnail' onError='this.src = \"./img/thumbnail_not_available.jpg\" width=\"200px\"></td>");
 		window.document.write ("<td><a href='javascript:deleteDocument(\""+doc.idDocument+"\")'><span class='glyphicon glyphicon-trash'></span></a></td></tr>");
 	}
 	window.document.write ("</table>");

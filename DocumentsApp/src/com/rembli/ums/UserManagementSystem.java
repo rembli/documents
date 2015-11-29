@@ -16,6 +16,12 @@ import com.rembli.log.*;
 import com.rembli.util.db.*;
 
 public class UserManagementSystem {
+
+	public static class IDENTIY_PROVIDER {
+		public static String FACEBOOK = "FACEBOOK";
+	
+	}	
+	
 	// die Tokens werden Anwendungsübergreifend in einer Hashmap abgespeichert, d.h. pro VM bzw. App-Server
 	// Alternative: in der Datenbank
 	private static HashMap<String,Token> tokens = new HashMap<String,Token>();
@@ -42,29 +48,43 @@ public class UserManagementSystem {
 		}
     }
 
-    public String login (String ssoTicket) throws Exception {    
+    public String loginWithAccessToken (String identityProvider, String accessToken) throws Exception {    
 	
-    	// 1. Bei Facebook das AccessToken prüfen
+    	if (identityProvider == IDENTIY_PROVIDER.FACEBOOK) {
+    		
+	    	// 1. Bei Facebook das AccessToken prüfen
+		
+	    	Client client = ClientBuilder.newClient();
+	    	WebTarget webTarget = client.target("https://graph.facebook.com/me?access_token="+accessToken);
+	    	Response response = webTarget.request().get();  
+		  	String userJSON = response.readEntity(String.class);
+		  
+		  	Genson genson = new Genson();
+		  	Map<Integer, String> user = genson.deserialize(userJSON, Map.class);
+		  	
+		  	// 2. Prüfen, ob AccessToken noch gültig ist (d.h. Werte zurück liefert)
+		  	if (user.get("id")!=null) {
+		  		
+			  	// 3. User ggf. anlegen (und prüfen, ob er nicht schon angelegt ist); wenn kein User angelegt wurde, liefert createUserInfo 0 zurück
+			  	String username = user.get("name") + "-"+user.get("id");
+		    	
+			  	Random random = new SecureRandom();
+		        String password = new BigInteger(130, random).toString(10);	  	
+			  	createUserInfo(username, username, password);
 	
-    	Client client = ClientBuilder.newClient();
-    	WebTarget webTarget = client.target("https://graph.facebook.com/me?access_token="+ssoTicket);
-    	Response response = webTarget.request().get();  
-	  	String userJSON = response.readEntity(String.class);
-	  
-	  	Genson genson = new Genson();
-	  	Map<Integer, String> user = genson.deserialize(userJSON, Map.class);
-	  	
-	  	// 2. User ggf. anlegen (und prüfen, ob er nicht schon angelegt ist)
-	  	String username = user.get("name") + "("+user.get("id")+")";
-    	
-	  	Random random = new SecureRandom();
-        String password = new BigInteger(130, random).toString(32);	  	
-	  	long userId = createUserInfo(username, username, password);
-	  	if (userId==0) {
-	  		System.out.println("User war schon angelegt");
-	  	}
-	  	
-	  	return (issueToken(username));
+			  	// 4. Token für User erzeugen
+			  	String token = issueToken (username);
+			  	LogManagementSystem.log(username, LogEntry.ENTITY.USER, username, LogEntry.ACTION.CHECK, "Successful login for user "+ username +" with FACEBOOK");
+			  	return token;
+		  	}
+		  	else {
+		  		LogManagementSystem.log("SYSTEM", LogEntry.ENTITY.USER, "", LogEntry.ACTION.CHECK, "Login with FACEBOOK failed");
+		  		return null;
+		  	}
+		  		
+    	}
+    	else
+    		return null;
     }
     
     private String issueToken (String username) throws Exception {

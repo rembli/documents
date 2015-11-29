@@ -17,7 +17,7 @@ import com.rembli.ums.*;
 public class _login {
 	@Context HttpServletRequest httpRequest;
 
-    @ApiOperation(value = "Anmeldung", notes = "Erzeugt ein Authentication-Token, welches für die weitere Bearbeitung notwendig ist. Entweder mit Username und Passwort ODER mit SSO-Ticket (noch in Arbeit)")
+    @ApiOperation(value = "Anmeldung", notes = "Erzeugt ein Authentication-Token, welches für die weitere Bearbeitung notwendig ist.")
     @ApiResponses(value = { 
     		@ApiResponse(code = 200, message = "Es wird das Authentication-Token als Text zurückgegeben.", response = String.class),
     		@ApiResponse(code = 401, message = "Das Login war nicht erfolgreich.")
@@ -25,7 +25,7 @@ public class _login {
     @POST
     @Produces("text/html")
     @Consumes("application/x-www-form-urlencoded")
-    public Response login (@FormParam("username") String username, @FormParam("password") String password, @FormParam("ssoTicket") String ssoTicket) throws Exception {
+    public Response login (@FormParam("username") String username, @FormParam("password") String password) throws Exception {
 
     	UserManagementSystem ums = new UserManagementSystem ();
     	
@@ -36,23 +36,15 @@ public class _login {
 	
 	    	if (token!=null) {
 	    		HttpSession session = httpRequest.getSession();
-	    		session.setAttribute("AuthenticationToken", token);
+	    		session.setAttribute("Authentication-Token", token);
 	    		return Response.ok(token).build();
 	    	}
 	    	else
 	        	return Response.status(Response.Status.UNAUTHORIZED).build();
     	}
-    	else if (ssoTicket != null) {
-
-    		String token = ums.login (ssoTicket);
-    		return Response.ok(token).build();
-    	
-    	}
-    	else 
-    		
-    		return Response.status(Response.Status.UNAUTHORIZED).build();
-
-    }
-
+   		return Response.status(Response.Status.UNAUTHORIZED).build();
+    }   
 }		
+
+	
 	

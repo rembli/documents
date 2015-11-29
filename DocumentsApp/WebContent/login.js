@@ -77,10 +77,10 @@ window.fbAsyncInit = function() {
     console.log('AccessToken: ' + accessToken);    
     
     FB.api('/me', function(response) {
-    	document.getElementById('status').innerHTML = 'Thanks for logging in, ' + response.name + '!';
+    	document.getElementById('status').innerHTML = '<br>Thanks for logging in, ' + response.name + '!';
     });
     
-	var url = host+"/api/login";
+	var url = host+"/api/loginWithAccessToken";
 	var client = new XMLHttpRequest();
 	client.open('POST', url, true);
 	client.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
@@ -92,7 +92,7 @@ window.fbAsyncInit = function() {
 					// das speichern wir uns im SessionStorage des Browswers
 					// später müssen wir das bei jedem Request in den Authorization-Header schreiben
 					window.sessionStorage.setItem("Authentication-Token",this.responseText);
-					window.sessionStorage.setItem("Authentication-User","Facebook-Login");
+					window.sessionStorage.setItem("Authentication-User","Facebook-User");
 					// dann gibt es einen redirekt zur Startseite
 					window.document.location.href = host+"/index.html";
 				}
@@ -103,9 +103,8 @@ window.fbAsyncInit = function() {
 				}
 			}
 	};
-	// hier senden wir username und passwort
-	client.send("ssoTicket="+accessToken);    
-    
+	// hier senden wir das accessToken von Facebook
+	client.send("identityProvider=FACEBOOK&accessToken="+accessToken);    
     
   }
 
