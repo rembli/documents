@@ -36,7 +36,7 @@ public class _documents {
 		String fileType = "application/octet-stream";
 		if (fileInfo != null) fileName = fileInfo.getFileName();
 		if (fileBody != null) fileType = fileBody.getMediaType().getType()+"/"+fileBody.getMediaType().getSubtype();
-		int iddocument = dms.createDocument(fileName, fileType , fileInputStream);
+		long iddocument = dms.createDocument(fileName, fileType , fileInputStream);
 
 		return Response.status(200).entity(""+iddocument).build();	
 	} 	

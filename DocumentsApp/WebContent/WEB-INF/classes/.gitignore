@@ -1,5 +1,3 @@
 /db-active.properties
-/TestClient.class
+/.gitignore
 /com/
-/TestThumbnails.class
-/TestPic.jpg

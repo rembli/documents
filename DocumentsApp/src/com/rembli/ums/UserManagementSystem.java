@@ -1,5 +1,9 @@
 package com.rembli.ums;
 import java.util.*;
+
+import javax.ws.rs.client.*;
+import javax.ws.rs.core.Response;
+
 import java.io.*;
 import java.math.BigInteger;
 import java.security.SecureRandom;
@@ -7,6 +11,7 @@ import java.security.SecureRandom;
 import org.sql2o.Connection;
 import org.sql2o.data.Table;
 
+import com.owlike.genson.Genson;
 import com.rembli.log.*;
 import com.rembli.util.db.*;
 
@@ -37,6 +42,31 @@ public class UserManagementSystem {
 		}
     }
 
+    public String login (String ssoTicket) throws Exception {    
+	
+    	// 1. Bei Facebook das AccessToken prüfen
+	
+    	Client client = ClientBuilder.newClient();
+    	WebTarget webTarget = client.target("https://graph.facebook.com/me?access_token="+ssoTicket);
+    	Response response = webTarget.request().get();  
+	  	String userJSON = response.readEntity(String.class);
+	  
+	  	Genson genson = new Genson();
+	  	Map<Integer, String> user = genson.deserialize(userJSON, Map.class);
+	  	
+	  	// 2. User ggf. anlegen (und prüfen, ob er nicht schon angelegt ist)
+	  	String username = user.get("name") + "("+user.get("id")+")";
+    	
+	  	Random random = new SecureRandom();
+        String password = new BigInteger(130, random).toString(32);	  	
+	  	long userId = createUserInfo(username, username, password);
+	  	if (userId==0) {
+	  		System.out.println("User war schon angelegt");
+	  	}
+	  	
+	  	return (issueToken(username));
+    }
+    
     private String issueToken (String username) throws Exception {
     	// Es kann ein beliebiges Token erzeugt werden, z.B. auch ein JWT. Hier nur eine Zufallszahl
     	// Vorteil von JWT: Ein System, welches den öffentlichen Schlüssel hat, kann beim JWT
@@ -89,7 +119,7 @@ public class UserManagementSystem {
     }
     
 	
-	public int createUserInfo (String username, String email, String password) throws Exception {
+	public long createUserInfo (String username, String email, String password) throws Exception {
 		System.out.println("Try to create new user: "+username+"/"+email+"/"+password);
 		try (Connection con = ConnectionPool.getConnection()) {
 			// Prüfen, ob es den username schon gibt
@@ -102,15 +132,15 @@ public class UserManagementSystem {
 			
     		// wenn nicht, dann entsprechend anlegen
 			sql = SqlStatements.get ("UMS.CREATE_USERINFO");
-		    Integer id = con.createQuery(sql, true)
+		    Long id = con.createQuery(sql, true)
 		    		.addParameter("username", username)
 		    		.addParameter("email", email)
 		    		.addParameter("password", password)		    		
 				    .executeUpdate()
-				    .getKey(Integer.class);
+				    .getKey(Long.class);
 		    LogManagementSystem.log(username, LogEntry.ENTITY.USER, username, LogEntry.ACTION.CREATE, "User "+ username+" created");
 		    
-		    return id.intValue();
+		    return id.longValue();
 		}
 	}    
 	

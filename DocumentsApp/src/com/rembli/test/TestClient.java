@@ -51,7 +51,7 @@ public class TestClient {
 
 			Random r2 = new Random ();
 			String note = "note-"+r2.nextInt(1000);
-			int id = dms.createDocument(note);
+			long id = dms.createDocument(note);
 			System.out.println ("new document #"+id);
 			
 			for (int cnt=0;cnt<1; cnt++) {

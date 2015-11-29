@@ -21,16 +21,42 @@
 
 <div class="container">
 <h2>Login to </i>/documents</i></h2>
+<br><br>
+<div>
 
-<form name="login">
-	<label>E-mail:</label> <input type="email" name="email" class="form-control" placeholder="jane.doe@example.com">
-	<label>Password:</label> <input type="password" name="password" class="form-control" placeholder="password">
-	<br>
-	<button type="button" class="btn btn-primary" onClick="javascript:submitLogin();">Anmelden</button>
-	<button type="button" class="btn btn-secondary" onClick="javascript:newUser();">Neuer User</button>
-</form>
+  <ul class="nav nav-tabs" role="tablist">
+    <li role="presentation" class="active"><a href="#facebookLoginTab" aria-controls="facebookLoginTab" role="tab" data-toggle="tab">facebook</a></li>
+    <li role="presentation"><a href="#rembliLoginTab" aria-controls="rembliLoginTab" role="tab" data-toggle="tab">e-mail</a></li>
+  </ul>
 
+  <div class="tab-content">
+    <div role="tabpanel" class="tab-pane fade in active" id="facebookLoginTab">
+    	<br><br>
+		<center>
+	    	<fb:login-button scope="public_profile,email" onlogin="checkLoginState();" data-size="xlarge">
+			</fb:login-button>
+ 			<!--  		
+			<div class="fb-login-button" data-max-rows="1" data-size="xlarge" data-show-faces="false" data-auto-logout-link="false" scope="email" onlogin="checkLoginState();"></div>
+			-->
+		</center>
+		<br><br>
+		<div id="status"></div>
+    	<br><br>
+    </div>
 
+    <div role="tabpanel" class="tab-pane fade" id="rembliLoginTab">
+		<br>
+		<form name="login">
+			<label>E-mail:</label> <input type="email" name="email" class="form-control" placeholder="jane.doe@example.com">
+			<label>Password:</label> <input type="password" name="password" class="form-control" placeholder="password">
+			<br>
+			<button type="button" class="btn btn-primary" onClick="javascript:submitLogin();">Anmelden</button>
+			<button type="button" class="btn btn-secondary" onClick="javascript:newUser();">Neuer User</button>
+		</form>
+	</div>
+	</div>
+
+</div>
 </div>
 <R-FOOTER></R-FOOTER>
 </body>

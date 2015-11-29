@@ -18,25 +18,25 @@ public class DocumentManagementSystem {
 		username = ums.getUsername(token);
 	}
 	
-	public int createDocument (String note) throws Exception {
+	public long createDocument (String note) throws Exception {
 		if (!isAuthenticated) throw new Exception ("UNAUTHORIZED");
 		
 		try (Connection con = ConnectionPool.getConnection()) {
 			String sql = SqlStatements.get ("DMS.CREATE_DOCUMENT");
-		    Integer id = con.createQuery(sql,true)
+		    Long id = con.createQuery(sql,true)
 		    		.addParameter("username", username)
 		    		.addParameter("note", note)
 				    .executeUpdate()
-				    .getKey(Integer.class);
+				    .getKey(Long.class);
 
 		    LogManagementSystem.log(username, LogEntry.ENTITY.DOCUMENT, id.toString(), LogEntry.ACTION.CREATE, "New document "+id.toString()+" created by user "+ username);   			
-		    return id.intValue();
+		    return id.longValue();
 		}
 	}
 	
-	public int createDocument (String fileName, String fileType, InputStream uploadedInputStream) throws Exception {
+	public long createDocument (String fileName, String fileType, InputStream uploadedInputStream) throws Exception {
 		if (!isAuthenticated) throw new Exception ("UNAUTHORIZED");
-		int idDocument = createDocument (fileName);
+		long idDocument = createDocument (fileName);
    		attachFile (idDocument, fileName, fileType, uploadedInputStream);
 	    return idDocument;	    		
 	}	
@@ -55,7 +55,7 @@ public class DocumentManagementSystem {
 		}
 	}	
 	
-	public long attachFile (int idDocument, String fileName, String fileType, InputStream uploadedInputStream) throws Exception {
+	public long attachFile (long idDocument, String fileName, String fileType, InputStream uploadedInputStream) throws Exception {
 		if (!isAuthenticated) throw new Exception ("UNAUTHORIZED");
 		
 		try (Connection con = ConnectionPool.getConnection()) {

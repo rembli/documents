@@ -43,7 +43,7 @@ public class _userInfo {
 		throws Exception {
 
 		UserManagementSystem ums = new UserManagementSystem ();
-		int iduser = ums.createUserInfo(username, email, password);
+		long iduser = ums.createUserInfo(username, email, password);
 		
 		if (iduser==0)
 			return Response.status(409).entity("This user already exists").build();

@@ -61,16 +61,17 @@
 		</script>
 		</table>
 
-		<div class="well">
 		<form name="uploadFileForm" action="./api/documents/123/files" method="post" enctype="multipart/form-data">
 		   <input type="file" onchange="javascript:attachFile();" name="RemoteFile" size="45"></input> 
 		</form>
-		</div>
     </div>
 
     <div role="tabpanel" class="tab-pane fade" id="logTab">
 		<p>
-		<div id="logEntryTable" style="overflow: scroll; height: 200px;">
+		<!-- 
+		<div id="logEntryTable" style="overflow: scroll; height: 200px;"></div>
+		 -->
+		<div id="logEntryTable">
 		</div>
     </div>
 
@@ -81,8 +82,8 @@
   </div>
 </div>
 
-<br>
-<input type="button" class="btn btn-secondary" value="< Back to list" onclick="window.open ('index.html','_self');" class="btn btn-default" />
+<br><br>
+<input type="button" class="btn btn-secondary" value="Back to list" onclick="window.open ('index.html','_self');" class="btn btn-default" />
 
 <!-- **************************************************************** -->	
 
