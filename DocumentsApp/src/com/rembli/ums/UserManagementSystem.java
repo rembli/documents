@@ -60,7 +60,7 @@ public class UserManagementSystem {
 		  	String userJSON = response.readEntity(String.class);
 		  
 		  	Genson genson = new Genson();
-		  	Map<Integer, String> user = genson.deserialize(userJSON, Map.class);
+		  	Map<String, Object> user = genson.deserialize(userJSON, Map.class);
 		  	
 		  	// 2. Prüfen, ob AccessToken noch gültig ist (d.h. Werte zurück liefert)
 		  	if (user.get("id")!=null) {

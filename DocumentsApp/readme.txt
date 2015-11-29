@@ -22,6 +22,7 @@ EVENTUELL
 
 ERLEDIGT
 --------------------------------------------------------------------------------
+- Login mit Facebook
 - Erstellung von Thumbnails von Images
 - GitHub
 - Beim FileUpload via DropZone kommt der Dateiname nicht mehr mit
