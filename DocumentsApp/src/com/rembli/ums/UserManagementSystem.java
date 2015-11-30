@@ -132,7 +132,6 @@ public class UserManagementSystem {
     	Token token = tokens.get(tokenSignature);
     	return token.getUsername();
     }
-    
 	
 	public long createUserInfo (String username, String email, String password) throws Exception {
 		System.out.println("Try to create new user: "+username);
@@ -184,7 +183,6 @@ public class UserManagementSystem {
 				    .executeUpdate();
 		}		
 	}  	
-    
 
 	private String getProperties (String statement) throws IOException {
 		Properties prop = new Properties();
