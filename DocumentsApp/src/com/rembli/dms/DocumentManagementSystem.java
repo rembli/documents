@@ -87,34 +87,34 @@ public class DocumentManagementSystem {
 		try (Connection con = ConnectionPool.getConnection()) {
 			try {
 				// 1. Read file from DB 
-				
 				String sql = SqlStatements.get ("DMS.GET_FILE");
 				com.rembli.dms.File file = con.createQuery(sql)
 						.addParameter("username", username)
 						.addParameter("idFile", idFile)
 						.executeAndFetchFirst (com.rembli.dms.File.class);
 				
-				// 2. Convert file to thumbnail
+				// 2. Convert file to thumbnail, wenn dieses schon verfügbar ist
+				if (file != null && file.data != null) {
 
-				ByteArrayInputStream bis = new ByteArrayInputStream(file.data);
-				ByteArrayOutputStream bos = new ByteArrayOutputStream();
-				
-				Thumbnails.of(bis)
-		    	.size(200, 100)
-		    	.outputFormat("png")
-		    	.toOutputStream (bos);		
-				
-				// 3. Write thumbnail to DB
-
-				ByteArrayInputStream bisT = new ByteArrayInputStream(bos.toByteArray());
+					ByteArrayInputStream bis = new ByteArrayInputStream(file.data);
+					ByteArrayOutputStream bos = new ByteArrayOutputStream();
+					
+					Thumbnails.of(bis)
+			    	.size(200, 100)
+			    	.outputFormat("png")
+			    	.toOutputStream (bos);		
+					
+					// 3. Write thumbnail to DB
 	
-				sql = SqlStatements.get ("DMS.ATTACH_THUMBNAIL");
-			    con.createQuery(sql,true)
-	    			.addParameter("username", username)
-	    			.addParameter("idFile", idFile)
-		    		.addParameter("inputstream", bisT)
-				    .executeUpdate();
-				
+					ByteArrayInputStream bisT = new ByteArrayInputStream(bos.toByteArray());
+		
+					sql = SqlStatements.get ("DMS.ATTACH_THUMBNAIL");
+				    con.createQuery(sql,true)
+		    			.addParameter("username", username)
+		    			.addParameter("idFile", idFile)
+			    		.addParameter("inputstream", bisT)
+					    .executeUpdate();
+				}				
 			} catch (net.coobird.thumbnailator.tasks.UnsupportedFormatException ignored) {
 				System.out.println ("Kann kein Thumbnail für dieses Format erzeugen");
 			} 

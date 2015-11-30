@@ -22,38 +22,39 @@
 <div class="container">
 <h2>Login to </i>/documents</i></h2>
 <br><br>
-<div>
 
-  <ul class="nav nav-tabs" role="tablist">
-    <li role="presentation" class="active"><a href="#facebookLoginTab" aria-controls="facebookLoginTab" role="tab" data-toggle="tab">facebook</a></li>
-    <li role="presentation"><a href="#rembliLoginTab" aria-controls="rembliLoginTab" role="tab" data-toggle="tab">e-mail</a></li>
-  </ul>
-
-  <div class="tab-content">
-    <div role="tabpanel" class="tab-pane fade in active" id="facebookLoginTab">
-    	<br><br>
-		<center>
-	    	<fb:login-button scope="public_profile,email" onlogin="checkLoginState();" data-size="xlarge">
-			</fb:login-button>
-		</center>
-		<br>
-		<div id="status"></div>
-    	<br>
-    </div>
-
-    <div role="tabpanel" class="tab-pane fade" id="rembliLoginTab">
-		<br>
-		<form name="login">
-			<label>E-mail:</label> <input type="email" name="email" class="form-control" placeholder="jane.doe@example.com">
-			<label>Password:</label> <input type="password" name="password" class="form-control" placeholder="password">
-			<br>
-			<button type="button" class="btn btn-primary" onClick="javascript:submitLogin();">Anmelden</button>
-			<button type="button" class="btn btn-secondary" onClick="javascript:newUser();">Neuer User</button>
-		</form>
+<div class="row">
+ 	<div class="col-md-4">
+		<div class="panel panel-default">
+ 			<div class="panel-heading">Login with e-Mail
+ 			</div>
+ 			<div class="panel-body">
+				<form name="login">
+					<label>E-mail:</label> <input type="email" name="email" class="form-control" placeholder="jane.doe@example.com">
+					<label>Password:</label> <input type="password" name="password" class="form-control" placeholder="password">
+					<br>
+					<button type="button" class="btn btn-primary" onClick="javascript:submitLogin();">Anmelden</button>
+					<button type="button" class="btn btn-secondary" onClick="javascript:newUser();">Neuer User</button>
+				</form>
+ 			</div>
+ 			</div>
+ 		</div>
+ 		<div class="col-md-1"><center><u>or</u></center><br>
+ 		</div>
+ 		<div class="col-md-4">  
+ 			<div class="panel panel-default">
+ 			<div class="panel-heading">Login with facebook
+ 			</div>
+ 			<div class="panel-body">
+				<center><br>
+			    	<fb:login-button scope="public_profile,email" onlogin="checkLoginState();" data-size="xlarge">
+					</fb:login-button>
+				<br><br></center>
+ 			</div>
+ 		</div>
 	</div>
-	</div>
+ </div>
 
-</div>
 </div>
 <R-FOOTER></R-FOOTER>
 </body>

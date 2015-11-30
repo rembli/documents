@@ -8,12 +8,14 @@ Nutzung der Anwendung
 
 TODOS
 --------------------------------------------------------------------------------
-- Tags
+- Suche
+- Tags/Properties
 - Mehrsprachigkeit
 - Mehrmandantenfähigkeit
 
 EVENTUELL
 --------------------------------------------------------------------------------
+- Email-integration (senden an rembli adresse: client-id@postbox.rembli.com)
 - Asynchrone Thumbnails
 - Volltextsuche (Asprise für OCR +  + Lucene)
 - Automatisches Nachladen (a la Facebook)
@@ -22,7 +24,9 @@ EVENTUELL
 
 ERLEDIGT
 --------------------------------------------------------------------------------
-- Login mit Facebook
+- Login mit facebook
+- Loeschen in die details
+- Scanner Ressourcen als separate web app
 - Erstellung von Thumbnails von Images
 - GitHub
 - Beim FileUpload via DropZone kommt der Dateiname nicht mehr mit

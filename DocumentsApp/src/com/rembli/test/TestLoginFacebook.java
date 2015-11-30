@@ -14,7 +14,7 @@ public class TestLoginFacebook {
     	  WebTarget webTarget;
     	  Response response;
     	  
-    	  String access_token = "CAAXP8ro1wSgBAJ6r1v2JZB9cFIrBRYOBzdiyw60vHnZBrhhZAwAdQmA3fL2YJyYVPjKuBwnw2ZBFZARXHljZAMAZCg4YUvpmOmR4px1lBhphGcZBgiVobiTIP6cY7bPzZCHYPSjqvKm7EIXsZAxX0IZAfUyDkMx1ZAY8J3ZBEkorq0saPVVMTbSgO3T5UsZCsOuhqoSTjrCjGDZBegJ3UbdTF9kAqVk";
+    	  String access_token = "CAAXP8ro1wSgBAI2IiepMBSZAKYrqLjdkES5ZB6ZBNYk0TfFffhUksAvWcaZBnQdsZAVnpsGZCX3VjhhfWYrMCb5bmYEnZBZC49psBHcT95elBZCH90ixLcY491EjZA8pVMDmQouA9hcoETt3uJZCaZBudkXZBiDVfSzaZBNzd5XuyKHgIcER8S0OIS7ida93M89N4E0McWnfCexKHQuKVB9QlZCsgWs";
     	  
     	  webTarget = client.target("https://graph.facebook.com/debug_token?input_token="+access_token+"&access_token="+access_token);
     	  response = webTarget.request().get();    	  
@@ -25,7 +25,7 @@ public class TestLoginFacebook {
     	  String userJSON = response.readEntity(String.class);
     	  
     	  Genson genson = new Genson();
-    	  Map<Integer, String> user = genson.deserialize(userJSON, Map.class);
+    	  Map<String, Object> user = genson.deserialize(userJSON, Map.class);
     	  System.out.println (user.get("id"));
     	  System.out.println (user.get("name"));
     	  

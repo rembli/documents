@@ -1,16 +1,12 @@
 package com.rembli.ums;
 import java.util.*;
-
 import javax.ws.rs.client.*;
 import javax.ws.rs.core.Response;
-
 import java.io.*;
 import java.math.BigInteger;
 import java.security.SecureRandom;
-
 import org.sql2o.Connection;
 import org.sql2o.data.Table;
-
 import com.owlike.genson.Genson;
 import com.rembli.log.*;
 import com.rembli.util.db.*;
@@ -19,7 +15,6 @@ public class UserManagementSystem {
 
 	public static class IDENTIY_PROVIDER {
 		public static String FACEBOOK = "FACEBOOK";
-	
 	}	
 	
 	// die Tokens werden Anwendungsübergreifend in einer Hashmap abgespeichert, d.h. pro VM bzw. App-Server
@@ -41,16 +36,16 @@ public class UserManagementSystem {
     			return token;
     		}
     		else {
-    			LogManagementSystem.log(username, LogEntry.ENTITY.USER, username, LogEntry.ACTION.CHECK, "Login failed for user "+ username);			
-    			System.out.println ("Login failed");
+    			LogManagementSystem.log(username, LogEntry.ENTITY.USER, username, LogEntry.ACTION.CHECK, "Login failed for user "+ username);	
     			return null;
     		}
 		}
     }
 
     public String loginWithAccessToken (String identityProvider, String accessToken) throws Exception {    
-	
-    	if (identityProvider == IDENTIY_PROVIDER.FACEBOOK) {
+    	System.out.println ("Trying to login with "+identityProvider);
+    	
+    	if (identityProvider.equalsIgnoreCase(IDENTIY_PROVIDER.FACEBOOK)) {
     		
 	    	// 1. Bei Facebook das AccessToken prüfen
 		
@@ -58,7 +53,8 @@ public class UserManagementSystem {
 	    	WebTarget webTarget = client.target("https://graph.facebook.com/me?access_token="+accessToken);
 	    	Response response = webTarget.request().get();  
 		  	String userJSON = response.readEntity(String.class);
-		  
+		  	System.out.println("FACEBOOK: "+userJSON);
+		  	
 		  	Genson genson = new Genson();
 		  	Map<String, Object> user = genson.deserialize(userJSON, Map.class);
 		  	
@@ -66,11 +62,11 @@ public class UserManagementSystem {
 		  	if (user.get("id")!=null) {
 		  		
 			  	// 3. User ggf. anlegen (und prüfen, ob er nicht schon angelegt ist); wenn kein User angelegt wurde, liefert createUserInfo 0 zurück
-			  	String username = user.get("name") + "-"+user.get("id");
-		    	
+			  	String username = user.get("name")+"-"+user.get("id"); 
+			  	String email = ""; // leider steht die E-Mail Adresse bei FB im Standard nicht zur Verfügung
 			  	Random random = new SecureRandom();
 		        String password = new BigInteger(130, random).toString(10);	  	
-			  	createUserInfo(username, username, password);
+			  	createUserInfo(username, email, password);
 	
 			  	// 4. Token für User erzeugen
 			  	String token = issueToken (username);
@@ -81,7 +77,6 @@ public class UserManagementSystem {
 		  		LogManagementSystem.log("SYSTEM", LogEntry.ENTITY.USER, "", LogEntry.ACTION.CHECK, "Login with FACEBOOK failed");
 		  		return null;
 		  	}
-		  		
     	}
     	else
     		return null;
@@ -140,7 +135,7 @@ public class UserManagementSystem {
     
 	
 	public long createUserInfo (String username, String email, String password) throws Exception {
-		System.out.println("Try to create new user: "+username+"/"+email+"/"+password);
+		System.out.println("Try to create new user: "+username);
 		try (Connection con = ConnectionPool.getConnection()) {
 			// Prüfen, ob es den username schon gibt
     		String sql = SqlStatements.get ("UMS.CHECK_USERINFO");

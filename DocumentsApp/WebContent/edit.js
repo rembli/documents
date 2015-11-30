@@ -66,6 +66,23 @@ function deleteFile (id) {
 	}
 }	
 
+function deleteDocument (id) {
+	
+	if (confirm ("Do You really want to delete document with id "+id)) {
+		var url = host+"/api/documents/"+id;
+		var client = new XMLHttpRequest();
+		client.open('DELETE', url, true);
+		client.onload = function () {
+			window.document.location.href = host+"/index.html"
+		};
+		client.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+		client.setRequestHeader("Authorization", token);	
+		client.send("id="+id);
+		if (client.status == 401) window.document.location.href = host+"/login.html";
+	}
+	
+}
+
 function updateDocument () {
 	var url = host+"/api/documents/"+getParameterByName("id");
 	var client = new XMLHttpRequest();
