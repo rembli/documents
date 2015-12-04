@@ -8,10 +8,12 @@ Nutzung der Anwendung
 
 TODOS
 --------------------------------------------------------------------------------
-- Suche
-- Tags/Properties
+- Swagger-UI auslagern
 - Mehrsprachigkeit
 - Mehrmandantenfähigkeit
+- Admin UI
+- Tags/Properties
+- Suche
 
 EVENTUELL
 --------------------------------------------------------------------------------

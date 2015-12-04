@@ -116,11 +116,11 @@ function writeLogEntriesToTable () {
 
 	    	logEntryTable +=  
 	    		"<tr>"+
-	    		"<td>"+logEntry.id+"</td>"+
-	    		"<td>"+dateString+"</td>"+
-	    		"<td>"+logEntry.username+"</td>"+
-	    		"<td>"+logEntry.action+"</td>"+
-	    		"<td>"+logEntry.comment+"</td>"+
+	    		"<td>"+logEntry.id+
+	    		"<br>"+dateString+
+	    		"<br>"+logEntry.username+"</td>"+
+	    		"<td>"+logEntry.action+
+	    		"<br>"+logEntry.comment+"</td>"+
 	    		"</tr>";
 	}
 	logEntryTable += "</table>";
