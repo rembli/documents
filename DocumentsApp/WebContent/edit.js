@@ -27,8 +27,8 @@ function writeFilesToTable () {
 	    var fileInfo = fileInfos[i];
 		window.document.write ("<tr>");
 		window.document.write ("<td>"+fileInfo.idFile+"</td>");
-		window.document.write ("<td><a href='"+host+"/api/documents/"+getParameterByName("id")+"/files/"+fileInfo.idFile+"' target='_new'>"+fileInfo.fileName+"</a></td>");		
-		window.document.write ("<td><img src='"+host+"/api/documents/"+getParameterByName("id")+"/files/"+fileInfo.idFile+"/thumbnail' onError='this.src = \"./img/thumbnail_not_available.jpg\"'></td>");		
+		window.document.write ("<td><img src='"+host+"/api/documents/"+getParameterByName("id")+"/files/"+fileInfo.idFile+"/thumbnail' onError='this.src = \"./img/thumbnail_not_available.jpg\"'>");		
+		window.document.write ("	<br><a href='"+host+"/api/documents/"+getParameterByName("id")+"/files/"+fileInfo.idFile+"' target='_new'>"+fileInfo.fileName+"</a></td>");		
 		window.document.write ("<td><a href='javascript:deleteFile(\""+fileInfo.idFile+"\")'><span class='glyphicon glyphicon-trash'></span></a></td></tr>");		
 		window.document.write ("</tr>");
 	}
@@ -117,10 +117,10 @@ function writeLogEntriesToTable () {
 	    	logEntryTable +=  
 	    		"<tr>"+
 	    		"<td>"+logEntry.id+
-	    		"<br>"+dateString+
-	    		"<br>"+logEntry.username+"</td>"+
+	    		"	<br>"+dateString+
+	    		"	<br>"+logEntry.username+"</td>"+
 	    		"<td>"+logEntry.action+
-	    		"<br>"+logEntry.comment+"</td>"+
+	    		"	<br>"+logEntry.comment+"</td>"+
 	    		"</tr>";
 	}
 	logEntryTable += "</table>";

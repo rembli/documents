@@ -77,7 +77,7 @@ window.fbAsyncInit = function() {
     console.log('AccessToken: ' + accessToken);    
     
     FB.api('/me', function(response) {
-    	document.getElementById('fbLoginState').innerHTML = '<br>Anmeldung erfolgreich für ' + response.name + '!<br>Bitte warten ...';
+    	document.getElementById('fbLoginState').innerHTML = '<br>Login successfull for ' + response.name + '!<br>Please wait ...';
     });
     
 	var url = host+"/api/loginWithAccessToken";
