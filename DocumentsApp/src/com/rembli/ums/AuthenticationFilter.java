@@ -45,12 +45,12 @@ public class AuthenticationFilter implements ContainerRequestFilter {
         // das ist notwendig, damit die REST-Services auch im Browser bedient werden können
         if (authenticationToken == null) {
     		HttpSession session = httpRequest.getSession();
-    		authenticationToken = (String) session.getAttribute("Authentication-Token");
+    		authenticationToken = (String) session.getAttribute("authenticationToken");
         }
         
         // Zusätzlich noch in den Query-Parametern nachschauen
         if (authenticationToken == null) {
-        	authenticationToken = httpRequest.getParameter("Authentication-Token");
+        	authenticationToken = httpRequest.getParameter("authenticationToken");
         }        
 
         // Check if the HTTP Authorization header is present and formatted correctly 

@@ -27,7 +27,7 @@ window.fbAsyncInit = function() {
     // for FB.getLoginStatus().
     if (response.status === 'connected') {
       // Logged into your app and Facebook.
-      loginToRembli(response);
+    	loginWithFacebook (response);
     } else if (response.status === 'not_authorized') {
       // The person is logged into Facebook, but not your app.
       document.getElementById('status').innerHTML = 'Please log ' +
@@ -67,7 +67,7 @@ window.fbAsyncInit = function() {
 
   // Here we run a very simple test of the Graph API after login is
   // successful.  See statusChangeCallback() for when this call is made.
-  function loginToRembli (response) {
+  function loginWithFacebook (response) {
     console.log('Successful login in facebook');
     
     var uid = response.authResponse.userID;
@@ -91,15 +91,15 @@ window.fbAsyncInit = function() {
 					// wenn die Anmeldung funktioniert hat, bekommen wir vom Server das Token im Klartext zurück
 					// das speichern wir uns im SessionStorage des Browswers
 					// später müssen wir das bei jedem Request in den Authorization-Header schreiben
-					window.sessionStorage.setItem("Authentication-Token",this.responseText);
-					window.sessionStorage.setItem("Authentication-User","Facebook-User");
+					window.sessionStorage.setItem("authenticationToken",this.responseText);
+					window.sessionStorage.setItem("authenticationUser", response.name);
 					// dann gibt es einen redirekt zur Startseite
 					window.document.location.href = host+"/index.html";
 				}
 				else{
 					// Wenn es nicht geklappt hat, geben wir einen Hinweis aus und löschen das gespeichert Token
 					alert (this.statusText);
-					window.sessionStorage.removeItem("Authentication-Token");
+					window.sessionStorage.removeItem("authenticationToken");
 				}
 			}
 	};
@@ -110,8 +110,8 @@ window.fbAsyncInit = function() {
 
 //LOGIN NORMAL ********************  
 
-function submitLogin () {
-	var url = host+"/api/login";
+function login () {
+		var url = host+"/api/login";
 	var client = new XMLHttpRequest();
 	client.open('POST', url, true);
 	client.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
@@ -122,22 +122,22 @@ function submitLogin () {
 					// wenn die Anmeldung funktioniert hat, bekommen wir vom Server das Token im Klartext zurück
 					// das speichern wir uns im SessionStorage des Browswers
 					// später müssen wir das bei jedem Request in den Authorization-Header schreiben
-					window.sessionStorage.setItem("Authentication-Token",this.responseText);
-					window.sessionStorage.setItem("Authentication-User",window.document.login.email.value);
+					window.sessionStorage.setItem("authenticationToken",this.responseText);
+					window.sessionStorage.setItem("authenticationUser",window.document.login.email.value);
 					// dann gibt es einen redirekt zur Startseite
 					window.document.location.href = host+"/index.html";
 				}
 				else{
 					// Wenn es nicht geklappt hat, geben wir einen Hinweis aus und löschen das gespeichert Token
 					alert (this.statusText);
-					window.sessionStorage.removeItem("Authentication-Token");
+					window.sessionStorage.removeItem("authenticationToken");
 				}
 			}
 	};
 	// hier senden wir username und passwort
 	client.send("username="+window.document.login.email.value+"&password="+window.document.login.password.value);
-}
-
+}  
+  
 function newUser () {
 	var url = host+"/api/userInfo";
 	var client = new XMLHttpRequest();

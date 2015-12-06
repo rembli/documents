@@ -2,7 +2,7 @@ var host = ".";
 
 // WENN DIESES SCRIPT EINGEBUNDEN WIRD, WIRD BEI DER GEPRÜFT, OB DER ANWENDER ANGEMELDET IST
 // token aus der session holen
-var token = window.sessionStorage.getItem("Authentication-Token");
+var token = window.sessionStorage.getItem("authenticationToken");
 
 // wenn es keine session gibt, dann auf die login-seite umleiten
 if (token==null) {

@@ -36,7 +36,7 @@ public class _login {
 	
 	    	if (token!=null) {
 	    		HttpSession session = httpRequest.getSession();
-	    		session.setAttribute("Authentication-Token", token);
+	    		session.setAttribute("authenticationToken", token);
 	    		return Response.ok(token).build();
 	    	}
 	    	else

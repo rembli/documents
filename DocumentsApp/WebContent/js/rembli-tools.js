@@ -1,6 +1,6 @@
 
 function isAuthenticated() {
-	var token = window.sessionStorage.getItem("Authentication-Token");
+	var token = window.sessionStorage.getItem("authenticationToken");
 	if (token!=null) 
 		return true;
 	else
@@ -10,7 +10,7 @@ function isAuthenticated() {
 
 function getUser () {
 	if (isAuthenticated()) 
-		return  window.sessionStorage.getItem("Authentication-User");
+		return  window.sessionStorage.getItem("authenticationUser");
 	else
 		return "";
 }
@@ -18,15 +18,15 @@ function getUser () {
 
 function getToken () {
 	if (isAuthenticated()) 
-		return  window.sessionStorage.getItem("Authentication-Token");
+		return  window.sessionStorage.getItem("authenticationToken");
 	else
 		return "";
 }
 
 function logout () {
 	// token aus der session entfernen
-	window.sessionStorage.removeItem("Authentication-Token");
-	window.sessionStorage.removeItem("Authentication-User");	
+	window.sessionStorage.removeItem("authenticationToken");
+	window.sessionStorage.removeItem("authenticationUser");	
 	
 	// token aus der DB entfernen
 	var url = host+"/api/logout";
