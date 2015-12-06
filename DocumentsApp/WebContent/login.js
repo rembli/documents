@@ -47,7 +47,7 @@ function newUser () {
 			}
 	};
 	// hier senden wir username und passwort
-	client.send("username="+window.document.loginForm.email.value+"&password="+window.document.login.password.value+"&email="+window.document.loginForm.email.value);
+	client.send("username="+window.document.loginForm.email.value+"&password="+window.document.loginForm.password.value+"&email="+window.document.loginForm.email.value);
 }
 
 // LOGIN MIT FACEBOOK ********************
