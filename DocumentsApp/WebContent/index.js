@@ -40,7 +40,8 @@ function writeDocumentsToThumbnailGrid () {
 		window.document.write ("<div class='col-xs-6 col-md-3'>");
 		window.document.write ("<div class='thumbnail'><center>");
 		window.document.write ("<a href='edit.html?id="+doc.idDocument+"'>");
-		window.document.write ("<img class='img-responsive' height='50' src='"+host+"/api/documents/"+doc.idDocument+"/thumbnail' onError='this.src = \"./img/thumbnail_not_available.jpg\"'>");
+		// window.document.write ("<img class='img-responsive' src='"+host+"/api/documents/"+doc.idDocument+"/thumbnail' onError='this.src = \"./img/thumbnail_not_available.jpg\"'>");
+		 window.document.write ("<img height='100' width='200' src='"+host+"/api/documents/"+doc.idDocument+"/thumbnail' onError='this.src = \"./img/thumbnail_not_available.jpg\"'>");
 		window.document.write ("</a>");
 		window.document.write ("<div class='caption'>");
 		// window.document.write (doc.idDocument + " | ");
