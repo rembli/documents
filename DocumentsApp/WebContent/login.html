@@ -10,6 +10,7 @@
 
 	<script type="text/javascript" src="./js/rembli.js"></script>
 	<script type="text/javascript" src="./js/rembli-tools.js"></script>
+
 	<script type="text/javascript" src="./js-lib/jquery.min.js"></script>	
 	<script type="text/javascript" src="./js-lib/bootstrap.min.js"></script>	
 	
@@ -26,15 +27,15 @@
 <div class="row">
  	<div class="col-md-4">
 		<div class="panel panel-default">
- 			<div class="panel-heading">Login with e-Mail
+ 			<div class="panel-heading">Login with e-mail
  			</div>
  			<div class="panel-body">
-				<form name="login">
+				<form name="loginForm">
 					<label>E-mail:</label> <input type="email" name="email" class="form-control" placeholder="jane.doe@example.com">
 					<label>Password:</label> <input type="password" name="password" class="form-control" placeholder="password">
 					<br>
-					<button type="button" class="btn btn-primary" onClick="javascript:login();">Anmelden</button>
-					<button type="button" class="btn btn-secondary" onClick="javascript:newUser();">Neuer User</button>
+					<button type="button" class="btn btn-primary" onClick="javascript:loginWithUsername ();">login</button>
+					<button type="button" class="btn btn-secondary" onClick="javascript:newUser();">new user</button>
 				</form>
  			</div>
  			</div>

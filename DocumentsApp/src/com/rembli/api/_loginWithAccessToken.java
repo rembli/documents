@@ -32,7 +32,7 @@ public class _loginWithAccessToken {
     	String token = ums.loginWithAccessToken(identityProvider, accessToken);
     	if (token != null) {
     		HttpSession session = httpRequest.getSession();
-    		session.setAttribute("Authentication-Token", token);
+    		session.setAttribute("authenticationToken", token);
     		return Response.ok(token).build();
     	}
     	else

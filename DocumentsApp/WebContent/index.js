@@ -1,3 +1,4 @@
+
 function writeDocumentsTable () {
 	
 	var url = host+"/api/documents";
