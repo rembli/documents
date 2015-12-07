@@ -27,10 +27,16 @@
 <div class="row">
 <div class="col-md-12">
 	<div class="well">
-		<form action="./api/documents" class="dropzone" id="my-dropzone"></form>
+		<form action="./api/documents" class="dropzone" id="my-dropzone">
+			<div class="dz-message">
+	    		Drop files here or click to upload.
+	    	</div>
+		</form>
 	</div>
 </div>
 </div>
+ 
+
 <script type="text/javascript">
 $(function() {
 	Dropzone.options.myDropzone = {
@@ -42,7 +48,8 @@ $(function() {
 					  	window.location.reload();
 			  	   });
 			  } 
-    };	
+    };
+	myDropzone.on("maxfilesexceeded", function(file) { this.removeFile(file); });
 })
 </script>
 
