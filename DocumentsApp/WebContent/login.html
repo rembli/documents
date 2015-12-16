@@ -9,33 +9,33 @@
 	<link rel="stylesheet" href="./css/style.css">	
 
 	<script type="text/javascript" src="./js/rembli.js"></script>
-	<script type="text/javascript" src="./js/rembli-tools.js"></script>
 
 	<script type="text/javascript" src="./js-lib/jquery.min.js"></script>	
-	<script type="text/javascript" src="./js-lib/bootstrap.min.js"></script>	
+	<script type="text/javascript" src="./js-lib/bootstrap.min.js"></script>
+	<script type="text/javascript" src="./js-lib/dust-full.min.js"></script>
 	
 	<script type="text/javascript" src="./login.js"></script>		
 </head>
 <body>
-
-<R-HEADER></R-HEADER>
+<translate>
+<include template="_header.html"></include>
 
 <div class="container">
-<h2>Login to </i>/documents</i></h2>
+<h2><lang>Login to</lang> </i>/documents</i></h2>
 <br><br>
 
 <div class="row">
  	<div class="col-md-4">
 		<div class="panel panel-default">
- 			<div class="panel-heading">Login with e-mail
+ 			<div class="panel-heading"><lang>Login with</lang> e-mail
  			</div>
  			<div class="panel-body">
 				<form name="loginForm">
 					<label>E-mail:</label> <input type="email" name="email" class="form-control" placeholder="jane.doe@example.com">
-					<label>Password:</label> <input type="password" name="password" class="form-control" placeholder="password">
+					<label><lang>Password</lang>:</label> <input type="password" name="password" class="form-control" placeholder="password">
 					<br>
-					<button type="button" class="btn btn-primary" onClick="javascript:loginWithUsername ();">login</button>
-					<button type="button" class="btn btn-secondary" onClick="javascript:newUser();">new user</button>
+					<button type="button" class="btn btn-primary" onClick="javascript:loginWithUsername ();"><lang>login</lang></button>
+					<button type="button" class="btn btn-secondary" onClick="javascript:newUser();"><lang>new user</lang></button>
 				</form>
  			</div>
  			</div>
@@ -44,7 +44,7 @@
  		</div>
  		<div class="col-md-4">  
  			<div class="panel panel-default">
- 			<div class="panel-heading">Login with facebook
+ 			<div class="panel-heading"><lang>Login with</lang> facebook
  			</div>
  			<div class="panel-body">
 				<center><br>
@@ -59,7 +59,8 @@
  </div>
 
 </div>
-<R-FOOTER></R-FOOTER>
+<include template="_footer.html"></include>
+</translate>
 </body>
 </html>
 

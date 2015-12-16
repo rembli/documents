@@ -9,12 +9,13 @@
 	<link rel="stylesheet" href="./css/style.css">	
 	
 	<script type="text/javascript" src="./js/rembli.js"></script>
-	<script type="text/javascript" src="./js/rembli-tools.js"></script>
+
 	<script type="text/javascript" src="./js-lib/jquery.min.js"></script>	
-	<script type="text/javascript" src="./js-lib/bootstrap.min.js"></script>		
+	<script type="text/javascript" src="./js-lib/bootstrap.min.js"></script>	
+	<script type="text/javascript" src="./js-lib/dust-full.min.js"></script>
 </head>
 <body>
-<R-HEADER></R-HEADER>
+<include template="_header.html"></include>
 <div class="container">
 
 <!-- **************************************************************** -->
@@ -26,7 +27,7 @@
 		<br><br>
 		The purpose of this web appliation is to demonstrate some techniques for current web development.
 		The application is written in Java, SQL, JavaScript, HTML and CSS using the following frameworks, libraries and tools:
-		Bootstrap, jQuery, Dropzone, Thumbnailator, Swagger, JAX-RS/Jersey, JAX-B, Tomcat, Jackson, Genson, Lombok, Mimepull, SQL2O, Hikary, mySQL.
+		Bootstrap, jQuery, Dust.js, Dropzone, Thumbnailator, Swagger, JAX-RS/Jersey, JAX-B, Tomcat, Jackson, Genson, Lombok, Mimepull, SQL2O, Hikary, mySQL.
 		<br><br>
 		Source code can be found at <a target="new" href="https://github.com/rembli/documents">https://github.com/rembli/documents</a>
 		<br><br>
@@ -50,6 +51,6 @@
 
 <!-- **************************************************************** -->
 </div>
-<R-FOOTER></R-FOOTER>
+<include template="_footer.html"></include>
 </body>
 </html>

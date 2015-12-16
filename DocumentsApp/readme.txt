@@ -9,7 +9,7 @@ Nutzung der Anwendung
 TODOS
 --------------------------------------------------------------------------------
 - Swagger-UI auslagern
-- Mehrsprachigkeit
+
 - Mehrmandantenfähigkeit
 - Admin UI
 - Tags/Properties
@@ -26,6 +26,9 @@ EVENTUELL
 
 ERLEDIGT
 --------------------------------------------------------------------------------
+- Dust.js-Templates, um HTML aus Javascript raus zu halten
+- Neues Tag <lang> für Übersetzungen / Mehrsprachigkeit
+- Neues Tag <include> als Ersatz für Server-seitige Includes
 - Login mit facebook
 - Loeschen in die details
 - Scanner Ressourcen als separate web app
@@ -81,12 +84,9 @@ thumbnailator - zur Erzeugung der Thumbnails
 *** JAVASCRIPT ***
 jQuery
 Bootstrap - Responsive Layout
+dust.js - Templating
 dropzone.js
 
-Noch zu testen
---------------------------------------------------------------------------------
-Jackson - zur Validierung von JSON-Objekte
-AngularJS - als UI-MVVM-Framework
 
 TOOLS
 --------------------------------------------------------------------------------

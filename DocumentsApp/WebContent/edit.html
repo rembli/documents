@@ -8,37 +8,31 @@
 	<link rel="stylesheet" href="./css/bootstrap-theme.min.css">
 	<link rel="stylesheet" href="./css/style.css">	
 	
-	<script type="text/javascript" src="./js/rembli-authentication-check.js"></script>
 	<script type="text/javascript" src="./js/rembli.js"></script>
-	<script type="text/javascript" src="./js/rembli-tools.js"></script>
+	<script type="text/javascript" src="./js/rembli-authentication-check.js"></script>
+	
 	<script type="text/javascript" src="./js-lib/jquery.min.js"></script>	
 	<script type="text/javascript" src="./js-lib/bootstrap.min.js"></script>	
-
+	<script type="text/javascript" src="./js-lib/dust-full.min.js"></script>	
+	
 	<script type="text/javascript" src="edit.js"></script>	
 </head>
 <body>
-<R-HEADER></R-HEADER>
+<include template="_header.html"></include>
 <div class="container">
 
 <!-- **************************************************************** -->	
 
-<form name="docForm">
-	<h2>Document: #
-	<script type="text/javascript">
-	window.document.write ("ID: "+getParameterByName("id")+"<br>"); 
-	</script>
-	</h2>
+<form name="docForm" id="document-header-form-template">
+	<h2>Document: # {idDocument}</h2>
 	
 	<div class="input-group input-group-lg">
-		<input type="text" name="note" class="form-control" placeholder="Text input">
+		<input type="text" name="note" class="form-control" placeholder="Text input" value="{note}">
   		<span class="input-group-btn">
-        <button type="button" onClick="javascript:updateDocument();" class="btn btn-default">Change</button>
+        <button type="button" onClick="javascript:updateDocument();" class="btn btn-default"><lang>change</lang></button>
       </span>		
 	</div>	
 </form>
-<script type="text/javascript">
-	readDocument (getParameterByName("id"));
-</script>
 <p>
 
 <!-- **************************************************************** -->	
@@ -46,7 +40,7 @@
 <div>
   <!-- Nav tabs -->
   <ul class="nav nav-tabs" role="tablist">
-    <li role="presentation" class="active"><a href="#filesTab" aria-controls="filesTab" role="tab" data-toggle="tab">Files</a></li>
+    <li role="presentation" class="active"><a href="#filesTab" aria-controls="filesTab" role="tab" data-toggle="tab"><lang>files</lang></a></li>
     <li role="presentation"><a href="#logTab" aria-controls="logTab" role="tab" data-toggle="tab">Log</a></li>
   </ul>
 
@@ -54,12 +48,21 @@
   <div class="tab-content">
     <div role="tabpanel" class="tab-pane fade in active" id="filesTab">
     
-		<p>
-		<table class="table">
-		<script type="text/javascript">
-			writeFilesToTable ();
-		</script>
-		</table>
+		<p><div id="file-table"></div>
+		<script type="text/dust" id="file-table-template">
+			<table class="table">
+			{#.}
+			<tr>
+				<td>{idFile}</td>
+				<td><a href="/api/documents/{idDocument}/files/{idFile}" target="_new">
+						<img src="{links.self}/thumbnail" onError="this.src = './img/thumbnail_not_available.jpg'"></a><br>
+						<a href="{links.self}" target="_new">{fileName}</a></td>
+				<td><a href="javascript:deleteFile({idFile})"><span class="glyphicon glyphicon-trash"></span></a></td>
+				</tr>		
+			</tr>
+			{/.}
+			</table>
+		</script>		
 
 		<form name="uploadFileForm" action="./api/documents/123/files" method="post" enctype="multipart/form-data">
 		   <input type="file" onchange="javascript:attachFile();" name="RemoteFile" size="45"></input> 
@@ -67,29 +70,33 @@
     </div>
 
     <div role="tabpanel" class="tab-pane fade" id="logTab">
-		<p>
-		<!-- 
-		<div id="logEntryTable" style="overflow: scroll; height: 200px;"></div>
-		 -->
-		<div id="logEntryTable">
-		</div>
+       	<p><div id="logEntry-table"></div>
+		<script type="text/dust" id="logEntry-table-template">
+			<table class='table'>
+			{#.}
+	    		<tr>
+	    			<td>{id}
+	    				<br>{timestamp}
+	    				<br>{username}</td>
+	    			<td>{action}
+	    				<br>{comment}</td>
+	    		</tr>
+			{/.}
+			</table>
+		</script>
     </div>
-
-	<script type="text/javascript">
-		writeLogEntriesToTable();
-	</script>
 
   </div>
 </div>
 
 <br><br>
-<input type="button" class="btn btn-primary"   value="back to list" onclick="window.open ('index.html','_self');" class="btn btn-default" />
-<input type="button" class="btn btn-secondary" value="delete doc"   onclick="deleteDocument(getParameterByName('id'))" class="btn btn-default" />
+<button type="button" class="btn btn-primary"  onclick="window.open ('index.html','_self');" class="btn btn-default" ><lang>backToList</lang></button>&nbsp;
+<button type="button" class="btn btn-secondary" onclick="deleteDocument(getParameterByName('id'))" class="btn btn-default" ><lang>deleteDoc</lang></button>
+
 <!-- **************************************************************** -->	
 
 </div>
-<R-FOOTER></R-FOOTER>
+<include template="_footer.html"></include>
 </body>
 </html>
-
 

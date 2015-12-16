@@ -3,24 +3,21 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	
+
 	<link rel="stylesheet" href="./css/bootstrap.min.css">
 	<link rel="stylesheet" href="./css/bootstrap-theme.min.css">
 	<link rel="stylesheet" href="./css/style.css">	
-	
-	<script type="text/javascript" src="./js/rembli-authentication-check.js"></script>
-	<script type="text/javascript" src="./js/rembli.js"></script>
-	<script type="text/javascript" src="./js/rembli-tools.js"></script>
 
-	<script type="text/javascript" src="./js-lib/jquery.min.js"></script>	
+	<script type="text/javascript" src="./js-lib/jquery.min.js"></script>		
 	<script type="text/javascript" src="./js-lib/bootstrap.min.js"></script>		
+	<script type="text/javascript" src="./js-lib/dust-full.min.js"></script>
 	<script type="text/javascript" src="./js-lib/dropzone.js"></script>
-	
-	<script type="text/javascript" src="./index.js"></script>		
+		
+	<script type="text/javascript" src="./js/rembli.js"></script>
+	<script type="text/javascript" src="./js/rembli-authentication-check.js"></script>	
 </head>
 <body>
-
-<R-HEADER></R-HEADER>
+<include template="_header.html"></include>
 <div class="container">
 
 <!-- **************************************************************** -->
@@ -29,37 +26,55 @@
 	<div class="well">
 		<form action="./api/documents" class="dropzone" name="myDropzone" id="my-dropzone">
 			<div class="dz-message">
-	    		Drop files here or click to upload.
+	    		<lang>dragNdrop</lang>
 	    	</div>
 		</form>
 	</div>
 </div>
 </div>
- 
 
 <script type="text/javascript">
 $(function() {
 	Dropzone.options.myDropzone = {
-	  		  paramName: "RemoteFile", // The name that will be used to transfer the file
-	          maxFilesize: 5, // MB,
-	          maxFiles: 1, 
+			paramName: "RemoteFile", // The name that will be used to transfer the file
+	        maxFilesize: 5, // MB,
+	        maxFiles: 1, 
 			  init: function() {
 				  this.on("success", function () {
 					  	window.location.reload();
 			  	   });
 			  } 
-    };
-})
+	};
+});
 </script>
 
 <br>
+<div id="document-thumbnail-template">
+	<div class="row">	
+		{#.}
+		<div class="col-xs-6 col-md-3">
+			<div class="thumbnail">
+				<center>
+				<a href="edit.html?id={idDocument}">
+				 	<img height="100" width="100" src="./api/documents/{idDocument}/thumbnail" onError="this.src = './img/thumbnail_not_available.jpg'" width="200px"/>
+				</a>
+				<div class="caption">
+					<a href="edit.html?id={idDocument}">{note}</a>
+				</div>
+				</center>
+			</div>
+		</div>
+		{/.}
+	</div>
+</div>
+
+</div>
+<include template="_footer.html"></include>
+</body>
 
 <script type="text/javascript">
-	writeDocumentsToThumbnailGrid();
-	</script>
-
-<!-- **************************************************************** -->
-</div>
-<R-FOOTER></R-FOOTER>
-</body>
+	$(function() {
+		renderTemplate ('document-thumbnail-template', '/documents/api/documents');
+	});
+</script>
 </html>
