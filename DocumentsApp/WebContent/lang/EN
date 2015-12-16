@@ -1,0 +1,18 @@
+{ 
+"hello": "Hello",
+"backToList": "back to list",
+"deleteDoc": "delete doc",  
+"inbox": "Inbox",
+"scan": "Scan",
+"about", "About",
+"files", "files"
+"logout": "logout",
+"dragNdrop": "Drop files here or click to upload.",
+"change": "change",
+"files": "files",
+"login": "login",
+"Login to": "Login to",
+"Login with": "Login with",
+"Password": "Password",
+"new user": "new user"
+}

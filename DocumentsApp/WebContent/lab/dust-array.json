@@ -1,0 +1,92 @@
+[
+  {
+    "changedOn": 1448836783000,
+    "createdBy": "gboegerl3",
+    "createdOn": 1448151795000,
+    "idDocument": 537,
+    "links": {
+      "self": "/documents/api/documents/537"
+    },
+    "note": "Eiffelturm"
+  },
+  {
+    "changedOn": 1448154000000,
+    "createdBy": "gboegerl3",
+    "createdOn": 1448153976000,
+    "idDocument": 541,
+    "links": {
+      "self": "/documents/api/documents/541"
+    },
+    "note": "Family"
+  },
+  {
+    "changedOn": null,
+    "createdBy": "gboegerl3",
+    "createdOn": 1448911884000,
+    "idDocument": 548,
+    "links": {
+      "self": "/documents/api/documents/548"
+    },
+    "note": "ControllingReportSimple.xlsx"
+  },
+  {
+    "changedOn": 1449605198000,
+    "createdBy": "gboegerl3",
+    "createdOn": 1449520765000,
+    "idDocument": 557,
+    "links": {
+      "self": "/documents/api/documents/557"
+    },
+    "note": "IBAN"
+  },
+  {
+    "changedOn": null,
+    "createdBy": "gboegerl3",
+    "createdOn": 1449521208000,
+    "idDocument": 560,
+    "links": {
+      "self": "/documents/api/documents/560"
+    },
+    "note": "Catlux.docx"
+  },
+  {
+    "changedOn": null,
+    "createdBy": "gboegerl3",
+    "createdOn": 1449521223000,
+    "idDocument": 561,
+    "links": {
+      "self": "/documents/api/documents/561"
+    },
+    "note": "ControllingReportSimple.xlsx"
+  },
+  {
+    "changedOn": null,
+    "createdBy": "gboegerl3",
+    "createdOn": 1449521450000,
+    "idDocument": 563,
+    "links": {
+      "self": "/documents/api/documents/563"
+    },
+    "note": "Rechnung 1.jpg"
+  },
+  {
+    "changedOn": null,
+    "createdBy": "gboegerl3",
+    "createdOn": 1449521485000,
+    "idDocument": 566,
+    "links": {
+      "self": "/documents/api/documents/566"
+    },
+    "note": "Rechnung 1.jpg"
+  },
+  {
+    "changedOn": null,
+    "createdBy": "gboegerl3",
+    "createdOn": 1449522032000,
+    "idDocument": 567,
+    "links": {
+      "self": "/documents/api/documents/567"
+    },
+    "note": "Rechnung 1.jpg"
+  }
+]

@@ -54,7 +54,7 @@
 			{#.}
 			<tr>
 				<td>{idFile}</td>
-				<td><a href="/api/documents/{idDocument}/files/{idFile}" target="_new">
+				<td><a href="{links.self}" target="_new">
 						<img src="{links.self}/thumbnail" onError="this.src = './img/thumbnail_not_available.jpg'"></a><br>
 						<a href="{links.self}" target="_new">{fileName}</a></td>
 				<td><a href="javascript:deleteFile({idFile})"><span class="glyphicon glyphicon-trash"></span></a></td>

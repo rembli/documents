@@ -1,0 +1,107 @@
+<html>
+<head>
+	<script type="text/javascript" src="../js-lib/jquery.min.js"></script>	
+	<script type="text/javascript" src="../js-lib/dust-full.min.js"></script>	
+	<script type="text/javascript">	
+		
+	function loadIncludes () {
+		do {
+			var includes = $("include");
+			
+			for (i=0; i<includes.length; i++) {
+
+				var currentInclude = includes[i];
+				var includeTemplate = currentInclude.getAttribute("template");
+				var client = new XMLHttpRequest();
+				client.open("GET",includeTemplate,false);
+				//client.setRequestHeader("Authorization", token);	
+				client.send();
+				
+				$( "include[template='"+includeTemplate+"']" ).replaceWith (client.responseText); 
+			}
+		} 
+		while ($("include").length>0);
+	}
+
+	function translate () {
+
+		var language = (navigator.language || navigator.browserLanguage).split('-')[0].toUpperCase();
+		if (language != "EN" && language != "DE") language = "EN";
+
+		var client = new XMLHttpRequest();
+		client.open("GET","dust-lang-"+language,false);
+		client.send();
+		
+		var dictionary = JSON.parse(client.responseText);
+
+		var translation = $("lang");
+		for (i=0; i<translation.length; i++) {
+			var currentTranslation = translation[i].innerHTML;
+			var result = dictionary[currentTranslation];
+			translation[i].innerHTML = result;
+		}
+	}		
+
+	function renderTemplate (template, url, output) {
+		if (output==null) output = template;
+		var src = document.getElementById(template).innerHTML;
+		var compiled = dust.compile(src, template);
+		dust.loadSource(compiled);
+
+		var client = new XMLHttpRequest();
+		client.open("GET",url,false);
+		client.setRequestHeader("Accept", "application/json");
+		// client.setRequestHeader("Authorization", token);
+		client.send();
+		if (client.status == 401) window.document.location.href = host+"/login.html";
+
+		dust.render(template, JSON.parse(client.responseText), function(err, out) {
+			document.getElementById(output).innerHTML = out;
+		});
+	}	
+	
+	$(function() {
+		// die includes auf der Seite ladem
+		loadIncludes ();
+		// übersetzen der markups
+		translate();
+		// das Template rendern
+		renderTemplate ("document-table-template", "dust-array.json", "document-table");
+	});
+	
+	</script>	
+</head>
+
+<!-- MAIN PAGE -->
+<body>
+	<div id="dust-translate">
+		<!-- TRANSLATION -->
+		<h1><lang>hello</lang> to Dust.</h1>
+	
+		<!-- INLINE TEMPLATE -->
+		<div id="document-table"></div><p>
+		<script type="text/dust" id="document-table-template">
+			<table border=1>
+			{#.}
+				<tr>
+					<td>{$idx}</td><td>{note}</td><td><a href="{links.self}/thumbnail" target="new">{links.self}</a></td>
+				</tr>
+			{/.}
+			</table>
+		</script>		
+		<input type="button" onClick="javascript:renderTemplate ('document-table-template', '/documents/api/documents', 'document-table');" value="refresh">
+		
+		<!-- INCLUDES -->
+		<p>
+		<include template="dust-include-1.html"/>
+		<p>
+		<include template="dust-include-1.html"/>
+	</div>
+</body>
+
+
+
+</html>
+
+
+

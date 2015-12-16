@@ -1,0 +1,19 @@
+{ 
+
+"hello": "Hallo",
+"backToList": "Liste",
+"deleteDoc": "Löschen",
+"inbox": "Posteingang",
+"scan": "Scannen" ,
+"about": "Info",
+"files": "Dateien",
+"logout": "Abmelden",
+"dragNdrop": "Dateien hier her ziehen oder klicken." ,
+"change": "Ändern",
+"files": "Dateien",
+"login": "Anmelden",
+"Login to": "Willkommen bei",
+"Login with": "Anmelden mit",
+"Password": "Passwort",
+"new user": "Registrieren"
+}
