@@ -62,18 +62,26 @@ function translate () {
 	var language = (navigator.language || navigator.browserLanguage).split('-')[0].toUpperCase();
 	if (language != "EN" && language != "DE") language = "EN";
 
-	var client = new XMLHttpRequest();
-	client.open("GET","./lang/"+language,false);
-	client.send();
-	
-	var dictionary = JSON.parse(client.responseText);
+	var dictionary = JSON.parse(window.sessionStorage.getItem("dictionary-"+language));
+	if (dictionary == null || getParameterByName("reloadDictionary") !=  "") {
+		console.log ("Load dictionary to session storage");
+		var client = new XMLHttpRequest();
+		client.open("GET","./lang/"+language,false);
+		client.send();
 
+		window.sessionStorage.setItem("dictionary-"+language, client.responseText);
+		dictionary = JSON.parse(client.responseText);
+	}
+
+	// console.log( JSON.stringify(dictionary, null, "    ") );
+	
 	var translation = $("lang");
 	for (i=0; i<translation.length; i++) {
 		var currentTranslation = translation[i].innerHTML;
 		var result = dictionary[currentTranslation];
 		translation[i].innerHTML = result;
 	}
+	
 }		
 
 function renderTemplate (template, url, output) {
