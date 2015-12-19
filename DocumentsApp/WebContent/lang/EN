@@ -15,5 +15,7 @@
 "Login with": "Login with",
 "Password": "Password",
 "new user": "new user",
-"or": "or"
+"or": "or",
+"login_success": "Login successfull for",
+"Please wait": "Please wait"
 }

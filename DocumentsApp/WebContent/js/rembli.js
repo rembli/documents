@@ -57,8 +57,7 @@ function loadIncludes () {
 	while ($("include").length>0);
 }
 
-function translate () {
-
+function loadDictionary () {
 	var language = (navigator.language || navigator.browserLanguage).split('-')[0].toUpperCase();
 	if (language != "EN" && language != "DE") language = "EN";
 
@@ -72,17 +71,27 @@ function translate () {
 		window.sessionStorage.setItem("dictionary-"+language, client.responseText);
 		dictionary = JSON.parse(client.responseText);
 	}
-
 	// console.log( JSON.stringify(dictionary, null, "    ") );
-	
+	return dictionary;
+}
+
+function lang (id) {
+	var dictionary =  loadDictionary ();
+	return dictionary[id];
+}
+
+function translate () {
+	var dictionary =  loadDictionary ();
+
 	var translation = $("lang");
 	for (i=0; i<translation.length; i++) {
 		var currentTranslation = translation[i].innerHTML;
 		var result = dictionary[currentTranslation];
 		translation[i].innerHTML = result;
 	}
-	
 }		
+
+
 
 function renderTemplate (template, url, output) {
 	if (output==null) output = template;

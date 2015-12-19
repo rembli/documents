@@ -16,5 +16,7 @@
 "Login with": "Anmelden mit",
 "Password": "Passwort",
 "new user": "Registrieren",
-"or": "oder"
+"or": "oder",
+"login_success": "Anmeldung erfolgreich für",
+"Please wait": "Bitte warten"
 }

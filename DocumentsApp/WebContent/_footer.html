@@ -1,7 +1,15 @@
  <div class="container">	
 	  <hr>
       <p>&copy; rembli 2015</p>
-      <p>API: <a href="./swagger" target="new">Swagger-Docs</a> | <a href="./api/swagger.json" target="new">Swagger-Spec (JSON)</a></p>
+
+      <p>API: <a href="/documents/swagger/index.html?url=/documents/api/swagger.json" target="new">Swagger-Docs</a> | 
+      <a href="/documents/api/swagger.json" target="new">Swagger-Spec (JSON)</a>
+      <!-- 
+      // das klappt mit Reverse Proxy nicht, da die Session Info nicht übergeben wird
+      <p>API: <a href="/swagger/index.html?url=/api/docs/v2/swagger.json" target="new">Swagger-Docs</a> | 
+      <a href="/api/docs/v2/swagger.json" target="new">Swagger-Spec (JSON)</a>
+       -->
+      </p>
       <div id="r-token"></div>
       <script type="text/javascript">
     		if (isAuthenticated) {
