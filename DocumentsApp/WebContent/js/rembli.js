@@ -6,10 +6,11 @@ var token = window.sessionStorage.getItem("authenticationToken");
 (function() {
 	 
 	 // load jquery
-     var script1 = document.createElement("SCRIPT");
-     script1.src = host+'/js-lib/jquery.min.js';
-     script1.type = 'text/javascript';
-     document.getElementsByTagName("head")[0].appendChild(script1);
+     var jQueryScript = document.createElement("SCRIPT");
+     jQueryScript.src = './js-lib/jquery.min.js';
+     jQueryScript.type = 'text/javascript';
+     jQueryScript.async = false;
+     document.getElementsByTagName("head")[0].appendChild(jQueryScript);
 
      var checkReady = function(callback) {
          if (window.jQuery) {
@@ -30,10 +31,31 @@ var token = window.sessionStorage.getItem("authenticationToken");
  })();
 
 function init () {
+		// alle zentralen Bibliotheken laden
+		loadBase ();
 		// die includes auf der Seite ladem
 		loadIncludes ();
 		// übersetzen der markups führt dazu, dass dropzone nicht mehr funktioniert :(
-		translate();
+		translate ();
+}
+
+function loadBase () {
+	// TODO: Dynamisches Lade der js-libs und css
+}
+
+function loadScript (url) {
+    var script = document.createElement("SCRIPT");
+    script.src = url;
+    script.type = 'text/javascript';
+    script.async = false;
+    document.getElementsByTagName("head")[0].appendChild(script);
+}
+
+function loadCSS (url) {
+    var link = document.createElement("LINK");
+    link.href = url;
+    link.rel = 'stylesheet';
+    document.getElementsByTagName("head")[0].appendChild(link);	
 }
 
 //# TEMPLATING, TRANSLATION & INCLUDES ################################
@@ -90,8 +112,6 @@ function translate () {
 		translation[i].innerHTML = result;
 	}
 }		
-
-
 
 function renderTemplate (template, url, output) {
 	if (output==null) output = template;
