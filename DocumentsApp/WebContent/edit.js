@@ -1,7 +1,8 @@
 $(function() {
 	renderTemplate ('document-header-form-template', '/documents/api/documents/'+getParameterByName("id"));
 	renderTemplate ('file-table-template', '/documents/api/documents/'+getParameterByName("id")+"/files","file-table");	
-	renderTemplate ('logEntry-table-template', '/documents/api/log?entity=DOCUMENT&entityid='+getParameterByName("id"),"logEntry-table");	
+	renderTemplate ('logEntry-table-template', '/documents/api/log?entity=DOCUMENT&entityid='+getParameterByName("id"),"logEntry-table");
+	document.getElementById('rembli-body').style.visibility='visible';
 });
 
 function updateDocument () {

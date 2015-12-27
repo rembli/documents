@@ -1,3 +1,8 @@
+$(function() {
+	// show content
+	document.getElementById('rembli-body').style.visibility='visible';
+});
+
 //LOGIN NORMAL ********************  
 
 function loginWithUsername () {
@@ -52,7 +57,7 @@ function newUser () {
 
 // LOGIN MIT FACEBOOK ********************
 
-window.fbAsyncInit = function() {
+  window.fbAsyncInit = function() {
     FB.init({
       appId      : '1636016296673576',
       xfbml      : true,

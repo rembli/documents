@@ -37,9 +37,6 @@ function init () {
 		loadIncludes ();
 		// übersetzen der markups mit <lang>xzy</lang> oder lang('xyz');
 		translate ();
-		// show body
-		 rb = document.getElementById('rembli-body');
-		 if (rb != null) rb.style.visibility='visible';
 }
 
 function loadBase () {

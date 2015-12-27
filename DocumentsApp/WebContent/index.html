@@ -10,7 +10,7 @@
 	<script type="text/javascript" src="./js-lib/dropzone.js"></script>
 </head>
 <body>
-<div id="rembli-body" class="container" style="visibility:hidden;">
+<div id="rembli-body" class="container" style="visibility:hidden">
 <include template="_header.html"></include>
 
 <!-- ########################################################################### -->
@@ -41,14 +41,15 @@
 </div>
 
 <br>
-<div id="document-thumbnail-template">
+<div id="document-thumbnail-table"></div>
+<script type="text/dust" id="document-thumbnail-template">
 	<div class="row">	
 		{#.}
 		<div class="col-xs-6 col-md-3">
 			<div class="thumbnail">
 				<center>
 				<a href="edit.html?id={idDocument}">
-				 	<img height="100" width="100" src="./api/documents/{idDocument}/thumbnail" onError="this.src = './img/thumbnail_not_available.jpg'" width="200px"/>
+					<img src="{links.self}/thumbnail" onError="this.src = './img/thumbnail_not_available.jpg'" height="100" width="100">
 				</a>
 				<div class="caption">
 					<a href="edit.html?id={idDocument}">{note}</a>
@@ -58,7 +59,7 @@
 		</div>
 		{/.}
 	</div>
-</div>
+</script>
 
 <!-- ########################################################################### -->
 
