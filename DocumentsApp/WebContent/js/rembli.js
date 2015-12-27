@@ -3,8 +3,8 @@
 var host = ".";
 var token = window.sessionStorage.getItem("authenticationToken");
 
-(function() {
-	 
+window.onload = function () {
+	
 	 // load jquery
      var jQueryScript = document.createElement("SCRIPT");
      jQueryScript.src = './js-lib/jquery.min.js';
@@ -28,19 +28,46 @@ var token = window.sessionStorage.getItem("authenticationToken");
          });
      });
      
- })();
+ };
 
 function init () {
 		// alle zentralen Bibliotheken laden
 		loadBase ();
-		// die includes auf der Seite ladem
+		// die includes auf der Seite laden
 		loadIncludes ();
-		// übersetzen der markups führt dazu, dass dropzone nicht mehr funktioniert :(
+		// übersetzen der markups mit <lang>xzy</lang> oder lang('xyz');
 		translate ();
+		// show body
+		 rb = document.getElementById('rembli-body');
+		 if (rb != null) rb.style.visibility='visible';
 }
 
 function loadBase () {
-	// TODO: Dynamisches Lade der js-libs und css
+
+	    loadCSS ("./css/bootstrap.min.css");
+	    loadCSS ("./css/bootstrap-theme.min.css");
+	    loadCSS ("./css/style.css");
+	    
+	    loadScript ("./js-lib/jquery.min.js");	
+	    loadScript ("./js-lib/bootstrap.min.js");	
+	    loadScript ("./js-lib/dust-full.min.js");
+	    
+	    // load page-related js-file, e.g. index.html > load index.js
+	    
+	    var currentHTML = document.location.href.match(/[^\/]+$/);
+	    if (currentHTML==null) 
+	    	currentHTML = "index.html";
+	    else 
+	    	currentHTML = currentHTML[0];
+	    var currentJS = currentHTML.split (".")[0]+".js";
+	    loadScript (currentJS);
+}
+
+function loadCSS (url) {
+    var link = document.createElement("LINK");
+    link.href = url;
+    link.rel = 'stylesheet';
+    document.getElementsByTagName("head")[0].appendChild(link);	
 }
 
 function loadScript (url) {
@@ -51,32 +78,52 @@ function loadScript (url) {
     document.getElementsByTagName("head")[0].appendChild(script);
 }
 
-function loadCSS (url) {
-    var link = document.createElement("LINK");
-    link.href = url;
-    link.rel = 'stylesheet';
-    document.getElementsByTagName("head")[0].appendChild(link);	
-}
-
 //# TEMPLATING, TRANSLATION & INCLUDES ################################
 
 function loadIncludes () {
+	var includesCache = {};
+	if (getParameterByName("reloadCache") !=  "") { 
+		includesCache = {};
+		window.sessionStorage.removeItem ("includesCache");
+	}
+	if (window.sessionStorage.getItem ("includesCache")!=null) {
+		// load string from cache and translate it to json-hashmap
+		includesCache = JSON.parse(window.sessionStorage.getItem ("includesCache"));
+	}
+
 	do {
 		var includes = $("include");
 		
 		for (i=0; i<includes.length; i++) {
-
 			var currentInclude = includes[i];
-			var includeTemplate = currentInclude.getAttribute("template");
-			var client = new XMLHttpRequest();
-			client.open("GET",includeTemplate,false);
-			client.setRequestHeader("Authorization", token);	
-			client.send();
+			var includeTemplateName = currentInclude.getAttribute("template");
+			var includeTemplate = "";
 			
-			$( "include[template='"+includeTemplate+"']" ).replaceWith (client.responseText); 
+			if (includesCache[includeTemplateName]==null) {
+				console.log ("Template "+includeTemplateName+" is not in cache");
+				
+				var client = new XMLHttpRequest();
+				client.open("GET",includeTemplateName,false);
+				client.setRequestHeader("Authorization", token);	
+				client.send();
+				includeTemplate = client.responseText;
+				
+				includesCache[includeTemplateName] = includeTemplate;
+			}
+			else {
+				// console.log ("Template "+includeTemplateName+" is in cache");
+				includeTemplate = includesCache[includeTemplateName];
+			}
+				
+			
+			$( "include[template='"+includeTemplateName+"']" ).replaceWith (includeTemplate); 
 		}
 	} 
 	while ($("include").length>0);
+	
+	// load json hashmap as string to sessionStorage
+	window.sessionStorage.setItem ("includesCache", JSON.stringify(includesCache));
+	// console.log ("updated includesCache");
 }
 
 function loadDictionary () {
@@ -84,7 +131,7 @@ function loadDictionary () {
 	if (language != "EN" && language != "DE") language = "EN";
 
 	var dictionary = JSON.parse(window.sessionStorage.getItem("dictionary-"+language));
-	if (dictionary == null || getParameterByName("reloadDictionary") !=  "") {
+	if (dictionary == null || getParameterByName("reloadCache") !=  "") {
 		console.log ("Load dictionary to session storage");
 		var client = new XMLHttpRequest();
 		client.open("GET","./lang/"+language,false);

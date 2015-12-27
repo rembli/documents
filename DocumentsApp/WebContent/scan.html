@@ -4,23 +4,16 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	
-	<link rel="stylesheet" href="./css/bootstrap.min.css">
-	<link rel="stylesheet" href="./css/bootstrap-theme.min.css">
-	<link rel="stylesheet" href="./css/style.css">	
-	
 	<script type="text/javascript" src="./js/rembli.js"></script>
 	<script type="text/javascript" src="./js/rembli-authentication-check.js"></script>
-	
-	<script type="text/javascript" src="./js-lib/jquery.min.js"></script>	
-	<script type="text/javascript" src="./js-lib/bootstrap.min.js"></script>	
-	<script type="text/javascript" src="./js-lib/dust-full.min.js"></script>	
 
     <script type="text/javascript" src="/scanner/dynamsoft.webtwain.initiate.js"> </script>
     <script type="text/javascript" src="/scanner/dynamsoft.webtwain.config.js"> </script>
 </head>
 <body>
+<div id="rembli-body" class="container" style="visibility:hidden;">
 <include template="_header.html"></include>
-<div class="container">
+
 <!-- ########################################################################### --> 
 
     <select size="1" id="source" style="position: relative; width: 220px;" class=".dropdown"></select><p>
@@ -106,9 +99,10 @@
         }
     </script>
 
-<!-- ########################################################################### --> 
-</div>
+<!-- ########################################################################### -->
+ 
 <include template="_footer.html"></include>
+</div>
 </body>
 </html>
         
