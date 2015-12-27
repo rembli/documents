@@ -9,7 +9,6 @@ Nutzung der Anwendung
 TODOS
 --------------------------------------------------------------------------------
 - Swagger-UI auslagern
-
 - Mehrmandantenfähigkeit
 - Admin UI
 - Tags/Properties
