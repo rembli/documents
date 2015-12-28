@@ -1,16 +1,20 @@
 $(function() {
-	renderTemplate ('document-header-form-template', '/documents/api/documents/'+getParameterByName("id"));
-	renderTemplate ('file-table-template', '/documents/api/documents/'+getParameterByName("id")+"/files","file-table");	
-	renderTemplate ('logEntry-table-template', '/documents/api/log?entity=DOCUMENT&entityid='+getParameterByName("id"),"logEntry-table");
+	refresh();
 	document.getElementById('rembli-body').style.visibility='visible';
 });
+
+function refresh () {
+	renderTemplate ('document-header-form-template', '/documents/api/documents/'+getParameterByName("id"),"document-header-form");
+	renderTemplate ('file-table-template', '/documents/api/documents/'+getParameterByName("id")+"/files","file-table");	
+	renderTemplate ('logEntry-table-template', '/documents/api/log?entity=DOCUMENT&entityid='+getParameterByName("id"),"logEntry-table");
+}
 
 function updateDocument () {
 	var url = host+"/api/documents/"+getParameterByName("id");
 	var client = new XMLHttpRequest();
 	client.open('PUT', url, true);
 	client.onload = function () {
-		renderTemplate ('logEntry-table-template', '/documents/api/log?entity=DOCUMENT&entityid='+getParameterByName("id"),"logEntry-table");
+		refresh();
 	};
 	client.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 	client.setRequestHeader("Authorization", token);		
@@ -24,7 +28,7 @@ function attachFile () {
 	client.open('POST', url, true);
 	client.onload = function () {
 		window.document.uploadFileForm.RemoteFile.value = "";
-		window.location.reload();
+		refresh();
 	};
 	client.setRequestHeader("Authorization", token);	
 
@@ -39,7 +43,7 @@ function deleteFile (id) {
 		var client = new XMLHttpRequest();
 		client.open('DELETE', url, true);
 		client.onload = function () {
-			window.location.reload();
+			refresh();
 		};
 		client.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 		client.setRequestHeader("Authorization", token);	

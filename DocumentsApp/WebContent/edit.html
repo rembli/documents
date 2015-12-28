@@ -12,7 +12,9 @@
 
 <!-- ########################################################################### -->
 
-<form name="docForm" id="document-header-form-template">
+<div id="document-header-form"></div>
+<script type="text/dust" id="document-header-form-template">
+<form name="docForm">
 	<h2>Document: # {idDocument}</h2>
 	
 	<div class="input-group input-group-lg">
@@ -22,6 +24,7 @@
       </span>		
 	</div>	
 </form>
+</script>
 <p>
 
 <!-- **************************************************************** -->	
