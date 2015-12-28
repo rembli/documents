@@ -1,5 +1,6 @@
 //# INIT ##########################################################
 
+var debug = false;
 var host = ".";
 var token = window.sessionStorage.getItem("authenticationToken");
 
@@ -48,10 +49,15 @@ function loadBase () {
 	    loadScript ("./js-lib/jquery.min.js");	
 	    loadScript ("./js-lib/bootstrap.min.js");	
 	    loadScript ("./js-lib/dust-full.min.js");
+
+	    // internationalization with Dust
+	    loadScript ("https://cdn.polyfill.io/v2/polyfill.min.js?features=Intl.~locale.en,Intl.~locale.de");
+	    loadScript ("./js-lib/dust-intl.min.js");
+	    loadScript ("./js-lib/locale-data/en.js");	    
+	    loadScript ("./js-lib/locale-data/de.js");	    
 	    
 	    // load page-related js-file, e.g. index.html > load index.js
-	    
-	    var currentHTML = document.location.href.match(/[^\/]+$/);
+	    	    var currentHTML = document.location.href.match(/[^\/]+$/);
 	    if (currentHTML==null) 
 	    	currentHTML = "index.html";
 	    else 
@@ -97,7 +103,7 @@ function loadIncludes () {
 			var includeTemplate = "";
 			
 			if (includesCache[includeTemplateName]==null) {
-				console.log ("Template "+includeTemplateName+" is not in cache");
+				log ("Template "+includeTemplateName+" is not in cache and will be put into cache.");
 				
 				var client = new XMLHttpRequest();
 				client.open("GET",includeTemplateName,false);
@@ -111,7 +117,6 @@ function loadIncludes () {
 				// console.log ("Template "+includeTemplateName+" is in cache");
 				includeTemplate = includesCache[includeTemplateName];
 			}
-				
 			
 			$( "include[template='"+includeTemplateName+"']" ).replaceWith (includeTemplate); 
 		}
@@ -129,15 +134,14 @@ function loadDictionary () {
 
 	var dictionary = JSON.parse(window.sessionStorage.getItem("dictionary-"+language));
 	if (dictionary == null || getParameterByName("reloadCache") !=  "") {
-		console.log ("Load dictionary to session storage");
 		var client = new XMLHttpRequest();
 		client.open("GET","./lang/"+language,false);
 		client.send();
-
 		window.sessionStorage.setItem("dictionary-"+language, client.responseText);
 		dictionary = JSON.parse(client.responseText);
+		
+		log ("PUT dictionary to session storage: \n"+JSON.stringify(dictionary));
 	}
-	// console.log( JSON.stringify(dictionary, null, "    ") );
 	return dictionary;
 }
 
@@ -159,10 +163,37 @@ function translate () {
 
 function renderTemplate (template, url, output) {
 	if (output==null) output = template;
-	var src = document.getElementById(template).innerHTML;
-	var compiled = dust.compile(src, template);
+
+	// register DustIntl
+	DustIntl.registerWith(dust);
+	
+	// load template 
+	var templatesCache = {};
+	if (getParameterByName("reloadCache") !=  "") { 
+		templatesCache = {};
+		window.sessionStorage.removeItem ("templatesCache");
+	}
+	if (window.sessionStorage.getItem ("templatesCache")!=null) {
+		templatesCache = JSON.parse(window.sessionStorage.getItem ("templatesCache"));
+	}	
+	
+	var compiled;
+	if (templatesCache[template]==null) {
+		// template is not in cache --> needs to be compiled
+		var src = document.getElementById(template).innerHTML;
+		compiled = dust.compile(src, template);
+		templatesCache[template] = compiled;
+		window.sessionStorage.setItem ("templatesCache", JSON.stringify(templatesCache));
+		log ("PUT compiled template to cache: \n"+compiled);
+	}
+	else {
+		// template is already compiled in cache
+		compiled = templatesCache[template];
+		log ("LOADED compiled template '"+template+"' from cache");
+	}
 	dust.loadSource(compiled);
 
+	// Get data to be rendered
 	var client = new XMLHttpRequest();
 	client.open("GET",url,true);
 	client.setRequestHeader("Accept", "application/json");
@@ -170,6 +201,7 @@ function renderTemplate (template, url, output) {
 	client.onload = function (e) {
 		if (client.status == 401) window.document.location.href = host+"/login.html";
 
+		// finally render it
 		dust.render(template, JSON.parse(client.responseText), function(err, out) {
 			document.getElementById(output).innerHTML = out;
 		});
@@ -219,6 +251,12 @@ function renderTemplate (template, url, output) {
  }
 
  //# HELPER ##################################################################
+ 
+ function log (str) {
+	 if (debug) {
+		 console.log (str);
+	 }
+ }
  
  function getParameterByName(name) {
      name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");

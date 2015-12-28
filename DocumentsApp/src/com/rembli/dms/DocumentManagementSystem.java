@@ -116,7 +116,7 @@ public class DocumentManagementSystem {
 					    .executeUpdate();
 				}				
 			} catch (net.coobird.thumbnailator.tasks.UnsupportedFormatException ignored) {
-				System.out.println ("Kann kein Thumbnail für dieses Format erzeugen");
+				// System.out.println ("Kann kein Thumbnail für dieses Format erzeugen");
 			} 
 		}			
 	}

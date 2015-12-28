@@ -8,7 +8,7 @@ Nutzung der Anwendung
 
 TODOS
 --------------------------------------------------------------------------------
-- Swagger-UI auslagern
+
 - Mehrmandantenfähigkeit
 - Admin UI
 - Tags/Properties
@@ -25,6 +25,7 @@ EVENTUELL
 
 ERLEDIGT
 --------------------------------------------------------------------------------
+- Swagger-UI auslagern
 - Dust.js-Templates, um HTML aus Javascript raus zu halten
 - Neues Tag <lang> für Übersetzungen / Mehrsprachigkeit
 - Neues Tag <include> als Ersatz für Server-seitige Includes

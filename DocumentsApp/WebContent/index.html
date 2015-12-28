@@ -34,6 +34,10 @@
 					  this.removeFile(file);
 					  refresh();
 			  	   });
+				  this.on("error", function (file, errorMessage, client) {
+					  this.removeFile(file);
+					  alert ("ERROR: \n\n"+errorMessage);
+			  	   });
 			} 
 	};
 </script>
