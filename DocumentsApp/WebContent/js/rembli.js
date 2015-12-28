@@ -164,15 +164,17 @@ function renderTemplate (template, url, output) {
 	dust.loadSource(compiled);
 
 	var client = new XMLHttpRequest();
-	client.open("GET",url,false);
+	client.open("GET",url,true);
 	client.setRequestHeader("Accept", "application/json");
 	client.setRequestHeader("Authorization", token);
-	client.send();
-	if (client.status == 401) window.document.location.href = host+"/login.html";
+	client.onload = function (e) {
+		if (client.status == 401) window.document.location.href = host+"/login.html";
 
-	dust.render(template, JSON.parse(client.responseText), function(err, out) {
-		document.getElementById(output).innerHTML = out;
-	});
+		dust.render(template, JSON.parse(client.responseText), function(err, out) {
+			document.getElementById(output).innerHTML = out;
+		});
+	};
+	client.send();
 }	
 
 //# AUTHENTICATION ####################################################
