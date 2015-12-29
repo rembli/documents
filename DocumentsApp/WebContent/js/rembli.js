@@ -1,6 +1,6 @@
 //# INIT ##########################################################
 
-var debug = true;
+var debug = false;
 var host = ".";
 var token = window.sessionStorage.getItem("authenticationToken");
 
