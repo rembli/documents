@@ -45,19 +45,27 @@ function loadBase () {
 	    loadCSS ("./css/bootstrap.min.css");
 	    loadCSS ("./css/bootstrap-theme.min.css");
 	    loadCSS ("./css/style.css");
-	    
-	    loadScript ("./js-lib/jquery.min.js");	
 	    loadScript ("./js-lib/bootstrap.min.js");	
-	    loadScript ("./js-lib/dust-full.min.js");
 
-	    // internationalization with Dust
+	    // internationalization fix for IE
 	    loadScript ("https://cdn.polyfill.io/v2/polyfill.min.js?features=Intl.~locale.en,Intl.~locale.de");
-	    loadScript ("./js-lib/dust-intl.min.js");
-	    loadScript ("./js-lib/locale-data/en.js");	    
-	    loadScript ("./js-lib/locale-data/de.js");	    
 	    
+	    // templating and internationalization  with Dust
+	    $.ajaxSetup({
+	    	  cache: true
+	    });
+	    
+	    $.getScript( "./js-lib/dust-full.min.js", function( data, textStatus, jqxhr ) {
+		    $.getScript( "./js-lib/dust-intl.min.js", function( data, textStatus, jqxhr ) {
+			    loadScript ("./js-lib/locale-data/en.js");	    
+			    loadScript ("./js-lib/locale-data/de.js");	    
+				// register helper DustIntl
+			    DustIntl.registerWith(dust);
+		    });
+	    });
+		    
 	    // load page-related js-file, e.g. index.html > load index.js
-	    	    var currentHTML = document.location.href.match(/[^\/]+$/);
+	    var currentHTML = document.location.href.match(/[^\/]+$/);
 	    if (currentHTML==null) 
 	    	currentHTML = "index.html";
 	    else 
@@ -87,11 +95,11 @@ function loadIncludes () {
 	var includesCache = {};
 	if (getParameterByName("reloadCache") !=  "") { 
 		includesCache = {};
-		window.sessionStorage.removeItem ("includesCache");
+		localStorage.removeItem ("includesCache");
 	}
-	if (window.sessionStorage.getItem ("includesCache")!=null) {
+	if (localStorage.getItem ("includesCache")!=null) {
 		// load string from cache and translate it to json-hashmap
-		includesCache = JSON.parse(window.sessionStorage.getItem ("includesCache"));
+		includesCache = JSON.parse(localStorage.getItem ("includesCache"));
 	}
 
 	do {
@@ -103,7 +111,7 @@ function loadIncludes () {
 			var includeTemplate = "";
 			
 			if (includesCache[includeTemplateName]==null) {
-				log ("Template "+includeTemplateName+" is not in cache and will be put into cache.");
+				log ("Template "+includeTemplateName+" is not in localStorage and will be put into localStorage.");
 				
 				var client = new XMLHttpRequest();
 				client.open("GET",includeTemplateName,false);
@@ -114,7 +122,7 @@ function loadIncludes () {
 				includesCache[includeTemplateName] = includeTemplate;
 			}
 			else {
-				// console.log ("Template "+includeTemplateName+" is in cache");
+				log ("Template "+includeTemplateName+" is in cache");
 				includeTemplate = includesCache[includeTemplateName];
 			}
 			
@@ -124,23 +132,23 @@ function loadIncludes () {
 	while ($("include").length>0);
 	
 	// load json hashmap as string to sessionStorage
-	window.sessionStorage.setItem ("includesCache", JSON.stringify(includesCache));
-	// console.log ("updated includesCache");
+	localStorage.setItem ("includesCache", JSON.stringify(includesCache));
+	log ("updated includesCache");
 }
 
 function loadDictionary () {
 	var language = (navigator.language || navigator.browserLanguage).split('-')[0].toUpperCase();
 	if (language != "EN" && language != "DE") language = "EN";
 
-	var dictionary = JSON.parse(window.sessionStorage.getItem("dictionary-"+language));
+	var dictionary = JSON.parse(localStorage.getItem("dictionary-"+language));
 	if (dictionary == null || getParameterByName("reloadCache") !=  "") {
 		var client = new XMLHttpRequest();
 		client.open("GET","./lang/"+language,false);
 		client.send();
-		window.sessionStorage.setItem("dictionary-"+language, client.responseText);
+		localStorage.setItem("dictionary-"+language, client.responseText);
 		dictionary = JSON.parse(client.responseText);
 		
-		log ("PUT dictionary to session storage: \n"+JSON.stringify(dictionary));
+		log ("PUT dictionary to localStorage: \n"+JSON.stringify(dictionary));
 	}
 	return dictionary;
 }
@@ -164,17 +172,14 @@ function translate () {
 function renderTemplate (template, url, output) {
 	if (output==null) output = template;
 
-	// register DustIntl
-	DustIntl.registerWith(dust);
-	
 	// load template 
 	var templatesCache = {};
 	if (getParameterByName("reloadCache") !=  "") { 
 		templatesCache = {};
-		window.sessionStorage.removeItem ("templatesCache");
+		localStorage.removeItem ("templatesCache");
 	}
 	if (window.sessionStorage.getItem ("templatesCache")!=null) {
-		templatesCache = JSON.parse(window.sessionStorage.getItem ("templatesCache"));
+		templatesCache = JSON.parse(localStorage.getItem("templatesCache"));
 	}	
 	
 	var compiled;
@@ -183,13 +188,13 @@ function renderTemplate (template, url, output) {
 		var src = document.getElementById(template).innerHTML;
 		compiled = dust.compile(src, template);
 		templatesCache[template] = compiled;
-		window.sessionStorage.setItem ("templatesCache", JSON.stringify(templatesCache));
-		log ("PUT compiled template to cache: \n"+compiled);
+		localStorage.setItem ("templatesCache", JSON.stringify(templatesCache));
+		log ("PUT compiled template to localStorage: \n"+compiled);
 	}
 	else {
 		// template is already compiled in cache
 		compiled = templatesCache[template];
-		log ("LOADED compiled template '"+template+"' from cache");
+		log ("LOADED compiled template '"+template+"' from localStorage");
 	}
 	dust.loadSource(compiled);
 
