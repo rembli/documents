@@ -1,6 +1,6 @@
 //# INIT ##########################################################
 
-var debug = false;
+var debug = true;
 var host = ".";
 var token = window.sessionStorage.getItem("authenticationToken");
 
@@ -111,7 +111,7 @@ function loadIncludes () {
 			var includeTemplate = "";
 			
 			if (includesCache[includeTemplateName]==null) {
-				log ("Template "+includeTemplateName+" is not in localStorage and will be put into localStorage.");
+				log ("PUT template '"+includeTemplateName+"' into cache");
 				
 				var client = new XMLHttpRequest();
 				client.open("GET",includeTemplateName,false);
@@ -122,7 +122,7 @@ function loadIncludes () {
 				includesCache[includeTemplateName] = includeTemplate;
 			}
 			else {
-				log ("Template "+includeTemplateName+" is in cache");
+				log ("LOAD template '"+includeTemplateName+"' from cache");
 				includeTemplate = includesCache[includeTemplateName];
 			}
 			
@@ -133,7 +133,7 @@ function loadIncludes () {
 	
 	// load json hashmap as string to sessionStorage
 	localStorage.setItem ("includesCache", JSON.stringify(includesCache));
-	log ("updated includesCache");
+	log ("PUT template cache to localStorage");
 }
 
 function loadDictionary () {
@@ -161,12 +161,14 @@ function lang (id) {
 function translate () {
 	var dictionary =  loadDictionary ();
 
-	var translation = $("lang");
+	var translation = $("lang").not("[translated='true']");
 	for (i=0; i<translation.length; i++) {
 		var currentTranslation = translation[i].innerHTML;
 		var result = dictionary[currentTranslation];
 		translation[i].innerHTML = result;
+		log ("- translated '"+currentTranslation+"': "+result);
 	}
+	$("lang").attr("translated", "true");
 }		
 
 function renderTemplate (template, url, output) {
@@ -178,7 +180,7 @@ function renderTemplate (template, url, output) {
 		templatesCache = {};
 		localStorage.removeItem ("templatesCache");
 	}
-	if (window.sessionStorage.getItem ("templatesCache")!=null) {
+	if (localStorage.getItem ("templatesCache")!=null) {
 		templatesCache = JSON.parse(localStorage.getItem("templatesCache"));
 	}	
 	
@@ -189,7 +191,7 @@ function renderTemplate (template, url, output) {
 		compiled = dust.compile(src, template);
 		templatesCache[template] = compiled;
 		localStorage.setItem ("templatesCache", JSON.stringify(templatesCache));
-		log ("PUT compiled template to localStorage: \n"+compiled);
+		log ("PUT compiled template '"+template+"'to localStorage: \n"+compiled);
 	}
 	else {
 		// template is already compiled in cache
@@ -209,6 +211,7 @@ function renderTemplate (template, url, output) {
 		// finally render it
 		dust.render(template, JSON.parse(client.responseText), function(err, out) {
 			document.getElementById(output).innerHTML = out;
+			translate ();
 		});
 	};
 	client.send();
