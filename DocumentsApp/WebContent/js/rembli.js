@@ -41,37 +41,39 @@ function init () {
 }
 
 function loadBase () {
+	// caching enablen
+	$.ajaxSetup({
+		cache: true
+	});
+  
+	// CSS Dateien laden
+    loadCSS ("./css/bootstrap.min.css");
+    loadCSS ("./css/bootstrap-theme.min.css");
+    loadCSS ("./css/style.css");
+    loadScript ("./js-lib/bootstrap.min.js");	
 
-	    loadCSS ("./css/bootstrap.min.css");
-	    loadCSS ("./css/bootstrap-theme.min.css");
-	    loadCSS ("./css/style.css");
-	    loadScript ("./js-lib/bootstrap.min.js");	
-
-	    // internationalization fix for IE
-	    loadScript ("https://cdn.polyfill.io/v2/polyfill.min.js?features=Intl.~locale.en,Intl.~locale.de");
-	    
-	    // templating and internationalization  with Dust
-	    $.ajaxSetup({
-	    	  cache: true
-	    });
-	    
-	    $.getScript( "./js-lib/dust-full.min.js", function( data, textStatus, jqxhr ) {
-		    $.getScript( "./js-lib/dust-intl.min.js", function( data, textStatus, jqxhr ) {
-			    loadScript ("./js-lib/locale-data/en.js");	    
-			    loadScript ("./js-lib/locale-data/de.js");	    
-				// register helper DustIntl
-			    DustIntl.registerWith(dust);
-		    });
-	    });
+    // internationalization fix for IE
+    loadScript ("https://cdn.polyfill.io/v2/polyfill.min.js?features=Intl.~locale.en,Intl.~locale.de");
+    
+    // templating and internationalization  with Dust
+    $.getScript( "./js-lib/dust-full.min.js", function( data, textStatus, jqxhr ) {
+	    $.getScript( "./js-lib/dust-intl.min.js", function( data, textStatus, jqxhr ) {
+		    loadScript ("./js-lib/locale-data/en.js");	    
+		    loadScript ("./js-lib/locale-data/de.js");	    
+			// register helper DustIntl
+		    DustIntl.registerWith(dust);
 		    
-	    // load page-related js-file, e.g. index.html > load index.js
-	    var currentHTML = document.location.href.match(/[^\/]+$/);
-	    if (currentHTML==null) 
-	    	currentHTML = "index.html";
-	    else 
-	    	currentHTML = currentHTML[0];
-	    var currentJS = currentHTML.split (".")[0]+".js";
-	    loadScript (currentJS);
+		    // nachdem Dust geladen wurde, kann wg. Abhängigkeit die seiten-spezifische Dateien geladen werden
+		    // e.g. index.html > load index.js
+		    var currentHTML = document.location.href.match(/[^\/]+$/);
+		    if (currentHTML==null) 
+		    	currentHTML = "index.html";
+		    else 
+		    	currentHTML = currentHTML[0];
+		    var currentJS = currentHTML.split (".")[0]+".js";
+		    loadScript (currentJS);
+	    });
+    });
 }
 
 function loadCSS (url) {
