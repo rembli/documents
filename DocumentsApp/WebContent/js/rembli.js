@@ -60,21 +60,21 @@ function loadBase () {
 	    $.getScript( "./js-lib/dust-intl.min.js", function( data, textStatus, jqxhr ) {
 			// register helper DustIntl
 		    DustIntl.registerWith(dust);
-		    
-		    // nachdem Dust geladen wurde, kann wg. Abhängigkeit die seiten-spezifische Dateien geladen werden
-		    // e.g. index.html > load index.js
-		    var currentHTML = document.location.href.match(/[^\/]+$/);
-		    if (currentHTML==null) 
-		    	currentHTML = "index.html";
-		    else 
-		    	currentHTML = currentHTML[0];
-		    var currentJS = currentHTML.split (".")[0]+".js";
-		    loadScript (currentJS);
 
 		    loadScript ("./js-lib/locale-data/en.js");	    
 		    loadScript ("./js-lib/locale-data/de.js");	 	    
 	    });
     });
+
+    // nachdem Dust geladen wurde, kann wg. Abhängigkeit die seiten-spezifische Dateien geladen werden
+    // e.g. index.html > load index.js
+    var currentHTML = document.location.href.match(/[^\/]+$/);
+    if (currentHTML==null) 
+    	currentHTML = "index.html";
+    else 
+    	currentHTML = currentHTML[0];
+    var currentJS = currentHTML.split (".")[0]+".js";
+    loadScript (currentJS);    
 }
 
 function loadCSS (url) {

@@ -125,13 +125,13 @@ function newUser () {
   // Here we run a very simple test of the Graph API after login is
   // successful.  See statusChangeCallback() for when this call is made.
   function loginWithFacebook (response) {
-    console.log('Successful login in facebook');
+    log('Successful login in facebook');
     
     var uid = response.authResponse.userID;
     console.log('UID: ' + uid);
     
     var accessToken = response.authResponse.accessToken;   
-    console.log('AccessToken: ' + accessToken);    
+    log('AccessToken: ' + accessToken);    
     
     FB.api('/me', function(response) {
     	var username = response.name;
