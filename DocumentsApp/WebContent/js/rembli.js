@@ -58,8 +58,6 @@ function loadBase () {
     // templating and internationalization  with Dust
     $.getScript( "./js-lib/dust-full.min.js", function( data, textStatus, jqxhr ) {
 	    $.getScript( "./js-lib/dust-intl.min.js", function( data, textStatus, jqxhr ) {
-		    loadScript ("./js-lib/locale-data/en.js");	    
-		    loadScript ("./js-lib/locale-data/de.js");	    
 			// register helper DustIntl
 		    DustIntl.registerWith(dust);
 		    
@@ -72,6 +70,9 @@ function loadBase () {
 		    	currentHTML = currentHTML[0];
 		    var currentJS = currentHTML.split (".")[0]+".js";
 		    loadScript (currentJS);
+
+		    loadScript ("./js-lib/locale-data/en.js");	    
+		    loadScript ("./js-lib/locale-data/de.js");	 	    
 	    });
     });
 }
