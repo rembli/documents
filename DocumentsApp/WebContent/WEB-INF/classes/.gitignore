@@ -1,2 +1,5 @@
 /db-active.properties
 /com/
+/db.properties
+/sec.properties
+/sql.properties

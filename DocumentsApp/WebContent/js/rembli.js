@@ -51,9 +51,9 @@ function loadBase () {
     loadCSS ("./css/bootstrap-theme.min.css");
     loadCSS ("./css/style.css");
     loadScript ("./js-lib/bootstrap.min.js");	
-
+    
     // internationalization fix for IE
-    loadScript ("https://cdn.polyfill.io/v2/polyfill.min.js?features=Intl.~locale.en,Intl.~locale.de");
+    loadScript ("//cdn.polyfill.io/v2/polyfill.min.js?features=Intl.~locale.en,Intl.~locale.de");
     
     // templating and internationalization  with Dust
     $.getScript( "./js-lib/dust-full.min.js", function( data, textStatus, jqxhr ) {
@@ -64,17 +64,17 @@ function loadBase () {
 		    loadScript ("./js-lib/locale-data/en.js");	    
 		    loadScript ("./js-lib/locale-data/de.js");	 	    
 	    });
+	    
+	    // nachdem Dust geladen wurde, kann wg. Abhängigkeit die seiten-spezifische Dateien geladen werden
+	    // e.g. index.html > load index.js
+	    var currentHTML = document.location.href.match(/[^\/]+$/);
+	    if (currentHTML==null) 
+	    	currentHTML = "index.html";
+	    else 
+	    	currentHTML = currentHTML[0];
+	    var currentJS = currentHTML.split (".")[0]+".js";
+	    loadScript (currentJS);    	    
     });
-
-    // nachdem Dust geladen wurde, kann wg. Abhängigkeit die seiten-spezifische Dateien geladen werden
-    // e.g. index.html > load index.js
-    var currentHTML = document.location.href.match(/[^\/]+$/);
-    if (currentHTML==null) 
-    	currentHTML = "index.html";
-    else 
-    	currentHTML = currentHTML[0];
-    var currentJS = currentHTML.split (".")[0]+".js";
-    loadScript (currentJS);    
 }
 
 function loadCSS (url) {
@@ -98,11 +98,11 @@ function loadIncludes () {
 	var includesCache = {};
 	if (getParameterByName("reloadCache") !=  "") { 
 		includesCache = {};
-		localStorage.removeItem ("includesCache");
+		deleteCache ("includesCache");
 	}
-	if (localStorage.getItem ("includesCache")!=null) {
+	if (getCache ("includesCache")!=null) {
 		// load string from cache and translate it to json-hashmap
-		includesCache = JSON.parse(localStorage.getItem ("includesCache"));
+		includesCache = JSON.parse(getCache ("includesCache"));
 	}
 
 	do {
@@ -135,20 +135,23 @@ function loadIncludes () {
 	while ($("include").length>0);
 	
 	// load json hashmap as string to sessionStorage
-	localStorage.setItem ("includesCache", JSON.stringify(includesCache));
+	setCache ("includesCache", JSON.stringify(includesCache));
 	log ("PUT template cache to localStorage");
 }
 
 function loadDictionary () {
+	var dictionary = null;
 	var language = (navigator.language || navigator.browserLanguage).split('-')[0].toUpperCase();
 	if (language != "EN" && language != "DE") language = "EN";
 
-	var dictionary = JSON.parse(localStorage.getItem("dictionary-"+language));
+	if (getCache ("dictionary-"+language) != null)
+		dictionary = JSON.parse(getCache ("dictionary-"+language));
+	
 	if (dictionary == null || getParameterByName("reloadCache") !=  "") {
 		var client = new XMLHttpRequest();
 		client.open("GET","./lang/"+language,false);
 		client.send();
-		localStorage.setItem("dictionary-"+language, client.responseText);
+		setCache ("dictionary-"+language, client.responseText);
 		dictionary = JSON.parse(client.responseText);
 		
 		log ("PUT dictionary to localStorage: \n"+JSON.stringify(dictionary));
@@ -181,10 +184,10 @@ function renderTemplate (template, url, output) {
 	var templatesCache = {};
 	if (getParameterByName("reloadCache") !=  "") { 
 		templatesCache = {};
-		localStorage.removeItem ("templatesCache");
+		deleteCache ("templatesCache");
 	}
-	if (localStorage.getItem ("templatesCache")!=null) {
-		templatesCache = JSON.parse(localStorage.getItem("templatesCache"));
+	if (getCache ("templatesCache")!=null) {
+		templatesCache = JSON.parse(getCache ("templatesCache"));
 	}	
 	
 	var compiled;
@@ -193,7 +196,7 @@ function renderTemplate (template, url, output) {
 		var src = document.getElementById(template).innerHTML;
 		compiled = dust.compile(src, template);
 		templatesCache[template] = compiled;
-		localStorage.setItem ("templatesCache", JSON.stringify(templatesCache));
+		setCache ("templatesCache", JSON.stringify(templatesCache));
 		log ("PUT compiled template '"+template+"'to localStorage: \n"+compiled);
 	}
 	else {
@@ -263,7 +266,36 @@ function renderTemplate (template, url, output) {
 
  //# HELPER ##################################################################
  
- function log (str) {
+function setCache (key, value) {
+	try {
+		window.localStorage.setItem(key, value);
+	} 
+	catch (e) {
+		log ("Local Storage not supported");
+	}
+}
+
+function getCache (key) {
+	var value = null;
+	try {
+		value = window.localStorage.getItem(key);
+	} 
+	catch (e) {
+		log ("Local Storage not supported");
+	}
+	return value;
+}
+
+function deleteCache (key) {
+	try {
+		window.localStorage.removeItem(key);
+	} 
+	catch (e) {
+		log ("Local Storage not supported");
+	}
+}
+  
+function log (str) {
 	 if (debug) {
 		 console.log (str);
 	 }
