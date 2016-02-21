@@ -1,6 +1,9 @@
 $(function() {
 	refresh();
-	document.getElementById('rembli-body').style.visibility='visible';
+	
+	$("#rembliBody").hide();
+	document.getElementById('rembliBody').style.visibility='visible';		
+	$("#rembliBody").fadeIn(400);
 });
 
 function refresh () {
@@ -58,7 +61,8 @@ function deleteDocument (id) {
 		var client = new XMLHttpRequest();
 		client.open('DELETE', url, true);
 		client.onload = function () {
-			window.document.location.href = host+"/index.html"
+			loadBody ("index.html");
+			//window.document.location.href = host+"/index.html"
 		};
 		client.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 		client.setRequestHeader("Authorization", token);	

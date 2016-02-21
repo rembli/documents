@@ -8,9 +8,9 @@ Nutzung der Anwendung
 
 TODOS
 --------------------------------------------------------------------------------
-
-- Mehrmandantenfähigkeit
-- Admin UI
+- Fehler bei Single-Page adressierung und Upload von Datein in der DropZone (nach Wechsel in Edit geht es nicht mehr)
+- Mehrmandantenfähigkeit (Org-ID)
+- Admin UI für User
 - Tags/Properties
 - Suche
 

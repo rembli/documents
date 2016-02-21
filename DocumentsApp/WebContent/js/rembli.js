@@ -3,6 +3,7 @@
 var debug = false;
 var host = ".";
 var token = window.sessionStorage.getItem("authenticationToken");
+var rembliLocation = null;
 
 window.onload = function () {
 	
@@ -39,6 +40,48 @@ function init () {
 		// übersetzen der markups mit <lang>xzy</lang> oder lang('xyz');
 		translate ();
 }
+
+function loadBody (url) {
+	$("#rembliBody").fadeOut(200, function () {
+	
+		// muss hier gesetzt werden, damit später auch die QueryParameter ausgelesen werden können (statt von der loation.search)
+		rembliLocation = url;
+		
+		var client = new XMLHttpRequest();
+		client.open("GET",url,true);
+		client.setRequestHeader("Accept", "application/json");
+		client.setRequestHeader("Authorization", token);
+		client.onload = function (e) {
+			if (client.status == 401) window.document.location.href = host+"/login.html";
+	
+			// url im Browser richtig setzen für Favoriten
+		    window.history.pushState(
+		            {
+		                "html": "<none>",
+		                "pageTitle": "<none>"
+		            },
+		            "",
+		            url
+		       );			
+			
+			// ersetzen des rembliBody-Tags durch den neuen Inhalt
+			$("#rembliBody").replaceWith ("<div id='rembliBody' class='container' style='visibility:hidden'>"+$(client.responseText).filter("#rembliBody").html()+"</div>");
+			loadIncludes();
+			translate ();
+		    	
+			// auch hier wieder die entsprechende JS laden (Bsp. edit.html -> edit.js)
+		    var currentHTML = url.match(/[^\/]+$/);
+		    if (currentHTML==null) 
+		    	currentHTML = "index.html";
+		    else 
+		    	currentHTML = currentHTML[0];
+		    var currentJS = currentHTML.split (".")[0]+".js";
+		    loadScript (currentJS);
+		    
+		};
+		client.send();
+	});
+}	
 
 function loadBase () {
 	// caching enablen
@@ -223,6 +266,7 @@ function renderTemplate (template, url, output) {
 	client.send();
 }	
 
+
 //# AUTHENTICATION ####################################################
 
  function isAuthenticated() {
@@ -266,6 +310,7 @@ function renderTemplate (template, url, output) {
 
  //# HELPER ##################################################################
  
+ 
 function setCache (key, value) {
 	try {
 		window.localStorage.setItem(key, value);
@@ -302,9 +347,12 @@ function log (str) {
  }
  
  function getParameterByName(name) {
+	 if (rembliLocation == null)
+		 rembliLocation = location.search;
+     
      name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
      var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
-         results = regex.exec(location.search);
+         results = regex.exec(rembliLocation);
      return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
  }
 

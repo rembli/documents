@@ -8,9 +8,9 @@
 	<script type="text/javascript" src="./js-lib/dropzone.js"></script>
 </head>
 <body>
-<div id="rembli-body" class="container" style="visibility:hidden">
 <include template="_header.html"></include>
 
+<div id="rembliBody" class="container" style="visibility:hidden">
 <!-- ########################################################################### -->
 
 <div class="row">
@@ -23,6 +23,7 @@
 		</form>
 	</div>
 </div>
+
 
 <script type="text/javascript">
 	Dropzone.options.myDropzone = {
@@ -41,7 +42,9 @@
 			} 
 	};
 </script>
+
 </div>
+
 
 <br>
 <div id="document-thumbnail-table"></div>
@@ -51,11 +54,11 @@
 		<div class="col-xs-6 col-md-3">
 			<div class="thumbnail">
 				<center>
-				<a href="edit.html?id={idDocument}">
+				<a href="javascript: loadBody('edit.html?id={idDocument}');">
 					<img src="{links.self}/thumbnail" onError="this.src = './img/thumbnail_not_available.jpg'" height="100" width="100">
 				</a>
 				<div class="caption">
-					<a href="edit.html?id={idDocument}">{note}</a>
+					<a href="javascript: loadBody('edit.html?id={idDocument}')">{note}</a>
 				</div>
 				</center>
 			</div>
@@ -65,7 +68,6 @@
 </script>
 
 <!-- ########################################################################### -->
-
 <include template="_footer.html"></include>
 </div>
 </body>
