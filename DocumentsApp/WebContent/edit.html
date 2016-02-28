@@ -46,11 +46,14 @@
 			{#.}
 			<tr>
 				<td>{idFile}</td>
-				<td><a href="{links.self}" target="_new">
-						<img src="{links.self}/thumbnail" onError="this.src = './img/thumbnail_not_available.jpg'"></a><br>
-						<a href="{links.self}" target="_new">{fileName}</a></td>
+				<td><a href="{links.self}" target="_new">{fileName}</a></td>
 				<td><a href="javascript:deleteFile({idFile})"><span class="glyphicon glyphicon-trash"></span></a></td>
-				</tr>		
+			</tr>
+			<tr>
+				<td colspan="3">
+					<a href="{links.self}" target="_new">
+					<img src="{links.self}" onError="this.src = './img/thumbnail_not_available.jpg'" width="100%"></a><br>
+				</td>
 			</tr>
 			{/.}
 			</table>
