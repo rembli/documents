@@ -41,8 +41,9 @@ function init () {
 		translate ();
 }
 
-function loadBody (url) {
-	$("#rembliBody").fadeOut(200, function () {
+function loadContent (url) {
+	
+	$("#rembli-body").fadeOut(200, function () {
 	
 		// muss hier gesetzt werden, damit später auch die QueryParameter ausgelesen werden können (statt von der loation.search)
 		rembliLocation = url;
@@ -65,7 +66,7 @@ function loadBody (url) {
 		       );			
 			
 			// ersetzen des rembliBody-Tags durch den neuen Inhalt
-			$("#rembliBody").replaceWith ("<div id='rembliBody' class='container' style='visibility:hidden'>"+$(client.responseText).filter("#rembliBody").html()+"</div>");
+			$("#rembli-body").replaceWith ("<div id='rembli-body' class='container' style='visibility:hidden'>"+$(client.responseText).filter("#rembli-body").html()+"</div>");
 			loadIncludes();
 			translate ();
 		    	
@@ -179,7 +180,7 @@ function loadIncludes () {
 	
 	// load json hashmap as string to sessionStorage
 	setCache ("includesCache", JSON.stringify(includesCache));
-	log ("PUT template cache to localStorage");
+	log ("PUT includes cache to localStorage");
 }
 
 function loadDictionary () {

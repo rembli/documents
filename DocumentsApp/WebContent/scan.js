@@ -1,11 +1,7 @@
 $(function() {
-
-	loadScript ("/scanner/dynamsoft.webtwain.initiate.js");	
-	loadScript ("/scanner/dynamsoft.webtwain.config.js");	
-	
 	// show content
-	$("#rembliBody").hide();
-	document.getElementById('rembliBody').style.visibility='visible';		
-	$("#rembliBody").fadeIn(400);
+	$("#rembli-body").hide();
+	document.getElementById('rembli-body').style.visibility='visible';		
+	$("#rembli-body").fadeIn(200);
 });
 

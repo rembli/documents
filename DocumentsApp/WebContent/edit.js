@@ -1,9 +1,9 @@
 $(function() {
 	refresh();
 	
-	$("#rembliBody").hide();
-	document.getElementById('rembliBody').style.visibility='visible';		
-	$("#rembliBody").fadeIn(400);
+	$("#rembli-body").hide();
+	document.getElementById('rembli-body').style.visibility='visible';		
+	$("#rembli-body").fadeIn(200);
 });
 
 function refresh () {
@@ -61,7 +61,7 @@ function deleteDocument (id) {
 		var client = new XMLHttpRequest();
 		client.open('DELETE', url, true);
 		client.onload = function () {
-			loadBody ("index.html");
+			loadContent ("index.html");
 			//window.document.location.href = host+"/index.html"
 		};
 		client.setRequestHeader("Content-type", "application/x-www-form-urlencoded");

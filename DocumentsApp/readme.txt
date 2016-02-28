@@ -8,7 +8,7 @@ Nutzung der Anwendung
 
 TODOS
 --------------------------------------------------------------------------------
-- Fehler bei Single-Page adressierung und Upload von Datein in der DropZone (nach Wechsel in Edit geht es nicht mehr)
+- Fehler bei Ersatz des Bodies und Upload von Datein in der DropZone (nach Wechsel in Edit geht es nicht mehr, da Javascript fehlt und Initialisierung fehlerhaft)
 - Mehrmandantenfähigkeit (Org-ID)
 - Admin UI für User
 - Tags/Properties

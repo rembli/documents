@@ -1,6 +1,6 @@
 $(function() {
 	// show content
-	document.getElementById('rembliBody').style.visibility='visible';
+	document.getElementById('rembli-body').style.visibility='visible';
 });
 
 //LOGIN NORMAL ********************  

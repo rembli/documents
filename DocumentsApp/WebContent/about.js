@@ -1,7 +1,7 @@
 $(function() {
 	// show content
-	$("#rembliBody").hide();
-	document.getElementById('rembliBody').style.visibility='visible';		
-	$("#rembliBody").fadeIn(400);
+	$("#rembli-body").hide();
+	document.getElementById('rembli-body').style.visibility='visible';		
+	$("#rembli-body").fadeIn(400);
 });
 
