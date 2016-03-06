@@ -39,6 +39,12 @@ function init () {
 		loadIncludes ();
 		// übersetzen der markups mit <lang>xzy</lang> oder lang('xyz');
 		translate ();
+		
+		// Page load im Fall von Back-Button
+		$(window).on("popstate", function () {
+			  // die url wird automatisch gesetzt, aber das reload muss aktiv angestossen werden
+			  location.reload();
+		});		
 }
 
 function loadContent (url) {
@@ -56,15 +62,8 @@ function loadContent (url) {
 			if (client.status == 401) window.document.location.href = host+"/login.html";
 	
 			// url im Browser richtig setzen für Favoriten
-		    window.history.pushState(
-		            {
-		                "html": "<none>",
-		                "pageTitle": "<none>"
-		            },
-		            "",
-		            url
-		       );			
-			
+		    window.history.pushState(null, '', url);
+		    
 			// ersetzen des rembliBody-Tags durch den neuen Inhalt
 			$("#rembli-body").replaceWith ("<div id='rembli-body' class='container' style='visibility:hidden'>"+$(client.responseText).filter("#rembli-body").html()+"</div>");
 			loadIncludes();
@@ -128,12 +127,20 @@ function loadCSS (url) {
     document.getElementsByTagName("head")[0].appendChild(link);	
 }
 
-function loadScript (url) {
-    var script = document.createElement("SCRIPT");
-    script.src = url;
-    script.type = 'text/javascript';
-    script.async = false;
-    document.getElementsByTagName("head")[0].appendChild(script);
+function loadScript (url, f) {
+    if (f!=undefined) {
+    	$.getScript( url, function( data, textStatus, jqxhr ) {
+    		log ("Loaded script from "+url);
+    		f();
+    	});
+    }
+    else {
+        var script = document.createElement("SCRIPT");
+        script.src = url;
+        script.type = 'text/javascript';
+        script.async = false;
+        document.getElementsByTagName("head")[0].appendChild(script);    	
+    }
 }
 
 //# TEMPLATING, TRANSLATION & INCLUDES ################################

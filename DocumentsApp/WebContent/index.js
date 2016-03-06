@@ -1,12 +1,17 @@
 $(function() {
 	// render template
-	refresh();	
 
-	Dropzone.options.myDropzone = {
+	loadScript ("./js-lib/dropzone.js", function () {
+		
+		log ("Initialize dropzone");
+		
+		$("#my-dropzone").dropzone({ 
+			url: "./api/documents",
 			paramName: "RemoteFile", // The name that will be used to transfer the file
 	        maxFilesize: 5, // MB,
 	        maxFiles: 1, 
-			init: function() {
+			
+	        init: function() {
 				
 				  this.on("success", function (file) {
 					  this.removeFile(file);
@@ -16,8 +21,13 @@ $(function() {
 					  this.removeFile(file);
 					  alert ("ERROR: \n\n"+errorMessage);
 			  	   });
-			} 
-	};
+			} 				
+	});
+		
+
+	});
+	
+	refresh();	
 	
 	// show content
 	$("#rembli-body").hide();
