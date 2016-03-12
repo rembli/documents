@@ -15,14 +15,9 @@ function refresh () {
 	// set prev and next ID
 	currentDocumentList = getCache ("currentDocumentList").split(",");
 	currentDocumentPos = currentDocumentList.indexOf (currentID);
-	if (currentDocumentPos==currentDocumentList.length-1) 
-		nextID = currentID;
-	else
+	if (currentDocumentPos < currentDocumentList.length) 
 		nextID = currentDocumentList [currentDocumentPos+1];
-	
-	if (currentDocumentPos==0) 
-		prevID = currentID;
-	else
+	if (currentDocumentPos > 0) 
 		prevID = currentDocumentList [currentDocumentPos-1];
 	
 	renderTemplate ('document-header-form-template', '/documents/api/documents/'+currentID,"document-header-form");
