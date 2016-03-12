@@ -15,18 +15,12 @@
 <div id="document-header-form"></div>
 <script type="text/dust" id="document-header-form-template">
 	<form name="docForm">
-
-		<div class="row">
-			<div class="col-md-10">
-				<h2>Document: # {idDocument}</h2>
-			</div>
-			<div class="col-md-2" align="right">
-      			<div id="rembli-navigator" class="btn-group" role="group">
-					<button id="prevButton" type="button" class="btn btn-default" onClick="loadContent ('edit.html?id='+prevID);")><span class="glyphicon glyphicon glyphicon-chevron-left"></span></button>
-					<button id="nextButton" type="button" class="btn btn-default" onClick="loadContent ('edit.html?id='+nextID);;"><span class="glyphicon glyphicon glyphicon-chevron-right"></span></button>
-				</div>
-			</div>
+		<h2>Document: # {idDocument} &nbsp;
+		<div id="rembli-navigator" class="btn-group" role="group">
+			<button id="prevButton" type="button" class="btn btn-default" onClick="currentID=prevID; refresh();")><span class="glyphicon glyphicon glyphicon-chevron-left"></span></button>
+			<button id="nextButton" type="button" class="btn btn-default" onClick="currentID=nextID; refresh();;"><span class="glyphicon glyphicon glyphicon-chevron-right"></span></button>
 		</div>
+		</h2>
 
 		<div class="input-group input-group-lg">
 				<input type="text" name="note" class="form-control" placeholder="Text input" value="{note}">

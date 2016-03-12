@@ -4,7 +4,14 @@ var prevID = 0;
 
 $(function() {
 	currentID = getParameterByName("id");
+	refresh();
+	
+	$("#rembli-body").hide();
+	document.getElementById('rembli-body').style.visibility='visible';		
+	$("#rembli-body").fadeIn(200);
+});
 
+function refresh () {
 	// set prev and next ID
 	currentDocumentList = getCache ("currentDocumentList").split(",");
 	currentDocumentPos = currentDocumentList.indexOf (currentID);
@@ -18,14 +25,6 @@ $(function() {
 	else
 		prevID = currentDocumentList [currentDocumentPos-1];
 	
-	refresh();
-	
-	$("#rembli-body").hide();
-	document.getElementById('rembli-body').style.visibility='visible';		
-	$("#rembli-body").fadeIn(200);
-});
-
-function refresh () {
 	renderTemplate ('document-header-form-template', '/documents/api/documents/'+currentID,"document-header-form");
 	renderTemplate ('file-table-template', '/documents/api/documents/'+currentID+"/files","file-table");	
 	renderTemplate ('logEntry-table-template', '/documents/api/log?entity=DOCUMENT&entityid='+currentID,"logEntry-table");
