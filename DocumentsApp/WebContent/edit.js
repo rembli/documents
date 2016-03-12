@@ -1,4 +1,23 @@
+var currentID = 0;
+var nextID = 0;
+var prevID = 0;
+
 $(function() {
+	currentID = getParameterByName("id");
+
+	// set prev and next ID
+	currentDocumentList = getCache ("currentDocumentList").split(",");
+	currentDocumentPos = currentDocumentList.indexOf (currentID);
+	if (currentDocumentPos==currentDocumentList.length-1) 
+		nextID = currentID;
+	else
+		nextID = currentDocumentList [currentDocumentPos+1];
+	
+	if (currentDocumentPos==0) 
+		prevID = currentID;
+	else
+		prevID = currentDocumentList [currentDocumentPos-1];
+	
 	refresh();
 	
 	$("#rembli-body").hide();
@@ -7,13 +26,13 @@ $(function() {
 });
 
 function refresh () {
-	renderTemplate ('document-header-form-template', '/documents/api/documents/'+getParameterByName("id"),"document-header-form");
-	renderTemplate ('file-table-template', '/documents/api/documents/'+getParameterByName("id")+"/files","file-table");	
-	renderTemplate ('logEntry-table-template', '/documents/api/log?entity=DOCUMENT&entityid='+getParameterByName("id"),"logEntry-table");
+	renderTemplate ('document-header-form-template', '/documents/api/documents/'+currentID,"document-header-form");
+	renderTemplate ('file-table-template', '/documents/api/documents/'+currentID+"/files","file-table");	
+	renderTemplate ('logEntry-table-template', '/documents/api/log?entity=DOCUMENT&entityid='+currentID,"logEntry-table");
 }
 
 function updateDocument () {
-	var url = host+"/api/documents/"+getParameterByName("id");
+	var url = host+"/api/documents/"+currentID;
 	var client = new XMLHttpRequest();
 	client.open('PUT', url, true);
 	client.onload = function () {
@@ -26,7 +45,7 @@ function updateDocument () {
 }
 
 function attachFile () {
-	var url = host+"/api/documents/"+getParameterByName("id")+"/files";
+	var url = host+"/api/documents/"+currentID+"/files";
 	var client = new XMLHttpRequest();
 	client.open('POST', url, true);
 	client.onload = function () {
@@ -42,7 +61,7 @@ function attachFile () {
 
 function deleteFile (id) {
 	if (confirm ("Do You really want to delete file with id "+id)) {
-		var url = host+"/api/documents/"+getParameterByName("id")+"/files/"+id;
+		var url = host+"/api/documents/"+currentID+"/files/"+id;
 		var client = new XMLHttpRequest();
 		client.open('DELETE', url, true);
 		client.onload = function () {

@@ -1,7 +1,7 @@
 var DWObject;
 
 $(function() {
-
+	// load and initialize scanner
     loadScript ("http://www.rembli.com/scanner/dynamsoft.webtwain.initiate.js", function () {
         loadScript ("./scan.config.js", function () {
         	Dynamsoft.WebTwainEnv.RegisterEvent('OnWebTwainReady', Dynamsoft_OnReady); // Register OnWebTwainReady event. This event fires as soon as Dynamic Web TWAIN is initialized and ready to be used
@@ -13,7 +13,6 @@ $(function() {
 	document.getElementById('rembli-body').style.visibility='visible';		
 	$("#rembli-body").fadeIn(200);
 });
-
 
 
 function Dynamsoft_OnReady() {

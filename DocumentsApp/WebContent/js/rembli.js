@@ -228,7 +228,7 @@ function translate () {
 	$("lang").attr("translated", "true");
 }		
 
-function renderTemplate (template, url, output) {
+function renderTemplate (template, url, output, fn) {
 	if (output==null) output = template;
 
 	// load template 
@@ -270,6 +270,7 @@ function renderTemplate (template, url, output) {
 			document.getElementById(output).innerHTML = out;
 			translate ();
 		});
+		if (fn != undefined) fn (JSON.parse(client.responseText));
 	};
 	client.send();
 }	

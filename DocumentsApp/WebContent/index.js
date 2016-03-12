@@ -1,6 +1,6 @@
 $(function() {
-	// render template
 
+	// load and initialize dropzone
 	loadScript ("./js-lib/dropzone.js", function () {
 		
 		log ("Initialize dropzone");
@@ -22,11 +22,10 @@ $(function() {
 					  alert ("ERROR: \n\n"+errorMessage);
 			  	   });
 			} 				
-	});
-		
-
+		});
 	});
 	
+	// render template
 	refresh();	
 	
 	// show content
@@ -37,6 +36,11 @@ $(function() {
 
 
 function refresh () {
-	renderTemplate ('document-thumbnail-template', '/documents/api/documents', 'document-thumbnail-table');
+	renderTemplate ('document-thumbnail-template', '/documents/api/documents', 'document-thumbnail-table', function (response) {
+		var currentDocumentList = new Array();
+		for (i in response)
+			currentDocumentList [i] = ""+response[i].idDocument;
+		setCache ("currentDocumentList", currentDocumentList);
+	});
 }
 
