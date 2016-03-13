@@ -5,6 +5,30 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<script type="text/javascript" src="./js/rembli.js"></script>
 	<script type="text/javascript" src="./js/rembli-authentication-check.js"></script>
+  	<style>
+	.wrapper {
+		  font-size: 0;
+		  letter-spacing: 0;
+		  word-spacing: 0;
+		}
+		
+	  .inline_block {
+	    display: inline-block;
+	    width: 130px;
+	    height: 155px;
+	    margin: 10px;
+	    border: 2px solid #ddd; 
+	    text-align: center;
+	    border-radius: 5px;
+	    padding: 5px;
+
+    	font-size: 12px;
+    	letter-spacing: 1px;
+    	word-spacing: .1em;
+    	vertical-align: top;	  
+	  }  	
+
+    </style>	
 </head>
 <body>
 <include template="_header.html"></include>
@@ -13,36 +37,31 @@
 
 <!-- ########################################################################### -->
 
-<div class="row">
-<div class="col-md-12">
-	<div class="well" id="my-dropzone" class="dropzone" name="myDropzone">
-		<div class="dz-message">
-    		<lang>dragNdrop</lang>
-    	</div>
-	</div>
-</div>
-</div>
+<div class="wrapper">
 
-<br>
-<div id="document-thumbnail-table"></div>
-<script type="text/dust" id="document-thumbnail-template">
-	<div class="row">	
-		{#.}
-		<div class="col-xs-6 col-md-3">
-			<div class="thumbnail">
-				<center>
-				<a href="javascript: loadContent('edit.html?id={idDocument}');">
-					<img src="{links.self}/thumbnail" onError="this.src = './img/thumbnail_not_available.jpg'" height="100" width="100">
-				</a>
-				<div class="caption">
-					<a href="javascript: loadContent('edit.html?id={idDocument}')">{note}</a>
+		<div class="inline_block">
+			<div id="my-dropzone" class="dropzone" name="myDropzone" style="background-color:#eee;">
+				<div class="dz-message">
+					<br><br><span class="glyphicon glyphicon-plus"></span><br><br>
+					<lang>dragNdrop</lang><br><br>
 				</div>
-				</center>
 			</div>
 		</div>
+
+		<div id="document-thumbnail-table" style="display:inline"></div>
+</div>
+
+<script type="text/dust" id="document-thumbnail-table-template">
+		{#.}
+		<div class="inline_block">
+			<a href="javascript: loadContent('edit.html?id={idDocument}');">
+				<img src="{links.self}/thumbnail" onError="this.src = './img/thumbnail_not_available.jpg'" height="100" width="100">
+			</a><br>
+			<a href="javascript: loadContent('edit.html?id={idDocument}')">{note}</a>
+		</div>
 		{/.}
-	</div>
 </script>
+
 
 <!-- ########################################################################### -->
 <include template="_footer.html"></include>

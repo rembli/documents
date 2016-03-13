@@ -1,5 +1,8 @@
 $(function() {
 
+	// render template
+	refresh();		
+	
 	// load and initialize dropzone
 	loadScript ("./js-lib/dropzone.js", function () {
 		
@@ -23,10 +26,7 @@ $(function() {
 			  	   });
 			} 				
 		});
-	});
-	
-	// render template
-	refresh();	
+	});	
 	
 	// show content
 	$("#rembli-body").hide();
@@ -36,7 +36,7 @@ $(function() {
 
 
 function refresh () {
-	renderTemplate ('document-thumbnail-template', '/documents/api/documents', 'document-thumbnail-table', function (response) {
+	renderTemplate ('document-thumbnail-table-template', '/documents/api/documents', 'document-thumbnail-table', function (response) {
 		var currentDocumentList = new Array();
 		for (i in response)
 			currentDocumentList [i] = ""+response[i].idDocument;
