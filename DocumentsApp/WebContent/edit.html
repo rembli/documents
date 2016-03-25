@@ -9,8 +9,8 @@
 <body>
 <include template="_header.html"></include>
 
-<div id="rembli-body" class="container" style="visibility:hidden">
 <!-- ########################################################################### -->
+<div id="rembli-body" class="container" style="visibility:hidden">
 
 <div id="document-header-form"></div>
 <script type="text/dust" id="document-header-form-template">
@@ -93,8 +93,9 @@
 <button type="button" class="btn btn-primary"  onclick="loadContent('index.html');" class="btn btn-default" ><lang>backToList</lang></button>&nbsp;
 <button type="button" class="btn btn-secondary" onclick="deleteDocument(getParameterByName('id'))" class="btn btn-default" ><lang>deleteDoc</lang></button>
 
-<!-- ########################################################################### -->
-<include template="_footer.html"></include>
 </div>
+<!-- ########################################################################### -->
+
+<include template="_footer.html"></include>
 </body>
 </html>

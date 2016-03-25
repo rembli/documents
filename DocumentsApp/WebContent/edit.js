@@ -34,7 +34,7 @@ function updateDocument () {
 	};
 	client.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 	client.setRequestHeader("Authorization", token);		
-	client.send("id="+getParameterByName("id")+"&note="+window.docForm.note.value);
+	client.send("id="+currentID+"&note="+window.docForm.note.value);
 	if (client.status == 401) window.document.location.href = host+"/login.html";
 }
 
@@ -83,6 +83,4 @@ function deleteDocument (id) {
 		if (client.status == 401) window.document.location.href = host+"/login.html";
 	}
 }
-
-
 

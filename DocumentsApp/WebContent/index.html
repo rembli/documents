@@ -9,36 +9,41 @@
 <body>
 <include template="_header.html"></include>
 
+<!-- ########################################################################### -->
 <div id="rembli-body" class="container" style="visibility:hidden">
 
-<!-- ########################################################################### -->
+<div class="row">
 
-<div class="wrapper">
-	<div class="inline_block">
-		<div id="my-dropzone" class="dropzone" name="myDropzone" style="background-color:#eee;">
+	<div class="col-xs-6 col-md-3" style="text-align:center;padding:5px;">
+		<div id="my-dropzone" class="dropzone thumbnail" name="myDropzone" style="background-color:#eee">
 			<div class="dz-message">
-				<br><br><br><span class="glyphicon glyphicon-plus"></span><br><br>
-				<lang>dragNdrop</lang><br><br><br>
+				<br><span class="glyphicon glyphicon-plus"></span><br><br>
+				<lang>dragNdrop</lang><br><br>
 			</div>
 		</div>
 	</div>
-
+	
 	<div id="document-thumbnail-table" style="display:inline"></div>
+
 </div>
+
 
 <script type="text/dust" id="document-thumbnail-table-template">
 		{#.}
-		<div class="inline_block">
+		<div class="col-xs-6 col-md-3" style="text-align:center;padding:5px;white-space:nowrap;overflow:hidden">
+			<div class="thumbnail">
 			<a href="javascript: loadContent('edit.html?id={idDocument}');">
-				<img src="{links.self}/thumbnail" onError="this.src = './img/thumbnail_not_available.jpg'" height="200" width="200">
+				<img src="{links.self}/thumbnail" onError="this.src = './img/thumbnail_not_available.jpg'" style="margin:auto;" width="150" height="100">
 			</a><br>
 			<a href="javascript: loadContent('edit.html?id={idDocument}')">{note}</a>
+			</div>
 		</div>
 		{/.}
 </script>
 
-<!-- ########################################################################### -->
-<include template="_footer.html"></include>
 </div>
+<!-- ########################################################################### -->
+
+<include template="_footer.html"></include>
 </body>
 </html>
