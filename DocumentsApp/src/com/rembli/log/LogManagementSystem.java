@@ -25,11 +25,11 @@ public class LogManagementSystem {
 	private boolean isAuthenticated = false;
 	private String username = null;	
 	
-	public LogManagementSystem (String token) throws Exception {
+	public LogManagementSystem (String accessToken) throws Exception {
 		UserManagementSystem ums = new UserManagementSystem ();
-		isAuthenticated = ums.isAuthenticated (token);
+		isAuthenticated = ums.isAuthenticated (accessToken);
 		if (!isAuthenticated) throw new Exception ("UNAUTHORIZED");
-		username = ums.getUsername(token);		
+		username = ums.getUsername(accessToken);		
 	}        
     
 	public LogEntry[] getAllonge (String entity, String entityid) throws Exception {

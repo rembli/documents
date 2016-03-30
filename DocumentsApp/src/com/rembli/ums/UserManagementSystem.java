@@ -89,12 +89,12 @@ public class UserManagementSystem {
     	// siehe auch JWS - JSON Web Signature
     	
     	Random random = new SecureRandom();
-        String accessTtokenSignature = "Bearer " + new BigInteger(130, random).toString(32);
+        String accessTokenSignature = "Bearer " + new BigInteger(130, random).toString(32);
         int secondsToLive = new Integer(getProperties ("SEC.TOKEN_VALIDTY_IN_SECONDS")).intValue(); // Gültigkeit des Tokens in Sekunden
         AccessToken accessToken = new AccessToken (username, secondsToLive);
-        accessTokens.put(accessTtokenSignature, accessToken);
+        accessTokens.put(accessTokenSignature, accessToken);
 
-		return accessTtokenSignature;
+		return accessTokenSignature;
     }	
     
     public java.util.Date getAccessTokenExipration (String accessTokenSignature) throws Exception {

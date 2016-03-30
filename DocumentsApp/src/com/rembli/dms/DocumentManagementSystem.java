@@ -11,11 +11,11 @@ public class DocumentManagementSystem {
 	private boolean isAuthenticated = false;
 	private String username = null;
 
-	public DocumentManagementSystem (String token) throws Exception {
+	public DocumentManagementSystem (String accessToken) throws Exception {
 		UserManagementSystem ums = new UserManagementSystem ();
-		isAuthenticated = ums.isAuthenticated (token);
+		isAuthenticated = ums.isAuthenticated (accessToken);
 		if (!isAuthenticated) throw new Exception ("UNAUTHORIZED");
-		username = ums.getUsername(token);
+		username = ums.getUsername(accessToken);
 	}
 	
 	public long createDocument (String note) throws Exception {
