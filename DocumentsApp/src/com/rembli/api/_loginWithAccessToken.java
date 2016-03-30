@@ -18,7 +18,7 @@ import com.rembli.ums.*;
 public class _loginWithAccessToken {
 	@Context HttpServletRequest httpRequest;
 
-    @ApiOperation(value = "Anmeldung", notes = "Erzeugt ein Authentication-Token auf Basis eines von einem fremden IdentityProvider erzeugten AccessTokens. Aktuell ist nur FACEBOOK möglich (noch in Arbeit)")
+    @ApiOperation(value = "Anmeldung", notes = "Erzeugt ein Authentication-Token auf Basis eines von einem fremden IdentityProvider erzeugten AccessTokens. Aktuell ist nur FACEBOOK möglich.")
     @ApiResponses(value = { 
     		@ApiResponse(code = 200, message = "Es wird das Authentication-Token als Text zurückgegeben.", response = String.class),
     		@ApiResponse(code = 401, message = "Das Login war nicht erfolgreich.")
@@ -26,14 +26,14 @@ public class _loginWithAccessToken {
     @POST
     @Produces("text/html")
     @Consumes("application/x-www-form-urlencoded")
-    public Response login (@FormParam("identityProvider") String identityProvider, @FormParam("accessToken") String accessToken) throws Exception {
+    public Response login (@FormParam("identityProvider") String identityProvider, @FormParam("accessToken") String thirdPartyAccessToken) throws Exception {
 
     	UserManagementSystem ums = new UserManagementSystem ();
-    	String token = ums.loginWithAccessToken(identityProvider, accessToken);
-    	if (token != null) {
+    	String accessToken = ums.loginWithAccessToken(identityProvider, thirdPartyAccessToken);
+    	if (accessToken != null) {
     		HttpSession session = httpRequest.getSession();
-    		session.setAttribute("authenticationToken", token);
-    		return Response.ok(token).build();
+    		session.setAttribute("accessToken", accessToken);
+    		return Response.ok(accessToken).build();
     	}
     	else
     		return Response.status(Response.Status.UNAUTHORIZED).build();
