@@ -25,6 +25,7 @@ EVENTUELL
 ERLEDIGT
 --------------------------------------------------------------------------------
 - AuthenticationToken und AuthenticationUser umbenannt in AccessToken und CurrentUser
+- Navigation zwischen einzelnen Dokumenten ermöglicht (statt immer über die Liste gehen zu müssen)
 - Fehler bei Ersatz des Bodies und Upload von Datein in der DropZone (nach Wechsel in Edit geht es nicht mehr, da Javascript fehlt und Initialisierung fehlerhaft)
 - Anpassen der Browser-History entsprechend der aktuell gewählten Seite
 - Dynamisches Laden und Ersetzen von Teilen einer Seite (Single-Page-Application)
