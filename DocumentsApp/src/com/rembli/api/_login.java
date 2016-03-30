@@ -17,9 +17,9 @@ import com.rembli.ums.*;
 public class _login {
 	@Context HttpServletRequest httpRequest;
 
-    @ApiOperation(value = "Anmeldung", notes = "Erzeugt ein Authentication-Token, welches für die weitere Bearbeitung notwendig ist.")
+    @ApiOperation(value = "Anmeldung", notes = "Erzeugt ein Access-Token, welches für die weitere Bearbeitung notwendig ist.")
     @ApiResponses(value = { 
-    		@ApiResponse(code = 200, message = "Es wird das Authentication-Token als Text zurückgegeben.", response = String.class),
+    		@ApiResponse(code = 200, message = "Es wird das Access-Token als Text zurückgegeben.", response = String.class),
     		@ApiResponse(code = 401, message = "Das Login war nicht erfolgreich.")
       })	    
     @POST
