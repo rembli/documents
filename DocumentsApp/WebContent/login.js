@@ -128,14 +128,14 @@ function newUser () {
     log('Successful login in facebook');
     
     var uid = response.authResponse.userID;
-    console.log('UID: ' + uid);
+    log('UID: ' + uid);
     
     var accessToken = response.authResponse.accessToken;   
     log('AccessToken: ' + accessToken);    
     
     FB.api('/me', function(response) {
     	var username = response.name;
-    	window.sessionStorage.setItem("authenticationUser", username);
+    	window.sessionStorage.setItem("currentUser", username);
     	document.getElementById('fbLoginState').innerHTML = '<br>' + lang('login_success') + ' ' + username + '!<br> '+ lang('Please wait') + ' ...';
     });
 
