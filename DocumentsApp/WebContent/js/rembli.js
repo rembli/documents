@@ -1,10 +1,14 @@
-//# INIT ##########################################################
+//# APP SETTINGS ##################################################
 
 var debug = false;
-var caching = false;
+var caching = true;
 var host = ".";
-var accessToken = window.sessionStorage.getItem("accessToken");
 var rembliLocation = null;
+
+//# INIT ##########################################################
+
+var accessToken = window.sessionStorage.getItem("accessToken");
+var currentUser = window.sessionStorage.getItem("currentUser");
 
 window.onload = function () {
 	
@@ -276,7 +280,6 @@ function renderTemplate (template, url, output, fn) {
 	client.send();
 }	
 
-
 //# AUTHENTICATION ####################################################
 
  function isAuthenticated() {
@@ -319,7 +322,6 @@ function renderTemplate (template, url, output, fn) {
  }
 
  //# HELPER ##################################################################
- 
  
 function setCache (key, value) {
 	try {
@@ -404,8 +406,7 @@ function log (str) {
 
  	    return dateTxt
  	  }
-
- 	}
+ }
 
  function setCookie(name, value, days) {
  	    if (days) {
@@ -416,7 +417,6 @@ function log (str) {
  	    else var expires = "";
  	    document.cookie = name + "=" + value + expires + "; path=/";
  }
-
 
  function getCookie(c_name) {
  	    if (document.cookie.length > 0) {
@@ -433,12 +433,10 @@ function log (str) {
  	    return "";
  }
 
-
  function validateEmail(email) { 
    var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
    return re.test(email);
  } 
-
 
  function checkForApp () {
  	if (navigator.userAgent.search(/iPhone/i)>0  || navigator.userAgent.search(/iPad/i)>0)
