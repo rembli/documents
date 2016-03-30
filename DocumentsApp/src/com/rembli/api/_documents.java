@@ -29,8 +29,8 @@ public class _documents {
 			@FormDataParam("RemoteFile") FormDataBodyPart fileBody) 
 		throws Exception {
 
-		String token = AuthenticationFilter.getTokenFromRequest (httpRequest);
-		DocumentManagementSystem dms = new DocumentManagementSystem (token);
+		String accessToken = AuthenticationFilter.getAccessTokenFromRequest (httpRequest);
+		DocumentManagementSystem dms = new DocumentManagementSystem (accessToken);
 
 		String fileName = "New upload";
 		String fileType = "application/octet-stream";
@@ -48,8 +48,8 @@ public class _documents {
 	@GET
 	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML }) 
 	public DocumentRessource[] getDocuments () throws Exception {
-		String token = AuthenticationFilter.getTokenFromRequest (httpRequest);
-		DocumentManagementSystem dms = new DocumentManagementSystem (token);
+		String accessToken = AuthenticationFilter.getAccessTokenFromRequest (httpRequest);
+		DocumentManagementSystem dms = new DocumentManagementSystem (accessToken);
 		Document[] documents = dms.getDocuments();
 		DocumentRessource[] documentRessources = new DocumentRessource[documents.length];
 		for (int i=0; i<documents.length;i++) documentRessources[i] = new DocumentRessource(documents[i]);

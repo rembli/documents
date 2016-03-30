@@ -17,15 +17,15 @@ function loginWithUsername () {
 					// wenn die Anmeldung funktioniert hat, bekommen wir vom Server das Token im Klartext zurück
 					// das speichern wir uns im SessionStorage des Browswers
 					// später müssen wir das bei jedem Request in den Authorization-Header schreiben
-					window.sessionStorage.setItem("authenticationToken",this.responseText);
-					window.sessionStorage.setItem("authenticationUser",window.document.loginForm.email.value);
+					window.sessionStorage.setItem("accessToken",this.responseText);
+					window.sessionStorage.setItem("currentUser",window.document.loginForm.email.value);
 					// dann gibt es einen redirekt zur Startseite
 					window.document.location.href = host+"/index.html";
 				}
 				else{
 					// Wenn es nicht geklappt hat, geben wir einen Hinweis aus und löschen das gespeichert Token
 					alert (this.statusText);
-					window.sessionStorage.removeItem("authenticationToken");
+					window.sessionStorage.removeItem("accessToken");
 				}
 			}
 	};

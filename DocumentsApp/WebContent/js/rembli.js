@@ -1,8 +1,9 @@
 //# INIT ##########################################################
 
 var debug = false;
+var caching = false;
 var host = ".";
-var token = window.sessionStorage.getItem("authenticationToken");
+var accessToken = window.sessionStorage.getItem("accessToken");
 var rembliLocation = null;
 
 window.onload = function () {
@@ -57,7 +58,7 @@ function loadContent (url) {
 		var client = new XMLHttpRequest();
 		client.open("GET",url,true);
 		client.setRequestHeader("Accept", "application/json");
-		client.setRequestHeader("Authorization", token);
+		client.setRequestHeader("Authorization", accessToken);
 		client.onload = function (e) {
 			if (client.status == 401) window.document.location.href = host+"/login.html";
 	
@@ -147,7 +148,7 @@ function loadScript (url, f) {
 
 function loadIncludes () {
 	var includesCache = {};
-	if (getParameterByName("reloadCache") !=  "") { 
+	if (!caching || getParameterByName("reloadCache") !=  "") { 
 		includesCache = {};
 		deleteCache ("includesCache");
 	}
@@ -169,7 +170,7 @@ function loadIncludes () {
 				
 				var client = new XMLHttpRequest();
 				client.open("GET",includeTemplateName,false);
-				client.setRequestHeader("Authorization", token);	
+				client.setRequestHeader("Authorization", accessToken);	
 				client.send();
 				includeTemplate = client.responseText;
 				
@@ -198,7 +199,7 @@ function loadDictionary () {
 	if (getCache ("dictionary-"+language) != null)
 		dictionary = JSON.parse(getCache ("dictionary-"+language));
 	
-	if (dictionary == null || getParameterByName("reloadCache") !=  "") {
+	if (dictionary == null || !caching || getParameterByName("reloadCache") !=  "") {
 		var client = new XMLHttpRequest();
 		client.open("GET","./lang/"+language,false);
 		client.send();
@@ -233,7 +234,7 @@ function renderTemplate (template, url, output, fn) {
 
 	// load template 
 	var templatesCache = {};
-	if (getParameterByName("reloadCache") !=  "") { 
+	if (!caching || getParameterByName("reloadCache") !=  "") { 
 		templatesCache = {};
 		deleteCache ("templatesCache");
 	}
@@ -261,7 +262,7 @@ function renderTemplate (template, url, output, fn) {
 	var client = new XMLHttpRequest();
 	client.open("GET",url,true);
 	client.setRequestHeader("Accept", "application/json");
-	client.setRequestHeader("Authorization", token);
+	client.setRequestHeader("Authorization", accessToken);
 	client.onload = function (e) {
 		if (client.status == 401) window.document.location.href = host+"/login.html";
 
@@ -279,33 +280,33 @@ function renderTemplate (template, url, output, fn) {
 //# AUTHENTICATION ####################################################
 
  function isAuthenticated() {
- 	var token = window.sessionStorage.getItem("authenticationToken");
- 	if (token!=null) 
+ 	var accessToken = window.sessionStorage.getItem("accessToken");
+ 	if (accessToken!=null) 
  		return true;
  	else
  		return false;
  }
 
 
- function getUser () {
+ function getCurrentUser () {
  	if (isAuthenticated()) 
- 		return  window.sessionStorage.getItem("authenticationUser");
+ 		return  window.sessionStorage.getItem("currentUser");
  	else
  		return "";
  }
 
 
- function getToken () {
+ function getAccessToken () {
  	if (isAuthenticated()) 
- 		return  window.sessionStorage.getItem("authenticationToken");
+ 		return  window.sessionStorage.getItem("accessToken");
  	else
  		return "";
  }
 
  function logout () {
  	// token aus der session entfernen
- 	window.sessionStorage.removeItem("authenticationToken");
- 	window.sessionStorage.removeItem("authenticationUser");	
+ 	window.sessionStorage.removeItem("accessToken");
+ 	window.sessionStorage.removeItem("currentUser");	
  	
  	// token aus der DB entfernen
  	var url = host+"/api/logout";

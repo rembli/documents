@@ -32,22 +32,22 @@ public class TestClient {
 		System.out.println ("ZWEITER VERSUCH -------------- ");		
 		try { // Mit Authentifizierung
 			
-			String tokenSignature = ums.login("testClient", "123");
-			if (tokenSignature==null) {
+			String accessTokenSignature = ums.login("testClient", "123");
+			if (accessTokenSignature==null) {
 				System.out.println ("FATAL: Authorization failed!");
 				return;
 			}
-			System.out.println ("Access Token: "+tokenSignature);
-			UserInfo ui = ums.getUserInfo(tokenSignature);
+			System.out.println ("Access Token: "+accessTokenSignature);
+			UserInfo ui = ums.getUserInfo(accessTokenSignature);
 			System.out.println ("UserInfo: "+ui);
-			System.out.println ("ExpDate1: "+ums.getTokenExipration(tokenSignature));
+			System.out.println ("ExpDate1: "+ums.getAccessTokenExipration(accessTokenSignature));
 			System.out.println ("3 Sekunden warten und dann die Laufzeit des Tokens verlängern");
 		    Thread.sleep(3000);  
-			ums.refreshToken(tokenSignature);
-			System.out.println ("ExpDate2: "+ums.getTokenExipration(tokenSignature));
+			ums.refreshAccessToken(accessTokenSignature);
+			System.out.println ("ExpDate2: "+ums.getAccessTokenExipration(accessTokenSignature));
 			
 			// Jetzt hat es geklappt und wir können mit dem Token was machen
-			dms = new DocumentManagementSystem(tokenSignature);
+			dms = new DocumentManagementSystem(accessTokenSignature);
 
 			Random r2 = new Random ();
 			String note = "note-"+r2.nextInt(1000);

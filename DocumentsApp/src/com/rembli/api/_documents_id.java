@@ -26,8 +26,8 @@ public class _documents_id {
   @GET
   @Produces ({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
   public DocumentRessource getDocument (@PathParam("idDocument") int idDocument) throws Exception {
-	String token = AuthenticationFilter.getTokenFromRequest (httpRequest);
-	DocumentManagementSystem dms = new DocumentManagementSystem (token);
+	String accessToken = AuthenticationFilter.getAccessTokenFromRequest (httpRequest);
+	DocumentManagementSystem dms = new DocumentManagementSystem (accessToken);
 	Document document =  dms.getDocument(idDocument);
 	DocumentRessource documentRessource = new DocumentRessource (document);
 	return documentRessource;
@@ -41,8 +41,8 @@ public class _documents_id {
   @Consumes (MediaType.APPLICATION_FORM_URLENCODED)
   @Produces (MediaType.TEXT_HTML)  
   public Response updateDocument (@PathParam("idDocument") int idDocument, @FormParam("note") String note) throws Exception {
-	String token = AuthenticationFilter.getTokenFromRequest (httpRequest);
-	DocumentManagementSystem dms = new DocumentManagementSystem (token);
+	String accessToken = AuthenticationFilter.getAccessTokenFromRequest (httpRequest);
+	DocumentManagementSystem dms = new DocumentManagementSystem (accessToken);
 	dms.updateDocument(idDocument, note);
 	return Response.status(204).entity("OK").build();
   }    
@@ -53,8 +53,8 @@ public class _documents_id {
   })	
   @DELETE
   public Response deleteDocument (@PathParam("idDocument") int idDocument) throws Exception {
-	String token = AuthenticationFilter.getTokenFromRequest (httpRequest);
-	DocumentManagementSystem dms = new DocumentManagementSystem (token);
+	String accessToken = AuthenticationFilter.getAccessTokenFromRequest (httpRequest);
+	DocumentManagementSystem dms = new DocumentManagementSystem (accessToken);
 	dms.deleteDocument(idDocument);
 	return Response.status(204).entity("OK").build();
   }

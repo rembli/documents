@@ -24,8 +24,8 @@ public class _documents_id_files_id {
 	})	
 	@GET
 	public Response getFile (@PathParam("idDocument") int idDocument, @PathParam("idFile") int idFile) throws Exception {
-		String token = AuthenticationFilter.getTokenFromRequest (httpRequest);
-		DocumentManagementSystem dms = new DocumentManagementSystem (token);
+		String accessToken = AuthenticationFilter.getAccessTokenFromRequest (httpRequest);
+		DocumentManagementSystem dms = new DocumentManagementSystem (accessToken);
 	    
 		com.rembli.dms.File file = dms.getFile(idFile);
 		
@@ -42,8 +42,8 @@ public class _documents_id_files_id {
 	})		
 	@DELETE
 	public Response deleteDocument (@PathParam("idDocument") int idDocument, @PathParam("idFile") int idFile) throws Exception {
-		String token = AuthenticationFilter.getTokenFromRequest (httpRequest);
-		DocumentManagementSystem dms = new DocumentManagementSystem (token);
+		String accessToken = AuthenticationFilter.getAccessTokenFromRequest (httpRequest);
+		DocumentManagementSystem dms = new DocumentManagementSystem (accessToken);
 		dms.deleteFile(idDocument, idFile);
 		return Response.status(204).build();
 	}	

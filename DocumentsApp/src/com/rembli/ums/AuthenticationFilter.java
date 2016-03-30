@@ -19,13 +19,13 @@ public class AuthenticationFilter implements ContainerRequestFilter {
 
     	try {
             UserManagementSystem ums = new UserManagementSystem ();
-            String tokenSignature = getTokenFromRequest (httpRequest);
+            String accessTokenSignature = getAccessTokenFromRequest (httpRequest);
             // wenn der Anwender nicht angemeldet ist (oder sonst ein Fehler aufgetreten ist) werfen wir eine Exception
-            if (!ums.isAuthenticated(tokenSignature))
+            if (!ums.isAuthenticated(accessTokenSignature))
                 throw new NotAuthorizedException("Authentication token must be provided");
             else
                 // wenn der Anwender weiter Request schickt und die Anmeldung noch gültig war, wird die Gültigkeit verlängert
-                ums.refreshToken(tokenSignature);
+                ums.refreshAccessToken(accessTokenSignature);
 
     	}
         catch (Exception e) {
@@ -34,31 +34,31 @@ public class AuthenticationFilter implements ContainerRequestFilter {
         }
     }
     
-    public static String getTokenFromRequest (HttpServletRequest httpRequest) {
+    public static String getAccessTokenFromRequest (HttpServletRequest httpRequest) {
         // Get the HTTP Authorization header from the request
-        String authenticationToken = null;
+        String accessTokenSignature = null;
         
         // stateless authentifizierungs-infos sollte im header stehen
-        authenticationToken = httpRequest.getHeader("Authorization");
+        accessTokenSignature = httpRequest.getHeader("Authorization");
         
         // Zusätzlich noch in der Session nachschauen
         // das ist notwendig, damit die REST-Services auch im Browser bedient werden können
-        if (authenticationToken == null) {
+        if (accessTokenSignature == null) {
     		HttpSession session = httpRequest.getSession();
-    		authenticationToken = (String) session.getAttribute("authenticationToken");
+    		accessTokenSignature = (String) session.getAttribute("accessToken");
         }
         
         // Zusätzlich noch in den Query-Parametern nachschauen
-        if (authenticationToken == null) {
-        	authenticationToken = httpRequest.getParameter("authenticationToken");
+        if (accessTokenSignature == null) {
+        	accessTokenSignature = httpRequest.getParameter("accessToken");
         }        
 
         // Check if the HTTP Authorization header is present and formatted correctly 
-        if (authenticationToken == null || !authenticationToken.startsWith("Bearer ")) {
-            throw new NotAuthorizedException("Authentication token must be provided");
+        if (accessTokenSignature == null || !accessTokenSignature.startsWith("Bearer ")) {
+            throw new NotAuthorizedException("Access token must be provided");
         }
 
         // Extract the token from the HTTP Authorization header
-        return authenticationToken;
+        return accessTokenSignature;
     }
 }

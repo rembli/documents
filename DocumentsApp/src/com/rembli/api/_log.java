@@ -23,8 +23,8 @@ public class _log {
 			@QueryParam("entity") String entity,
 			@QueryParam("entityid") String entityid) throws Exception {
 		
-    	String token = AuthenticationFilter.getTokenFromRequest (httpRequest);
-		LogManagementSystem audit = new LogManagementSystem (token);
+		String accessToken = AuthenticationFilter.getAccessTokenFromRequest (httpRequest);
+		LogManagementSystem audit = new LogManagementSystem (accessToken);
 		try {
 			LogEntry[] logEntries = audit.getAllonge(entity, entityid);
 			LogEntryRessource[] logEntryRessources =  new LogEntryRessource[logEntries.length];

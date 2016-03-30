@@ -33,7 +33,7 @@ function updateDocument () {
 		refresh();
 	};
 	client.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-	client.setRequestHeader("Authorization", token);		
+	client.setRequestHeader("Authorization", accessToken);		
 	client.send("id="+currentID+"&note="+window.docForm.note.value);
 	if (client.status == 401) window.document.location.href = host+"/login.html";
 }
@@ -46,7 +46,7 @@ function attachFile () {
 		window.document.uploadFileForm.RemoteFile.value = "";
 		refresh();
 	};
-	client.setRequestHeader("Authorization", token);	
+	client.setRequestHeader("Authorization", accessToken);	
 
 	var formData = new FormData(window.document.uploadFileForm);
 	client.send(formData);
@@ -62,7 +62,7 @@ function deleteFile (id) {
 			refresh();
 		};
 		client.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-		client.setRequestHeader("Authorization", token);	
+		client.setRequestHeader("Authorization", accessToken);	
 		client.send("id="+id);
 		if (client.status == 401) window.document.location.href = host+"/login.html";
 	}
@@ -78,7 +78,7 @@ function deleteDocument (id) {
 			//window.document.location.href = host+"/index.html"
 		};
 		client.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-		client.setRequestHeader("Authorization", token);	
+		client.setRequestHeader("Authorization", accessToken);	
 		client.send("id="+id);
 		if (client.status == 401) window.document.location.href = host+"/login.html";
 	}

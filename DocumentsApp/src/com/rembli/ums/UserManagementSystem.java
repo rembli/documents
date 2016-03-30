@@ -19,7 +19,7 @@ public class UserManagementSystem {
 	
 	// die Tokens werden Anwendungsübergreifend in einer Hashmap abgespeichert, d.h. pro VM bzw. App-Server
 	// Alternative: in der Datenbank
-	private static HashMap<String,Token> tokens = new HashMap<String,Token>();
+	private static HashMap<String,AccessToken> accessTokens = new HashMap<String,AccessToken>();
     
     public String login (String username, String password) throws Exception {
     	try (Connection con = ConnectionPool.getConnection()) {
@@ -31,7 +31,7 @@ public class UserManagementSystem {
 				.executeAndFetchTable();
     		
     		if (t.rows().size()>0) {
-    			String token = issueToken (username);
+    			String token = issueAccessToken (username);
     			LogManagementSystem.log(username, LogEntry.ENTITY.USER, username, LogEntry.ACTION.CHECK, "Successful login for user "+ username);   			
     			return token;
     		}
@@ -42,7 +42,7 @@ public class UserManagementSystem {
 		}
     }
 
-    public String loginWithAccessToken (String identityProvider, String accessToken) throws Exception {    
+    public String loginWithAccessToken (String identityProvider, String thirdPartyAccessToken) throws Exception {    
     	System.out.println ("Trying to login with "+identityProvider);
     	
     	if (identityProvider.equalsIgnoreCase(IDENTIY_PROVIDER.FACEBOOK)) {
@@ -50,7 +50,7 @@ public class UserManagementSystem {
 	    	// 1. Bei Facebook das AccessToken prüfen
 		
 	    	Client client = ClientBuilder.newClient();
-	    	WebTarget webTarget = client.target("https://graph.facebook.com/me?access_token="+accessToken);
+	    	WebTarget webTarget = client.target("https://graph.facebook.com/me?access_token="+thirdPartyAccessToken);
 	    	Response response = webTarget.request().get();  
 		  	String userJSON = response.readEntity(String.class);
 		  	System.out.println("FACEBOOK: "+userJSON);
@@ -69,9 +69,9 @@ public class UserManagementSystem {
 			  	createUserInfo(username, email, password);
 	
 			  	// 4. Token für User erzeugen
-			  	String token = issueToken (username);
+			  	String accessToken = issueAccessToken (username);
 			  	LogManagementSystem.log(username, LogEntry.ENTITY.USER, username, LogEntry.ACTION.CHECK, "Successful login for user "+ username +" with FACEBOOK");
-			  	return token;
+			  	return accessToken;
 		  	}
 		  	else {
 		  		LogManagementSystem.log("SYSTEM", LogEntry.ENTITY.USER, "", LogEntry.ACTION.CHECK, "Login with FACEBOOK failed");
@@ -82,55 +82,56 @@ public class UserManagementSystem {
     		return null;
     }
     
-    private String issueToken (String username) throws Exception {
+    private String issueAccessToken (String username) throws Exception {
     	// Es kann ein beliebiges Token erzeugt werden, z.B. auch ein JWT. Hier nur eine Zufallszahl
     	// Vorteil von JWT: Ein System, welches den öffentlichen Schlüssel hat, kann beim JWT
     	// verifizieren, von wem es erzeugt wurde und dann - wenn es dem Aussteller vertraut - ein SSO durchführen
+    	// siehe auch JWS - JSON Web Signature
     	
     	Random random = new SecureRandom();
-        String tokenSignature = "Bearer " + new BigInteger(130, random).toString(32);
+        String accessTtokenSignature = "Bearer " + new BigInteger(130, random).toString(32);
         int secondsToLive = new Integer(getProperties ("SEC.TOKEN_VALIDTY_IN_SECONDS")).intValue(); // Gültigkeit des Tokens in Sekunden
-        Token token = new Token (username, secondsToLive);
-        tokens.put(tokenSignature, token);
+        AccessToken accessToken = new AccessToken (username, secondsToLive);
+        accessTokens.put(accessTtokenSignature, accessToken);
 
-		return tokenSignature;
+		return accessTtokenSignature;
     }	
     
-    public java.util.Date getTokenExipration (String tokenSignature) throws Exception {
-    	Token token = tokens.get(tokenSignature);
-    	return token.getExpiresOn();
+    public java.util.Date getAccessTokenExipration (String accessTokenSignature) throws Exception {
+    	AccessToken accessToken = accessTokens.get(accessTokenSignature);
+    	return accessToken.getExpiresOn();
     }    
         
-    public void refreshToken (String tokenSignature) {
+    public void refreshAccessToken (String accessTokenSignature) {
 		try {    	
 	        int secondsToLive = new Integer(getProperties ("SEC.TOKEN_VALIDTY_IN_SECONDS")).intValue();    	
-	    	Token token = tokens.get (tokenSignature);
+	    	AccessToken accessToken = accessTokens.get (accessTokenSignature);
 			java.util.Date now = new java.util.Date ();
 			now.setTime(now.getTime() + (secondsToLive * 1000));    
-			token.setExpiresOn(now);
-	    	tokens.put(tokenSignature, token);
+			accessToken.setExpiresOn(now);
+	    	accessTokens.put(accessTokenSignature, accessToken);
 
 		} catch (IOException ignored) {
 			ignored.printStackTrace();
 		}
     }
     
-    public void revokeToken (String tokenSignature) {
-		tokens.remove(tokenSignature);
+    public void revokeToken (String accessTokenSignature) {
+    	accessTokens.remove(accessTokenSignature);
     }
     
-    public boolean isAuthenticated (String tokenSignature) {
-    	Token token = tokens.get(tokenSignature);
+    public boolean isAuthenticated (String accessTokenSignature) {
+    	AccessToken accessToken = accessTokens.get(accessTokenSignature);
     	java.util.Date now = new java.util.Date();
-    	if (token.getExpiresOn().getTime()>now.getTime())
+    	if (accessToken.getExpiresOn().getTime()>now.getTime())
     		return true;
     	else 
     		return false;
     }    
 
-    public String getUsername (String tokenSignature) {
-    	Token token = tokens.get(tokenSignature);
-    	return token.getUsername();
+    public String getUsername (String accessTokenSignature) {
+    	AccessToken accessToken = accessTokens.get(accessTokenSignature);
+    	return accessToken.getUsername();
     }
 	
 	public long createUserInfo (String username, String email, String password) throws Exception {
@@ -158,27 +159,27 @@ public class UserManagementSystem {
 		}
 	}    
 	
-    public UserInfo getUserInfo (String tokenSignature) throws Exception {
-    	Token token = tokens.get(tokenSignature);
-    	System.out.println ("Username (Token): "+token.getUsername());
+    public UserInfo getUserInfo (String accessTokenSignature) throws Exception {
+    	AccessToken accessToken = accessTokens.get(accessTokenSignature);
+    	System.out.println ("Username (Token): "+accessToken.getUsername());
 
 		try (Connection con = ConnectionPool.getConnection()) {    	
 	   		String sql = SqlStatements.get ("UMS.GET_USERINFO");
 	   		return con.createQuery(sql)
-	   				.addParameter("username", token.getUsername())
+	   				.addParameter("username", accessToken.getUsername())
 	   				.executeAndFetch(UserInfo.class)
 	   				.get(0);  
 		}
     }	
 	
-	public void changePassword (String tokenSignature, String password) throws Exception {
-    	Token token = tokens.get(tokenSignature);
-    	if (token==null) throw new Exception ("UNAUTHORIZED");
+	public void changePassword (String accessTokenSignature, String password) throws Exception {
+    	AccessToken accessToken = accessTokens.get(accessTokenSignature);
+    	if (accessToken==null) throw new Exception ("UNAUTHORIZED");
 
 		try (Connection con = ConnectionPool.getConnection()) {
 			String sql = SqlStatements.get ("UMS.UPDATE_PASSWORD");
 		    con.createQuery(sql,true)
-    				.addParameter("username", token.getUsername())		    
+    				.addParameter("username", accessToken.getUsername())		    
 		    		.addParameter("password", password)
 				    .executeUpdate();
 		}		

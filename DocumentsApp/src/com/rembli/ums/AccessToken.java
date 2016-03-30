@@ -4,15 +4,15 @@ import javax.xml.bind.annotation.*;
 
 @Data
 @XmlRootElement
-public class Token {
+public class AccessToken {
 	private String username;
 	private java.util.Date expiresOn;
 
-	public Token () {
+	public AccessToken () {
 		
 	}
 	
-	public Token (String username, int secondsToLive) {
+	public AccessToken (String username, int secondsToLive) {
 		this.username = username;
 		
 		java.util.Date now = new java.util.Date ();

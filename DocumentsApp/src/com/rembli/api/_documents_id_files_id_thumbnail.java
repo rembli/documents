@@ -25,8 +25,8 @@ public class _documents_id_files_id_thumbnail {
 	})	
 	@GET
 	public Response getThumbnail (@PathParam("idDocument") int idDocument, @PathParam("idFile") int idFile) throws Exception {
-		String token = AuthenticationFilter.getTokenFromRequest (httpRequest);
-		DocumentManagementSystem dms = new DocumentManagementSystem (token);
+		String accessToken = AuthenticationFilter.getAccessTokenFromRequest (httpRequest);
+		DocumentManagementSystem dms = new DocumentManagementSystem (accessToken);
 	    
 		byte[] thumbnail = dms.getThumbnail(idFile);
 		if (thumbnail != null) {

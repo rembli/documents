@@ -21,10 +21,10 @@ public class _userInfo {
 	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML }) 
 	public UserInfoRessource getUserInfo () throws Exception {
 		// Zuerst das Token aus dem Request holen, den der User nach der Anmeldung bekommen hat
-		String token = AuthenticationFilter.getTokenFromRequest (httpRequest);
+		String accessToken = AuthenticationFilter.getAccessTokenFromRequest (httpRequest);
 		UserManagementSystem ums = new UserManagementSystem ();
 		// für den angemeldeten User sein Infos zurück geben
-		UserInfo userInfo = ums.getUserInfo (token);
+		UserInfo userInfo = ums.getUserInfo (accessToken);
 		UserInfoRessource userInfoRessource = new UserInfoRessource (userInfo);
 		return userInfoRessource;
 	  }	
@@ -64,9 +64,9 @@ public class _userInfo {
 			@FormParam("password") String password)		 
 		throws Exception {
 		
-		String token = AuthenticationFilter.getTokenFromRequest (httpRequest);
+		String accessToken = AuthenticationFilter.getAccessTokenFromRequest (httpRequest);
 		UserManagementSystem ums = new UserManagementSystem ();
-		ums.changePassword(token, password);
+		ums.changePassword(accessToken, password);
 
 		return Response.status(204).entity("").build();	
 	} 		

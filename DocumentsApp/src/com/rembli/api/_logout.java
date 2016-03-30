@@ -28,11 +28,11 @@ public class _logout {
     	// ohne Token kann der Anwender nicht mehr zugreifen
 
     	// dazu holen wir uns das token aus dem Request ...
-    	String token = AuthenticationFilter.getTokenFromRequest (httpRequest);
+		String accessToken = AuthenticationFilter.getAccessTokenFromRequest (httpRequest);
     	
     	// .. setzen es zurück ...
     	UserManagementSystem ums = new UserManagementSystem ();
-    	ums.revokeToken (token);
+    	ums.revokeToken (accessToken);
     	
     	// und melden OK
     	return Response.status(204).entity("").build();

@@ -8,7 +8,6 @@ Nutzung der Anwendung
 
 TODOS
 --------------------------------------------------------------------------------
-- Fehler bei Ersatz des Bodies und Upload von Datein in der DropZone (nach Wechsel in Edit geht es nicht mehr, da Javascript fehlt und Initialisierung fehlerhaft)
 - Mehrmandantenfähigkeit (Org-ID)
 - Admin UI für User
 - Tags/Properties
@@ -25,6 +24,11 @@ EVENTUELL
 
 ERLEDIGT
 --------------------------------------------------------------------------------
+- AuthenticationToken und AuthenticationUser umbenannt in AccessToken und CurrentUser
+- Fehler bei Ersatz des Bodies und Upload von Datein in der DropZone (nach Wechsel in Edit geht es nicht mehr, da Javascript fehlt und Initialisierung fehlerhaft)
+- Anpassen der Browser-History entsprechend der aktuell gewählten Seite
+- Dynamisches Laden und Ersetzen von Teilen einer Seite (Single-Page-Application)
+- Caching für die Templates, Includes und Dictionaries
 - Swagger-UI auslagern
 - Dust.js-Templates, um HTML aus Javascript raus zu halten
 - Neues Tag <lang> für Übersetzungen / Mehrsprachigkeit

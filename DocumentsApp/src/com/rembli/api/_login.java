@@ -32,12 +32,12 @@ public class _login {
     	if (username != null && password != null) {
  	    	// mit Username und Passwort anmelden, d.h. ein Token erzeugen, dass wir an den Browser zurück geben
 	    	// und zusätzlich noch in der Session abspeichern, falls von einem Browser auf die API zugegriffen werden soll
-	    	String token = ums.login (username, password);
+	    	String accessToken = ums.login (username, password);
 	
-	    	if (token!=null) {
+	    	if (accessToken!=null) {
 	    		HttpSession session = httpRequest.getSession();
-	    		session.setAttribute("authenticationToken", token);
-	    		return Response.ok(token).build();
+	    		session.setAttribute("accessToken", accessToken);
+	    		return Response.ok(accessToken).build();
 	    	}
 	    	else
 	        	return Response.status(Response.Status.UNAUTHORIZED).build();

@@ -35,8 +35,8 @@ public class _documents_id_files {
 			@FormDataParam("RemoteFile") FormDataBodyPart fileBody) 
 		throws Exception {
 		
-		String token = AuthenticationFilter.getTokenFromRequest (httpRequest);
-		DocumentManagementSystem dms = new DocumentManagementSystem (token);
+		String accessToken = AuthenticationFilter.getAccessTokenFromRequest (httpRequest);
+		DocumentManagementSystem dms = new DocumentManagementSystem (accessToken);
 	
 		String fileName = "New upload";
 		String fileType = "application/octet-stream";
@@ -54,8 +54,8 @@ public class _documents_id_files {
 	@GET
 	@Produces ({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 	public FileInfoRessource[] getFileInfos (@PathParam("idDocument") int idDocument) throws Exception {
-		String token = AuthenticationFilter.getTokenFromRequest (httpRequest);
-		DocumentManagementSystem dms = new DocumentManagementSystem (token);
+		String accessToken = AuthenticationFilter.getAccessTokenFromRequest (httpRequest);
+		DocumentManagementSystem dms = new DocumentManagementSystem (accessToken);
 		FileInfo[] fileInfos = dms.getFileInfos(idDocument);
 
 		// Typumwandlung, damit _self zur Verfügung steht
