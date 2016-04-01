@@ -80,6 +80,7 @@ public class UserManagementSystem {
 	// ### PUBLIC METHODS ##################################
 	
 	public long createUserInfo (String username, String email, String password) throws Exception {
+		
 		try (Connection con = ConnectionPool.getConnection()) {
 			// Prüfen, ob es den username schon gibt
     		String sql = SqlStatements.get ("UMS.CHECK_USERINFO");
@@ -104,6 +105,7 @@ public class UserManagementSystem {
 	} 	
 	
     public String login (String username, String password) throws Exception {
+    	
     	if (username==null || username.length()==0 || password==null || password.length()==0)
     		throw new NotAuthorizedException("Username/password wrong");
     	
@@ -128,8 +130,7 @@ public class UserManagementSystem {
     }
 
     public String loginWithAccessToken (String identityProvider, String thirdPartyAccessToken) throws Exception {    
-    	System.out.println ("Trying to login with "+identityProvider);
-    	
+   	
     	if (identityProvider.equalsIgnoreCase(IDENTIY_PROVIDER.FACEBOOK)) {
     		
 	    	// 1. Bei Facebook das AccessToken prüfen
@@ -170,6 +171,7 @@ public class UserManagementSystem {
 	// ### METHODS ONLY ACCESSIBLE WITH VALID ACCESS TOKEN ###########################
 	
     public UserInfo getUserInfo (String accessTokenSignature) throws Exception {
+    	
     	if (!isAuthenticated (accessTokenSignature))
     		throw new NotAuthorizedException ("Valid access token required.");
     	
@@ -183,6 +185,7 @@ public class UserManagementSystem {
     }	
 	
 	public void changePassword (String accessTokenSignature, String password) throws Exception {
+		
     	if (!isAuthenticated (accessTokenSignature))
     		throw new NotAuthorizedException ("Valid access token required.");
 
