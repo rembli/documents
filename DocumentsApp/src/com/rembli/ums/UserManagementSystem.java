@@ -1,5 +1,6 @@
 package com.rembli.ums;
 import java.util.*;
+import javax.ws.rs.NotAuthorizedException;
 import javax.ws.rs.client.*;
 import javax.ws.rs.core.Response;
 import java.io.*;
@@ -22,6 +23,9 @@ public class UserManagementSystem {
 	private static HashMap<String,AccessToken> accessTokens = new HashMap<String,AccessToken>();
     
     public String login (String username, String password) throws Exception {
+    	if (username==null || username.length()==0 || password==null || password.length()==0)
+    		throw new NotAuthorizedException("Username/password wrong");
+    	
     	try (Connection con = ConnectionPool.getConnection()) {
 			
     		String sql = SqlStatements.get ("UMS.AUTHENTICATE");
@@ -37,7 +41,7 @@ public class UserManagementSystem {
     		}
     		else {
     			LogManagementSystem.log(username, LogEntry.ENTITY.USER, username, LogEntry.ACTION.CHECK, "Login failed for user "+ username);	
-    			return null;
+    			throw new NotAuthorizedException("Username/password wrong");
     		}
 		}
     }
@@ -75,11 +79,11 @@ public class UserManagementSystem {
 		  	}
 		  	else {
 		  		LogManagementSystem.log("SYSTEM", LogEntry.ENTITY.USER, "", LogEntry.ACTION.CHECK, "Login with FACEBOOK failed");
-		  		return null;
+		  		throw new NotAuthorizedException("Username/password wrong");
 		  	}
     	}
     	else
-    		return null;
+    		throw new NotAuthorizedException(identityProvider + " not supported.");
     }
     
     private String issueAccessToken (String username) throws Exception {

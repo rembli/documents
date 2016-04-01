@@ -14,7 +14,7 @@
 
 <div id="document-header-form"></div>
 <script type="text/dust" id="document-header-form-template">
-	<form name="docForm">
+	<form name="docForm" onsubmit="javascript:updateDocument();">
 		<h2>Document: # {idDocument} &nbsp;
 		<div id="rembli-navigator" class="btn-group" role="group">
 			<button id="prevButton" type="button" class="btn btn-default" onClick="currentID=prevID; refresh();")><span class="glyphicon glyphicon glyphicon-chevron-left"></span></button>

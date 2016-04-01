@@ -22,7 +22,7 @@ public class AuthenticationFilter implements ContainerRequestFilter {
             String accessTokenSignature = getAccessTokenFromRequest (httpRequest);
             // wenn der Anwender nicht angemeldet ist (oder sonst ein Fehler aufgetreten ist) werfen wir eine Exception
             if (!ums.isAuthenticated(accessTokenSignature))
-                throw new NotAuthorizedException("Authentication token must be provided");
+                throw new NotAuthorizedException("Valid access token must be provided");
             else
                 // wenn der Anwender weiter Request schickt und die Anmeldung noch gültig war, wird die Gültigkeit verlängert
                 ums.refreshAccessToken(accessTokenSignature);

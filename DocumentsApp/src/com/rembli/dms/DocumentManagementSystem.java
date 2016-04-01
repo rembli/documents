@@ -1,6 +1,7 @@
 package com.rembli.dms;
 import java.io.*;
 import java.util.*;
+import javax.ws.rs.NotAuthorizedException;
 import org.sql2o.*;
 import com.rembli.log.*;
 import com.rembli.ums.*;
@@ -14,13 +15,11 @@ public class DocumentManagementSystem {
 	public DocumentManagementSystem (String accessToken) throws Exception {
 		UserManagementSystem ums = new UserManagementSystem ();
 		isAuthenticated = ums.isAuthenticated (accessToken);
-		if (!isAuthenticated) throw new Exception ("UNAUTHORIZED");
+		if (!isAuthenticated) throw new NotAuthorizedException("Valid access token must be provided");
 		username = ums.getUsername(accessToken);
 	}
 	
 	public long createDocument (String note) throws Exception {
-		if (!isAuthenticated) throw new Exception ("UNAUTHORIZED");
-		
 		try (Connection con = ConnectionPool.getConnection()) {
 			String sql = SqlStatements.get ("DMS.CREATE_DOCUMENT");
 		    Long id = con.createQuery(sql,true)
@@ -35,15 +34,12 @@ public class DocumentManagementSystem {
 	}
 	
 	public long createDocument (String fileName, String fileType, InputStream uploadedInputStream) throws Exception {
-		if (!isAuthenticated) throw new Exception ("UNAUTHORIZED");
 		long idDocument = createDocument (fileName);
    		attachFile (idDocument, fileName, fileType, uploadedInputStream);
 	    return idDocument;	    		
 	}	
 	
 	public void updateDocument (int idDocument, String note) throws Exception {
-		if (!isAuthenticated) throw new Exception ("UNAUTHORIZED");
-
 		try (Connection con = ConnectionPool.getConnection()) {
 			String sql = SqlStatements.get ("DMS.UPDATE_DOCUMENT");
 		    con.createQuery(sql,true)
@@ -56,8 +52,6 @@ public class DocumentManagementSystem {
 	}	
 	
 	public long attachFile (long idDocument, String fileName, String fileType, InputStream uploadedInputStream) throws Exception {
-		if (!isAuthenticated) throw new Exception ("UNAUTHORIZED");
-		
 		try (Connection con = ConnectionPool.getConnection()) {
 			String sql = SqlStatements.get ("DMS.ATTACH_FILE");
 		    long idFile = con.createQuery(sql,true)
@@ -82,8 +76,6 @@ public class DocumentManagementSystem {
 	}	
 	
 	public void updateThumbnail (long idDocument, long idFile) throws Exception {
-		if (!isAuthenticated) throw new Exception ("UNAUTHORIZED");
-		
 		try (Connection con = ConnectionPool.getConnection()) {
 			try {
 				// 1. Read file from DB 
@@ -124,8 +116,6 @@ public class DocumentManagementSystem {
 	
 	
 	public Document[] getDocuments () throws Exception {
-		if (!isAuthenticated) throw new Exception ("UNAUTHORIZED");
-		
 		try (Connection con = ConnectionPool.getConnection()) {
 			String sql = SqlStatements.get ("DMS.GET_DOCUMENTS");
 			List<Document> documentList = con.createQuery(sql)
@@ -137,8 +127,6 @@ public class DocumentManagementSystem {
 	}
 
 	public Document getDocument (int idDocument) throws Exception {
-		if (!isAuthenticated) throw new Exception ("UNAUTHORIZED");
-		
 		try (Connection con = ConnectionPool.getConnection()) {
 			String sql = SqlStatements.get ("DMS.GET_DOCUMENT");
 			return con.createQuery(sql)
@@ -149,8 +137,6 @@ public class DocumentManagementSystem {
 	}	
 	
 	public FileInfo[] getFileInfos (long idDocument) throws Exception {
-		if (!isAuthenticated) throw new Exception ("UNAUTHORIZED");
-		
 		try (Connection con = ConnectionPool.getConnection()) {
 			String sql = SqlStatements.get ("DMS.GET_FILES");
 			List<FileInfo> fileInfos = con.createQuery(sql)
@@ -163,8 +149,6 @@ public class DocumentManagementSystem {
 	}
 	
 	public com.rembli.dms.File getFile (long idFile) throws Exception {
-		if (!isAuthenticated) throw new Exception ("UNAUTHORIZED");
-		
 		try (Connection con = ConnectionPool.getConnection()) {
 			String sql = SqlStatements.get ("DMS.GET_FILE");
 			com.rembli.dms.File file = con.createQuery(sql)
@@ -177,8 +161,6 @@ public class DocumentManagementSystem {
 	}	
 	
 	public byte[] getThumbnail (long idFile) throws Exception {
-		if (!isAuthenticated) throw new Exception ("UNAUTHORIZED");
-		
 		try (Connection con = ConnectionPool.getConnection()) {
 			String sql = SqlStatements.get ("DMS.GET_THUMBNAIL");
 			return con.createQuery(sql)
@@ -189,8 +171,6 @@ public class DocumentManagementSystem {
 	}	
 	
 	public byte[] getThumbnailForDocument (long idDocument) throws Exception {
-		if (!isAuthenticated) throw new Exception ("UNAUTHORIZED");
-		
 		FileInfo[] fi = this.getFileInfos(idDocument);
 		if (fi.length>0) {
 			long idFile = fi[0].idFile;
@@ -200,8 +180,6 @@ public class DocumentManagementSystem {
 	}		
 	
 	public void deleteDocument (long idDocument) throws Exception {
-		if (!isAuthenticated) throw new Exception ("UNAUTHORIZED");
-		
 		try (Connection con = ConnectionPool.getConnection()) {
 			String sql = SqlStatements.get ("DMS.DELETE_DOCUMENT");
 		    con.createQuery(sql,true)
@@ -214,8 +192,6 @@ public class DocumentManagementSystem {
 	}	
 	
 	public void deleteFile (long idDocument, int idFile) throws Exception {
-		if (!isAuthenticated) throw new Exception ("UNAUTHORIZED");
-		
 		try (Connection con = ConnectionPool.getConnection()) {
 			String sql = SqlStatements.get ("DMS.DELETE_FILE");
 		    con.createQuery(sql,true)

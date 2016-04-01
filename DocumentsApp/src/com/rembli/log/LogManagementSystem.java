@@ -2,14 +2,19 @@ package com.rembli.log;
 import com.rembli.ums.UserManagementSystem;
 import com.rembli.util.db.*;
 import java.util.List;
+
+import javax.ws.rs.NotAuthorizedException;
+
 import org.sql2o.Connection;
 import org.sql2o.data.Table;
 
 public class LogManagementSystem {
 
+	// ### PUBLIC AVAILABLE METHODS FOR WRITING LOGS #####
+
     public static void log (String username, String entity, String entityid, String action, String comment) throws Exception {
+    	
 		try (Connection con = ConnectionPool.getConnection()) {
-					
 			String sql = SqlStatements.get ("AUDIT.LOG");
 		    con.createQuery(sql, true)
 		    		.addParameter("username", username)
@@ -21,20 +26,19 @@ public class LogManagementSystem {
 		}
     }
     
-    
-	private boolean isAuthenticated = false;
-	private String username = null;	
+	// ### METHODS TO READ LOGS ONLY AVAILABLE AFTER AUTHENTICATION #####    
 	
+    private boolean isAuthenticated = false;
+	private String username = null;	
+    
 	public LogManagementSystem (String accessToken) throws Exception {
 		UserManagementSystem ums = new UserManagementSystem ();
 		isAuthenticated = ums.isAuthenticated (accessToken);
-		if (!isAuthenticated) throw new Exception ("UNAUTHORIZED");
+		if (!isAuthenticated) throw new NotAuthorizedException ("Access token not valid");
 		username = ums.getUsername(accessToken);		
 	}        
     
 	public LogEntry[] getAllonge (String entity, String entityid) throws Exception {
-		if (!isAuthenticated) throw new Exception ("UNAUTHORIZED");
-		
 		try (Connection con = ConnectionPool.getConnection()) {
 			String sql = SqlStatements.get ("AUDIT.CHECK_AUTHORIZATION_"+LogEntry.ENTITY.DOCUMENT);
 	    	Table t = con.createQuery(sql)
