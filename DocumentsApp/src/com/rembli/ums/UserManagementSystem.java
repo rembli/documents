@@ -120,7 +120,7 @@ public class UserManagementSystem {
 		}
     }
     
-    public void revokeToken (String accessTokenSignature) {
+    public void revokeAccessToken (String accessTokenSignature) {
     	accessTokens.remove(accessTokenSignature);
     }
     

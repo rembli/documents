@@ -32,7 +32,7 @@ public class _logout {
     	
     	// .. setzen es zurück ...
     	UserManagementSystem ums = new UserManagementSystem ();
-    	ums.revokeToken (accessToken);
+    	ums.revokeAccessToken (accessToken);
     	
     	// und melden OK
     	return Response.status(204).entity("").build();

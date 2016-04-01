@@ -9,7 +9,7 @@ import javax.ws.rs.ext.*;
 
 @Provider
 @Priority(Priorities.HEADER_DECORATOR)
-public class AccessControlResponseFilter implements ContainerResponseFilter {
+public class CORSHeader implements ContainerResponseFilter {
 
     @Override
     public void filter(ContainerRequestContext requestContext, ContainerResponseContext responseContext) throws IOException {
