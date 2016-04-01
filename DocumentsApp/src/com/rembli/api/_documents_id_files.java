@@ -13,6 +13,8 @@ import javax.ws.rs.core.*;
 import org.glassfish.jersey.media.multipart.*;
 
 import com.rembli.api.resources.*;
+import com.rembli.api.security.AuthenticationFilter;
+import com.rembli.api.security.Secured;
 import com.rembli.dms.*;
 import com.rembli.ums.*;
 

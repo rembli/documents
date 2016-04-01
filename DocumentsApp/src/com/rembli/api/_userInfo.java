@@ -1,5 +1,8 @@
 package com.rembli.api;
 import com.rembli.api.resources.*;
+import com.rembli.api.security.AuthenticationFilter;
+import com.rembli.api.security.Secured;
+
 import io.swagger.annotations.*;
 import javax.servlet.http.*;
 import javax.ws.rs.*;

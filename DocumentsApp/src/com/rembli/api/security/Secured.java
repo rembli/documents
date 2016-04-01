@@ -1,6 +1,6 @@
 // Damit kann eine neue Annotation "Secured" verwendet werden, um einzelne REST-Endpunkte abzusichern
 
-package com.rembli.ums;
+package com.rembli.api.security;
 import java.lang.annotation.*;
 import javax.ws.rs.*;
 

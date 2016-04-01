@@ -9,6 +9,8 @@ import javax.ws.rs.*;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.core.*;
 
+import com.rembli.api.security.AuthenticationFilter;
+import com.rembli.api.security.Secured;
 import com.rembli.ums.*;
 
 @Api(value = "UM - USER MANAGEMENT")

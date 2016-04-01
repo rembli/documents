@@ -1,10 +1,12 @@
-package com.rembli.ums;
+package com.rembli.api.security;
 import javax.annotation.*;
 import javax.servlet.http.*;
 import javax.ws.rs.*;
 import javax.ws.rs.container.*;
 import javax.ws.rs.core.*;
 import javax.ws.rs.ext.*;
+
+import com.rembli.ums.UserManagementSystem;
 
 @Secured
 @Provider

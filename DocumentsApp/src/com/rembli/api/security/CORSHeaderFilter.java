@@ -1,4 +1,4 @@
-package com.rembli.ums;
+package com.rembli.api.security;
 
 import java.io.*;
 import javax.annotation.Priority;

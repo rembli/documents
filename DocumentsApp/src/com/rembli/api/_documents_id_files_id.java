@@ -9,6 +9,8 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 import javax.ws.rs.core.Response.*;
 
+import com.rembli.api.security.AuthenticationFilter;
+import com.rembli.api.security.Secured;
 import com.rembli.dms.*;
 import com.rembli.ums.*;
 
