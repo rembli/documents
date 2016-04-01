@@ -28,14 +28,15 @@ public class _loginWithAccessToken {
     @Consumes("application/x-www-form-urlencoded")
     public Response login (@FormParam("identityProvider") String identityProvider, @FormParam("accessToken") String thirdPartyAccessToken) throws Exception {
 
-    	UserManagementSystem ums = new UserManagementSystem ();
-    	String accessToken = ums.loginWithAccessToken(identityProvider, thirdPartyAccessToken);
-    	if (accessToken != null) {
+    	try {
+    		UserManagementSystem ums = new UserManagementSystem ();
+    		String accessToken = ums.loginWithAccessToken(identityProvider, thirdPartyAccessToken);
     		HttpSession session = httpRequest.getSession();
     		session.setAttribute("accessToken", accessToken);
     		return Response.ok(accessToken).build();
     	}
-    	else
+    	catch (Exception e) {
     		return Response.status(Response.Status.UNAUTHORIZED).build();
+    	}
     }
 }	

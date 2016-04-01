@@ -79,7 +79,7 @@ public class UserManagementSystem {
 		  	}
 		  	else {
 		  		LogManagementSystem.log("SYSTEM", LogEntry.ENTITY.USER, "", LogEntry.ACTION.CHECK, "Login with FACEBOOK failed");
-		  		throw new NotAuthorizedException("Username/password wrong");
+		  		throw new NotAuthorizedException("Access token from facebook not valid.");
 		  	}
     	}
     	else

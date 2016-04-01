@@ -27,22 +27,18 @@ public class _login {
     @Consumes("application/x-www-form-urlencoded")
     public Response login (@FormParam("username") String username, @FormParam("password") String password) throws Exception {
 
-    	UserManagementSystem ums = new UserManagementSystem ();
-    	
-    	if (username != null && password != null) {
- 	    	// mit Username und Passwort anmelden, d.h. ein Token erzeugen, dass wir an den Browser zurück geben
-	    	// und zusätzlich noch in der Session abspeichern, falls von einem Browser auf die API zugegriffen werden soll
-	    	String accessToken = ums.login (username, password);
-	
-	    	if (accessToken!=null) {
-	    		HttpSession session = httpRequest.getSession();
-	    		session.setAttribute("accessToken", accessToken);
-	    		return Response.ok(accessToken).build();
-	    	}
-	    	else
-	        	return Response.status(Response.Status.UNAUTHORIZED).build();
+    	// mit Username und Passwort anmelden, d.h. ein Token erzeugen, dass wir an den Browser zurück geben
+    	// und zusätzlich noch in der Session abspeichern, falls von einem Browser auf die API zugegriffen werden soll
+   		try {
+   	    	UserManagementSystem ums = new UserManagementSystem ();
+   			String accessToken = ums.login (username, password);
+    		HttpSession session = httpRequest.getSession();
+    		session.setAttribute("accessToken", accessToken);
+    		return Response.ok(accessToken).build();
     	}
-   		return Response.status(Response.Status.UNAUTHORIZED).build();
+   		catch (Exception e) {
+    			return Response.status(Response.Status.UNAUTHORIZED).build();
+   		}
     }   
 }		
 
