@@ -19,6 +19,7 @@ import com.rembli.ums.*;
 public class _documents {
 	@Context HttpServletRequest httpRequest;	
 	
+	// ########################################################################	
 	@ApiOperation(value = "Hinzufügen einer Datei", notes = "Ein neues Dokument per Upload anlegen")	
 	@ApiResponses(value = { 
 		@ApiResponse(code = 200, message = "Es wird die ID des neu angelegten Dokuments zurück gegeben.", response = String.class)
@@ -35,14 +36,17 @@ public class _documents {
 		DocumentManagementSystem dms = new DocumentManagementSystem (accessToken);
 
 		String fileName = "New upload";
-		String fileType = "application/octet-stream";
 		if (fileInfo != null) fileName = fileInfo.getFileName();
+		
+		String fileType = "application/octet-stream";
 		if (fileBody != null) fileType = fileBody.getMediaType().getType()+"/"+fileBody.getMediaType().getSubtype();
+		
 		long iddocument = dms.createDocument(fileName, fileType , fileInputStream);
 
 		return Response.status(200).entity(""+iddocument).build();	
 	} 	
 	
+   // ########################################################################	
     @ApiOperation(value = "Liste der Dokumente", notes = "Zeigt eine Liste der Dokumente an")
     @ApiResponses(value = { 
     		@ApiResponse(code = 200, message = "Es wird die Liste der gefundenen Dokumente zurück gegeben.", response = DocumentRessource[].class)
@@ -50,6 +54,7 @@ public class _documents {
 	@GET
 	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML }) 
 	public DocumentRessource[] getDocuments () throws Exception {
+    	
 		String accessToken = AuthenticationFilter.getAccessTokenFromRequest (httpRequest);
 		DocumentManagementSystem dms = new DocumentManagementSystem (accessToken);
 		Document[] documents = dms.getDocuments();
@@ -57,7 +62,4 @@ public class _documents {
 		for (int i=0; i<documents.length;i++) documentRessources[i] = new DocumentRessource(documents[i]);
 		return documentRessources;
 	}
-  
-
-    
 } 

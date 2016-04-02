@@ -20,6 +20,7 @@ import com.rembli.ums.*;
 public class _documents_id_files_id_thumbnail {
 	@Context HttpServletRequest httpRequest;	
 
+    // ########################################################################	
 	@ApiOperation(value = "Thumbnail", notes = "Anzeige der Thumbnail.")	
 	@ApiResponses(value = { 
 		@ApiResponse(code = 200, message = "Liefert die Datei binär zurück."),

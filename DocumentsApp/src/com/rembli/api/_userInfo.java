@@ -15,6 +15,7 @@ import com.rembli.ums.*;
 public class _userInfo {
 	@Context HttpServletRequest httpRequest;	
 
+    // ########################################################################	
 	@Secured
 	@ApiOperation(value = "Anwenderinformation", notes = "Anzeigen der Details zum aktuell angemeldeten Anwender.")	
 	@ApiResponses(value = { 
@@ -32,6 +33,7 @@ public class _userInfo {
 		return userInfoRessource;
 	  }	
 	
+    // ########################################################################	
 	@ApiOperation(value = "Anlegen eines Benutzerkontos", notes = "Anlegen eines Benutzerkontos")		
 	@ApiResponses(value = { 
 			  @ApiResponse(code = 200, message = "Benutzer erfogreich angelegt.", response = String.class),
@@ -53,26 +55,4 @@ public class _userInfo {
 		else
 			return Response.status(200).entity(""+iduser).build();	
 	} 		
-	
-	@Path("/changePassword")	
-	@Secured
-	@ApiOperation(value = "Passwort ändern", notes = "Ändern des Passworts für den aktiven Benutzer")		
-	@ApiResponses(value = { 
-			  @ApiResponse(code = 204, message = "Nach erfolgreicher Änderung des Passworts kommt keine Antwort.")
-	})		
-	@POST
-	@Consumes (MediaType.APPLICATION_FORM_URLENCODED)
-	@Produces (MediaType.TEXT_HTML)  
-	public Response changePassword (
-			@FormParam("password") String password)		 
-		throws Exception {
-		
-		String accessToken = AuthenticationFilter.getAccessTokenFromRequest (httpRequest);
-		UserManagementSystem ums = new UserManagementSystem ();
-		ums.changePassword(accessToken, password);
-
-		return Response.status(204).entity("").build();	
-	} 		
-	
-	
 }

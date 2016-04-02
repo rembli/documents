@@ -16,6 +16,7 @@ import com.rembli.log.*;
 public class _log {
 	@Context HttpServletRequest httpRequest;	
 	
+    // ########################################################################	
     @ApiOperation(value = "Allonge", notes = "Zeigt die Allonge zu einer Entität an")	
 	@ApiResponses(value = { 
 			  @ApiResponse(code = 200, message = "Logfiles werden zurück gegeben für die angefragte Entität.", response = LogEntryRessource[].class),

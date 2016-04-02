@@ -20,6 +20,7 @@ public class _logout {
 	@Context HttpServletRequest httpRequest;	
 	@Context ContainerRequestContext requestContext;
 	  
+    // ########################################################################	
     @ApiOperation(value = "Abmeldung", notes = "Setzt das Authentication-Token auf invalide, so dass darüber kein Zugriff mehr erfolgen kann")
     @ApiResponses(value = { 
     		@ApiResponse(code = 204, message = "Es wird nichts zurückgegeben.")

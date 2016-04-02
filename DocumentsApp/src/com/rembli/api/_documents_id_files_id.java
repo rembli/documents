@@ -20,6 +20,7 @@ import com.rembli.ums.*;
 public class _documents_id_files_id {
 	@Context HttpServletRequest httpRequest;	
 
+    // ########################################################################	
 	@ApiOperation(value = "Download einer Datei", notes = "Herunterladen einer bestimmten Datei.")	
 	@ApiResponses(value = { 
 		@ApiResponse(code = 200, message = "Liefert die Datei binär zurück.")
@@ -38,6 +39,7 @@ public class _documents_id_files_id {
         return response.build();		
 	  }  	
 	
+    // ########################################################################	
 	@ApiOperation(value = "Löschen einer Datei", notes = "Löschen des mit 'iddocument' und 'idfile' spezifierten Dokuments")  
 	@ApiResponses(value = { 
 		@ApiResponse(code = 204, message = "Es wird nichts zurückgegeben, wenn die Datei gelöscht wurde.")

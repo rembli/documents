@@ -24,6 +24,7 @@ import com.rembli.ums.*;
 public class _documents_id_files {
 	@Context HttpServletRequest httpRequest;	
 
+    // ########################################################################	
 	@ApiOperation(value = "Hinzufügen einer Datei", notes = "Einem Dokument können mehrere Dateien hinzugefügt werden. Die Datei darf eine bestimmte Größe nicht überschreiten.")		
 	@ApiResponses(value = { 
 			  @ApiResponse(code = 200, message = "Liefert die ID der hochgeladenen Datei zurück als Text.", response = String.class),
@@ -49,6 +50,7 @@ public class _documents_id_files {
 		return Response.status(200).entity(""+idfile).build();		
 	}
 	
+    // ########################################################################	
 	@ApiOperation(value = "Anzeige aller Dateien", notes = "Anzeige aller einem bestimmte Dokument hinzugefügten Dateien.")	
 	@ApiResponses(value = { 
 			  @ApiResponse(code = 200, message = "Liefert eine Liste an FileInfos zurück.", response = FileInfoRessource[].class),
@@ -56,6 +58,7 @@ public class _documents_id_files {
 	@GET
 	@Produces ({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 	public FileInfoRessource[] getFileInfos (@PathParam("idDocument") int idDocument) throws Exception {
+		
 		String accessToken = AuthenticationFilter.getAccessTokenFromRequest (httpRequest);
 		DocumentManagementSystem dms = new DocumentManagementSystem (accessToken);
 		FileInfo[] fileInfos = dms.getFileInfos(idDocument);

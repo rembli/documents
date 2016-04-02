@@ -18,6 +18,7 @@ import com.rembli.ums.*;
 public class _loginWithAccessToken {
 	@Context HttpServletRequest httpRequest;
 
+    // ########################################################################	
     @ApiOperation(value = "Anmeldung", notes = "Erzeugt ein Access-Token auf Basis eines von einem fremden IdentityProvider erzeugten AccessTokens. Aktuell ist nur FACEBOOK möglich.")
     @ApiResponses(value = { 
     		@ApiResponse(code = 200, message = "Es wird das Access-Token als Text zurückgegeben.", response = String.class),

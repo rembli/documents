@@ -21,6 +21,7 @@ import com.rembli.ums.*;
 public class _documents_id {
   @Context HttpServletRequest httpRequest;	
 
+  // ########################################################################
   @ApiOperation(value = "Lesen eines Dokuments", notes = "Lesen eines bestimmten Dokuments, welches durch die 'iddocument' angegeben wurde")
   @ApiResponses(value = { 
 		  @ApiResponse(code = 200, message = "Liefert die Meta-Daten des Dokuments zurück.", response = DocumentRessource.class)
@@ -28,6 +29,7 @@ public class _documents_id {
   @GET
   @Produces ({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
   public DocumentRessource getDocument (@PathParam("idDocument") int idDocument) throws Exception {
+	  
 	String accessToken = AuthenticationFilter.getAccessTokenFromRequest (httpRequest);
 	DocumentManagementSystem dms = new DocumentManagementSystem (accessToken);
 	Document document =  dms.getDocument(idDocument);
@@ -35,6 +37,7 @@ public class _documents_id {
 	return documentRessource;
   }  
   
+  // ########################################################################  
   @ApiOperation(value = "Ändern eines Dokuments", notes = "Ändern der Notiz eines Dokuments") 
   @ApiResponses(value = { 
 		@ApiResponse(code = 204, message = "Es wird nichts zurückgegeben, wenn das Dokument geändert wurde.")
@@ -43,18 +46,21 @@ public class _documents_id {
   @Consumes (MediaType.APPLICATION_FORM_URLENCODED)
   @Produces (MediaType.TEXT_HTML)  
   public Response updateDocument (@PathParam("idDocument") int idDocument, @FormParam("note") String note) throws Exception {
+	  
 	String accessToken = AuthenticationFilter.getAccessTokenFromRequest (httpRequest);
 	DocumentManagementSystem dms = new DocumentManagementSystem (accessToken);
 	dms.updateDocument(idDocument, note);
 	return Response.status(204).entity("OK").build();
   }    
 
+  // ########################################################################  
   @ApiOperation(value = "Löschen eines Dokuments", notes = "Löschen des mit 'iddocument' spezifierten Dokuments")  
   @ApiResponses(value = { 
 		@ApiResponse(code = 204, message = "Es wird nichts zurückgegeben, wenn das Dokument gelöscht wurde.")
   })	
   @DELETE
   public Response deleteDocument (@PathParam("idDocument") int idDocument) throws Exception {
+	  
 	String accessToken = AuthenticationFilter.getAccessTokenFromRequest (httpRequest);
 	DocumentManagementSystem dms = new DocumentManagementSystem (accessToken);
 	dms.deleteDocument(idDocument);
