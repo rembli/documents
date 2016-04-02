@@ -112,9 +112,7 @@ public class DocumentManagementSystem {
 			} 
 		}			
 	}
-	
-	
-	
+
 	public Document[] getDocuments () throws Exception {
 		try (Connection con = ConnectionPool.getConnection()) {
 			String sql = SqlStatements.get ("DMS.GET_DOCUMENTS");

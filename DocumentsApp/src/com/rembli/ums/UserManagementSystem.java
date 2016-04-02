@@ -54,7 +54,6 @@ public class UserManagementSystem {
 			now.setTime(now.getTime() + (secondsToLive * 1000));    
 			accessToken.setExpiresOn(now);
 	    	accessTokens.put(accessTokenSignature, accessToken);
-
 		} catch (IOException ignored) {
 			ignored.printStackTrace();
 		}

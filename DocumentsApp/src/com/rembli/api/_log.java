@@ -7,7 +7,6 @@ import io.swagger.annotations.*;
 import javax.servlet.http.*;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
-import com.rembli.ums.*;
 import com.rembli.log.*;
 
 @Api(value = "LOG - ALLONGE")

@@ -11,7 +11,6 @@ import com.rembli.api.resources.DocumentRessource;
 import com.rembli.api.security.AuthenticationFilter;
 import com.rembli.api.security.Secured;
 import com.rembli.dms.*;
-import com.rembli.ums.*;
 
 @Api(value = "DOC - DOCUMENTS")
 @Secured
