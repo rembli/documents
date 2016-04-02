@@ -8,7 +8,7 @@ public class UserInfoRessource extends UserInfo {
 	
 	public UserInfoRessource (UserInfo u) {
 		this.setEmail(u.getEmail());
-		this.setUsername(u.getEmail());
+		this.setUsername(u.getUsername());
 		setLinks ();
 	}
 	

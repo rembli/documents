@@ -45,7 +45,7 @@ public class LogManagementSystem {
 					.addParameter("username", username)
 					.addParameter("id", entityid)
 					.executeAndFetchTable();
-	    	if (t.rows().size() == 0) throw new Exception ("UNAUTHORIZED");		
+	    	if (t.rows().size() == 0) throw new NotAuthorizedException ("You are not authorized to view this audit trail.");		
 			
 			sql = SqlStatements.get ("AUDIT.ALLONGE");
 			List<LogEntry> allonge = con.createQuery(sql)
