@@ -18,7 +18,7 @@ public class UserManagementSystem {
 		public static String FACEBOOK = "FACEBOOK";
 	}	
 	
-	// ### METHODS FOR MANAGEMENT ACCESS TOKEBN #################################	  	
+	// ### METHODS FOR HANDLING ACCESS TOKENS #################################	  	
 	
 	// die Tokens werden Anwendungsübergreifend in einer Hashmap abgespeichert, d.h. pro VM bzw. App-Server
 	// Alternative: in der Datenbank
@@ -77,7 +77,7 @@ public class UserManagementSystem {
     	return accessToken.getUsername();
     }	
 	
-	// ### PUBLIC METHODS ##################################
+	// ### PUBLIC METHODS (i.e. ACCESSIBLE WITHOUT VALID ACCESS TOKEN) ##################################
 	
 	public long createUserInfo (String username, String email, String password) throws Exception {
 		
@@ -168,7 +168,7 @@ public class UserManagementSystem {
     		throw new NotAuthorizedException(identityProvider + " not supported.");
     }
 	
-	// ### METHODS ONLY ACCESSIBLE WITH VALID ACCESS TOKEN ###########################
+	// ### METHODS ONLY ACCESSIBLE WITH VALID ACCESS TOKEN #######################################
 	
     public UserInfo getUserInfo (String accessTokenSignature) throws Exception {
     	
@@ -202,7 +202,7 @@ public class UserManagementSystem {
 	
 	private String getProperties (String statement) throws IOException {
 		Properties prop = new Properties();
-	    prop.load(SqlStatements.class.getClassLoader().getResourceAsStream("sec.properties"));
+	    prop.load(UserManagementSystem.class.getClassLoader().getResourceAsStream("sec.properties"));
 	    return prop.getProperty(statement);
 	}    
 }
