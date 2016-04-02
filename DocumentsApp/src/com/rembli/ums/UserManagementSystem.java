@@ -12,6 +12,7 @@ import com.owlike.genson.Genson;
 import com.rembli.log.*;
 import com.rembli.util.db.*;
 
+
 public class UserManagementSystem {
 
 	public static class IDENTIY_PROVIDER {
@@ -170,7 +171,7 @@ public class UserManagementSystem {
 	
 	// ### METHODS ONLY ACCESSIBLE WITH VALID ACCESS TOKEN #######################################
 	
-    public UserInfo getUserInfo (String accessTokenSignature) throws Exception {
+	public UserInfo getUserInfo (String accessTokenSignature) throws Exception {
     	
     	if (!isAuthenticated (accessTokenSignature))
     		throw new NotAuthorizedException ("Valid access token required.");

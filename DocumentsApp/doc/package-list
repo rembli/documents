@@ -1,0 +1,8 @@
+com.rembli.api
+com.rembli.api.resources
+com.rembli.api.security
+com.rembli.dms
+com.rembli.log
+com.rembli.test
+com.rembli.ums
+com.rembli.util.db
