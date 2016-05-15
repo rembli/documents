@@ -25,27 +25,15 @@
       <file-size-threshold>5242880</file-size-threshold>
     </multipart-config>
   </servlet>
+  
   <servlet-mapping>
     <servlet-name>rembliDOCUMENTS-API</servlet-name>
     <url-pattern>/api/*</url-pattern>
   </servlet-mapping>
   
   <servlet>
-    <servlet-name>Swagger</servlet-name>
-    <servlet-class>io.swagger.jersey.config.JerseyJaxrsConfig</servlet-class>
-    <init-param>
-      <param-name>api.version</param-name>
-      <param-value>1</param-value>
-    </init-param>
-    <init-param>
-      <param-name>swagger.api.basepath</param-name>
-
-      <param-value>/documents/api</param-value>
-      <!--  das klappt mit Reverse Proxy nicht, da die Session Info nicht übergeben wird
-      <param-value>/api/docs/v2</param-value>
-       -->
-    </init-param>
-    <load-on-startup>2</load-on-startup>
-  </servlet>
-  
+     <servlet-name>SwaggerBootstrap</servlet-name>
+      <servlet-class>com.rembli.api.SwaggerConfig</servlet-class>
+      <load-on-startup>2</load-on-startup>
+   </servlet>  
 </web-app>
