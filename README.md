@@ -49,6 +49,7 @@ Demo web application which features:
 
 ### Dev log
 
+* Add SSL support at rembli.com
 * AuthenticationToken und AuthenticationUser umbenannt in AccessToken und CurrentUser
 * Navigation zwischen einzelnen Dokumenten ermöglicht (statt immer über die Liste gehen zu müssen)
 * Fehler bei Ersatz des Bodies und Upload von Datein in der DropZone (nach Wechsel in Edit geht es nicht mehr, da Javascript fehlt und Initialisierung fehlerhaft)
