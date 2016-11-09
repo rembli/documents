@@ -23,7 +23,7 @@ public class _mailbox {
 	// ########################################################################	
 	@ApiOperation(value = "Mails importieren", notes = "Auslesen des Mail-Postfachs des Users und Mails als Belege importieren")	
 	@ApiResponses(value = { 
-		@ApiResponse(code = 200, message = "Es wird die Liste der importierten Mails ausgegeben", response = Message[].class)
+		@ApiResponse(code = 200, message = "Es wird die Liste der importierten Mails ausgegeben", response = MailMessage[].class)
 	})		
 	@GET
 	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML }) 	
