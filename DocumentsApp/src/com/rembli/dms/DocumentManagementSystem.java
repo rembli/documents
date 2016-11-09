@@ -51,11 +51,11 @@ public class DocumentManagementSystem {
 		}
 	}	
 	
-	public long attachFile (long idDocument, String fileName, String fileType, InputStream uploadedInputStream) throws Exception {
+	public long attachFile (long idDocument, String fileName, String fileType, InputStream inputStream) throws Exception {
 		try (Connection con = ConnectionPool.getConnection()) {
 			String sql = SqlStatements.get ("DMS.ATTACH_FILE");
 		    long idFile = con.createQuery(sql,true)
-		    		.addParameter("inputstream", uploadedInputStream)
+		    		.addParameter("inputstream", inputStream)
 				    .executeUpdate()
 				    .getKey(Long.class);
 		    

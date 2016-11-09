@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<script type="text/javascript" src="./js/rembli.js"></script>
+	<script type="text/javascript" src="./js/rembli-authentication-check.js"></script>
+</head>
+<body>
+<include template="_header.html"></include>
+
+<!-- ########################################################################### -->
+<div id="rembli-body" class="container" style="visibility:hidden">
+
+<div class="row">
+	<b>You can import your mails sent to <a id="currentUserMail"></a>@rembli.com</b>
+	<p><p><p>
+	<div id="incoming-mail-table" style="display:inline"></div>
+	<p><p>
+	<button type="button" class="btn btn-primary" onClick="importMails();">import</button>
+</div>
+
+<script type="text/dust" id="incoming-mail-table-template">
+	<table class="table">
+		<tr>
+			<th>Date</th>
+			<th>From</th>
+			<th>Subject</th>
+			<th></th>
+		</tr>
+	{#.}
+		<tr>
+			<td>{sendDate}</td>
+			<td>{from}</td>
+			<td>{subject}</td>
+			<td><span class="glyphicon glyphicon-ok"></td>
+  		</tr>
+	{/.}
+	</table>
+</script>
+
+</div>
+<!-- ########################################################################### -->
+
+<include template="_footer.html"></include>
+</body>
+</html>

@@ -4,6 +4,7 @@
 "deleteDoc": "delete doc",  
 "inbox": "Inbox",
 "scan": "Scan",
+"mail": "Mail" ,
 "about", "About",
 "files", "files"
 "logout": "logout",

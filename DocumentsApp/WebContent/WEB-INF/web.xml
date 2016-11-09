@@ -32,7 +32,7 @@
   </servlet-mapping>
   
   <servlet>
-     <servlet-name>SwaggerBootstrap</servlet-name>
+     <servlet-name>SwaggerConfig</servlet-name>
       <servlet-class>com.rembli.api.SwaggerConfig</servlet-class>
       <load-on-startup>2</load-on-startup>
    </servlet>  

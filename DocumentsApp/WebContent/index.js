@@ -25,6 +25,16 @@ $(function() {
 		});
 	});	
 	
+	// pop-over im menu initialisieren
+	/*
+	$('#queryMail').popover({
+		placement: 'bottom',
+		trigger: 'focus',
+		title: "query your mail account",
+		content: "New content?"
+	})
+	*/;
+	
 	// render template
 	refresh();			
 	
@@ -36,6 +46,7 @@ $(function() {
 
 
 function refresh () {
+
 	renderTemplate ('document-thumbnail-table-template', '/documents/api/documents', 'document-thumbnail-table', function (response) {
 		var currentDocumentList = new Array();
 		for (i in response)

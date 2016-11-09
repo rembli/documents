@@ -1,7 +1,7 @@
 //# APP SETTINGS ##################################################
 
-var debug = false;
-var caching = true;
+var debug = true;
+var caching = false;
 var host = ".";
 var rembliLocation = null;
 
@@ -98,7 +98,8 @@ function loadBase () {
     loadCSS ("./css/bootstrap.min.css");
     loadCSS ("./css/bootstrap-theme.min.css");
     loadCSS ("./css/style.css");
-    loadScript ("./js-lib/bootstrap.min.js");	
+    loadScript ("./js-lib/bootstrap.min.js");
+    loadScript ("./js-lib/tooltip.js");	
     
     // internationalization fix for IE
     loadScript ("//cdn.polyfill.io/v2/polyfill.min.js?features=Intl.~locale.en,Intl.~locale.de");
@@ -295,7 +296,7 @@ function renderTemplate (template, url, output, fn) {
  	if (isAuthenticated()) 
  		return  window.sessionStorage.getItem("currentUser");
  	else
- 		return "";
+ 		return "-";
  }
 
 

@@ -2,7 +2,7 @@ var DWObject;
 
 $(function() {
 	// load and initialize scanner
-    loadScript ("http://www.rembli.com/scanner/dynamsoft.webtwain.initiate.js", function () {
+    loadScript ("https://www.rembli.com/scanner/dynamsoft.webtwain.initiate.js", function () {
         loadScript ("./scan.config.js", function () {
         	Dynamsoft.WebTwainEnv.RegisterEvent('OnWebTwainReady', Dynamsoft_OnReady); // Register OnWebTwainReady event. This event fires as soon as Dynamic Web TWAIN is initialized and ready to be used
         } ); 	
@@ -72,7 +72,7 @@ function UploadImage() {
         var CurrentPathName = unescape(location.pathname);
         var CurrentPath = CurrentPathName.substring(0, CurrentPathName.lastIndexOf("/") + 1);
         var strActionPage = CurrentPath + "api/documents";
-        DWObject.IfSSL = false; // Set whether SSL is used
+        DWObject.IfSSL = true; // Set whether SSL is used
         DWObject.HTTPPort = location.port == "" ? 80 : location.port;
 
         var Digital = new Date();
