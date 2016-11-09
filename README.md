@@ -17,6 +17,7 @@ Demo web application which features:
 * "Login with facebook"-button
 * Dedicated business layer
 * Database persistence using SQL2O
+* Import Mails from POP server
 
 ### Demo
 
@@ -41,7 +42,6 @@ Demo web application which features:
 * Admin UI für User
 * Tags/Properties
 * Suche
-* Email-integration (senden an rembli adresse: client-id@postbox.rembli.com)
 * Asynchrone Thumbnails
 * Volltextsuche (Asprise für OCR +  + Lucene)
 * Automatisches Nachladen (a la Facebook)
@@ -49,7 +49,8 @@ Demo web application which features:
 
 ### Dev log
 
-* Add SSL support at rembli.com
+* Added import of mails (senden an rembli adresse: <username>@rembli.com)
+* Add SSL support at rembli.com (https://coolestguidesontheplanet.com/redirecting-http-https-tomcat)
 * AuthenticationToken und AuthenticationUser umbenannt in AccessToken und CurrentUser
 * Navigation zwischen einzelnen Dokumenten ermöglicht (statt immer über die Liste gehen zu müssen)
 * Fehler bei Ersatz des Bodies und Upload von Datein in der DropZone (nach Wechsel in Edit geht es nicht mehr, da Javascript fehlt und Initialisierung fehlerhaft)

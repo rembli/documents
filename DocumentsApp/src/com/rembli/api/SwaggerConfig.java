@@ -13,8 +13,8 @@ public class SwaggerConfig extends HttpServlet {
         BeanConfig beanConfig = new BeanConfig();
         beanConfig.setTitle("A simple API for documents");
         beanConfig.setVersion("1");
-        //beanConfig.setSchemes(new String[]{"https"});
-        beanConfig.setSchemes(new String[]{"http"});        
+        beanConfig.setSchemes(new String[]{"https"});
+        //beanConfig.setSchemes(new String[]{"http"});        
         beanConfig.setBasePath("/documents/api");
         beanConfig.setResourcePackage("com.rembli.api");
         beanConfig.setPrettyPrint(true);
