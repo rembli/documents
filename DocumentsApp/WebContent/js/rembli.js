@@ -106,12 +106,15 @@ function loadBase () {
     
     // templating and internationalization  with Dust
     $.getScript( "./js-lib/dust-full.min.js", function( data, textStatus, jqxhr ) {
-	    $.getScript( "./js-lib/dust-intl.min.js", function( data, textStatus, jqxhr ) {
-			// register helper DustIntl
-		    DustIntl.registerWith(dust);
+	    $.getScript( "./js-lib/dust-helpers.js", function( data, textStatus, jqxhr ) {    	
+	    	$.getScript( "./js-lib/dust-intl.min.js", function( data, textStatus, jqxhr ) {
 
-		    loadScript ("./js-lib/locale-data/en.js");	    
-		    loadScript ("./js-lib/locale-data/de.js");	 	    
+	    		// register helper DustIntl
+	    		DustIntl.registerWith(dust);
+
+	    		loadScript ("./js-lib/locale-data/en.js");	    
+	    		loadScript ("./js-lib/locale-data/de.js");	 	    
+	    	});
 	    });
 	    
 	    // nachdem Dust geladen wurde, kann wg. Abhängigkeit die seiten-spezifische Dateien geladen werden

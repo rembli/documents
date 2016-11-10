@@ -51,14 +51,19 @@
 			{#.}
 			<tr>
 				<td>{idFile}</td>
-				<td><a href="{links.self}" target="_new">{fileName}</a> 
-					[<a href="/ViewerJS/#..{links.self}" target="_new">PDF</a>]</td>
+				<td><a href="{links.self}" target="_new" title="{fileType}">{fileName}</a> 
+				</td>
 				<td><a href="javascript:deleteFile({idFile})"><span class="glyphicon glyphicon-trash"></span></a></td>
 			</tr>
 			<tr>
 				<td colspan="3">
 					<a href="{links.self}" target="_new">
-					<img src="{links.self}" onError="this.src = './img/thumbnail_not_available.jpg'" width="100%"></a><br>
+					{@eq key=fileType value="application/pdf"}
+						<iframe src = "/ViewerJS/#..{links.self}" width='100%' height='500' allowfullscreen webkitallowfullscreen></iframe>
+					{:else}
+						<img src="{links.self}" onError="this.src = './img/thumbnail_not_available.jpg'" width="100%"></a><br>
+					{/eq}
+
 				</td>
 			</tr>
 			{/.}

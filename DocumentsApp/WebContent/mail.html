@@ -18,11 +18,10 @@
 	</div>
 	<p><p><p>
 	<div id="incoming-mail-table" style="display:inline"></div>
-	<p><p>
-	<button type="button" class="btn btn-primary" onClick="importMails();">import</button>
 </div>
 
 <script type="text/dust" id="incoming-mail-table-template">
+{?.}
 	<table class="table">
 		<tr>
 			<th><lang>date</lang></th>
@@ -39,6 +38,11 @@
   		</tr>
 	{/.}
 	</table>
+
+	<p><p>
+	<button type="button" class="btn btn-primary" onClick="importMails();">import</button>
+{/.}
+
 </script>
 
 </div>
