@@ -80,6 +80,9 @@ public class UserManagementSystem {
 	// ### PUBLIC METHODS (i.e. ACCESSIBLE WITHOUT VALID ACCESS TOKEN) ##################################
 	
 	public long createUserInfo (String username, String email, String password) throws Exception {
+		username = com.rembli.util.text.TextTools.sanitizeString (username);
+		if (username.length()==0 || email.length()==0 || password.length()==0)
+			return 0;
 		
 		try (Connection con = ConnectionPool.getConnection()) {
 			// Prüfen, ob es den username schon gibt
@@ -125,6 +128,32 @@ public class UserManagementSystem {
     		else {
     			LogManagementSystem.log(username, LogEntry.ENTITY.USER, username, LogEntry.ACTION.CHECK, "Login failed for user "+ username);	
     			throw new NotAuthorizedException("Username/password wrong");
+    		}
+		}
+    }
+    
+    public String loginWithEMail (String email, String password) throws Exception {
+    	
+    	if (email==null || email.length()==0 || password==null || password.length()==0)
+    		throw new NotAuthorizedException("email/password wrong");
+    	
+    	try (Connection con = ConnectionPool.getConnection()) {
+			
+    		String sql = SqlStatements.get ("UMS.AUTHENTICATE_WITH_E_MAIL");
+    		Table t = con.createQuery(sql)
+				.addParameter("email", email)
+				.addParameter("password", password)
+				.executeAndFetchTable();
+    		
+    		if (t.rows().size()>0) {
+    			String username = t.rows().get(0).getString(0);
+    			String token = issueAccessToken (username);
+    			LogManagementSystem.log(username, LogEntry.ENTITY.USER, username, LogEntry.ACTION.CHECK, "Successful login for user "+ username);   			
+    			return token;
+    		}
+    		else {
+    			LogManagementSystem.log(email, LogEntry.ENTITY.USER, email, LogEntry.ACTION.CHECK, "Login failed for email "+ email);	
+    			throw new NotAuthorizedException("email/password wrong");
     		}
 		}
     }

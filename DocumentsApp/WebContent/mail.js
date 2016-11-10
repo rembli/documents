@@ -27,7 +27,7 @@ function importMails () {
 	if (client.status == 401) 
 		window.document.location.href = host+"/login.html";
 	else {
-		alert ("Import done!");
+		alert (lang("Import done!"));
 		window.document.location.href = host+"/index.html";
 	}
 }

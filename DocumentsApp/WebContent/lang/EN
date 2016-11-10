@@ -12,11 +12,18 @@
 "change": "change",
 "files": "files",
 "login": "login",
+"register": "Registrieren",
 "Login to": "Login to",
 "Login with": "Login with",
 "Password": "Password",
 "new user": "new user",
 "or": "or",
 "login_success": "Login successfull for",
-"Please wait": "Please wait"
+"Please wait": "Please wait",
+"Import done!": "Import done!",
+"You can import your mails sent to": "You can import your mails sent to",
+"date":"date",
+"from":"from",
+"to":"to",
+"subject":"subject"
 }

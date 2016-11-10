@@ -13,7 +13,9 @@
 <div id="rembli-body" class="container" style="visibility:hidden">
 
 <div class="row">
-	<b>You can import your mails sent to <a id="currentUserMail"></a>@rembli.com</b>
+	<div class="alert alert-info" role="alert">
+		<b><lang>You can import your mails sent to</lang> <a id="currentUserMail"></a>@rembli.com</b>
+	</div>
 	<p><p><p>
 	<div id="incoming-mail-table" style="display:inline"></div>
 	<p><p>
@@ -23,9 +25,9 @@
 <script type="text/dust" id="incoming-mail-table-template">
 	<table class="table">
 		<tr>
-			<th>Date</th>
-			<th>From</th>
-			<th>Subject</th>
+			<th><lang>date</lang></th>
+			<th><lang>from</lang></th>
+			<th><lang>subject</lang></th>
 			<th></th>
 		</tr>
 	{#.}

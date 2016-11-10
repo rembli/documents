@@ -5,8 +5,8 @@ $(function() {
 
 //LOGIN NORMAL ********************  
 
-function loginWithUsername () {
-	var url = host+"/api/login";
+function loginWithEMail () {
+	var url = host+"/api/loginWithEMail";
 	var client = new XMLHttpRequest();
 	client.open('POST', url, true);
 	client.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
@@ -18,9 +18,16 @@ function loginWithUsername () {
 					// das speichern wir uns im SessionStorage des Browswers
 					// später müssen wir das bei jedem Request in den Authorization-Header schreiben
 					window.sessionStorage.setItem("accessToken",this.responseText);
-					window.sessionStorage.setItem("currentUser",window.document.loginForm.email.value);
-					// dann gibt es einen redirekt zur Startseite
-					window.document.location.href = host+"/index.html";
+					
+					//user info abrufen
+					$.ajax({url: host+"/api/userInfo"}).then(function(userinfo) {
+						window.sessionStorage.setItem("currentUser",userinfo.username);
+						window.sessionStorage.setItem("currentUserEMail",userinfo.email);
+
+						// dann gibt es einen redirekt zur Startseite						
+						window.document.location.href = host+"/index.html";
+					});
+					
 				}
 				else{
 					// Wenn es nicht geklappt hat, geben wir einen Hinweis aus und löschen das gespeichert Token
@@ -29,32 +36,10 @@ function loginWithUsername () {
 				}
 			}
 	};
-	// hier senden wir username und passwort
-	client.send("username="+window.document.loginForm.email.value+"&password="+window.document.loginForm.password.value);
+	// hier senden wir email und passwort
+	client.send("email="+window.document.loginForm.email.value+"&password="+window.document.loginForm.password.value);
 }  
   
-function newUser () {
-	var url = host+"/api/userInfo";
-	var client = new XMLHttpRequest();
-	client.open('POST', url, true);
-	client.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-	// wenn die Authentifzierung erfolgreich war, wird das Token in der Session abgespeichert
-	client.onreadystatechange = function(){
-			if(this.readyState == 4){
-				if(this.status == 200){
-					// wenn die Registierung funktioniert hat, bekommen wir vom Server eine OK
-					alert ("Registrierung war erfolgreich! Sie können sich jetzt anmelden.");
-				}
-				else{
-					// Wenn es nicht geklappt hat, geben wir einen Hinweis aus 
-					alert ("Registrierung war nicht erfolgreich: "+this.statusText);
-				}
-			}
-	};
-	// hier senden wir username und passwort
-	client.send("username="+window.document.loginForm.email.value+"&password="+window.document.loginForm.password.value+"&email="+window.document.loginForm.email.value);
-}
-
 // LOGIN MIT FACEBOOK ********************
 
   window.fbAsyncInit = function() {

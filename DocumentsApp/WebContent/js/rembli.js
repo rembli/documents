@@ -298,6 +298,13 @@ function renderTemplate (template, url, output, fn) {
  	else
  		return "-";
  }
+ 
+ function getCurrentUserEMail () {
+	 	if (isAuthenticated()) 
+	 		return  window.sessionStorage.getItem("currentUserEMail");
+	 	else
+	 		return "-";
+	 } 
 
 
  function getAccessToken () {

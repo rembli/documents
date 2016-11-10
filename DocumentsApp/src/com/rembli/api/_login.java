@@ -13,7 +13,7 @@ import com.rembli.ums.*;
 
 @Api(value = "UM - USER MANAGEMENT")
 
-@Path("/login")
+@Path("/loginWithEMail")
 public class _login {
 	@Context HttpServletRequest httpRequest;
 
@@ -26,13 +26,13 @@ public class _login {
     @POST
     @Produces("text/html")
     @Consumes("application/x-www-form-urlencoded")
-    public Response login (@FormParam("username") String username, @FormParam("password") String password) throws Exception {
+    public Response login (@FormParam("email") String email, @FormParam("password") String password) throws Exception {
 
     	// mit Username und Passwort anmelden, d.h. ein Token erzeugen, dass wir an den Browser zurück geben
     	// und zusätzlich noch in der Session abspeichern, falls von einem Browser auf die API zugegriffen werden soll
    		try {
    	    	UserManagementSystem ums = new UserManagementSystem ();
-   			String accessToken = ums.login (username, password);
+   			String accessToken = ums.loginWithEMail(email, password);
     		HttpSession session = httpRequest.getSession();
     		session.setAttribute("accessToken", accessToken);
     		return Response.ok(accessToken).build();

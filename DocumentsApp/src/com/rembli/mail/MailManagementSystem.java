@@ -99,7 +99,7 @@ public class MailManagementSystem {
 	    	 
 	    	  Message msg = messages[i];
 	    	  msg.setFlag(Flags.Flag.DELETED, true);
-       	   	  String fileName = sanitizeFilename(msg.getSubject())+".eml";
+       	   	  String fileName = com.rembli.util.text.TextTools.sanitizeString (msg.getSubject())+".eml";
 	    	  String fileType = "message/rfc822";
 	    	  
 			  ByteArrayOutputStream out = new ByteArrayOutputStream();	    	
@@ -125,7 +125,7 @@ public class MailManagementSystem {
 	
 	 private void saveMailToDisk (javax.mail.Message msg, String subject) throws MessagingException, IOException
 	 {
-	   String whereToSave = "c:/temp/" + sanitizeFilename(subject) + ".eml";
+	   String whereToSave = "c:/temp/" + com.rembli.util.text.TextTools.sanitizeString(subject) + ".eml";
 	   OutputStream out = new FileOutputStream(new File(whereToSave));
 	   try {
 	       msg.writeTo(out);
@@ -135,8 +135,6 @@ public class MailManagementSystem {
 	   }
 	 }	
 	
-	private static String sanitizeFilename(String name) {
-		   return name.replaceAll("[:\\\\/*?|<> \"]", "_");
-	}	
+
 	
 }
