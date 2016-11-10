@@ -49,7 +49,8 @@ Demo web application which features:
 
 ### Dev log
 
-* Added import of mails (senden an rembli adresse: <username>@rembli.com)
+* integrated pdf view ViewJS
+* Added import of mails (send to rembli address: <username>@rembli.com)
 * Add SSL support at rembli.com (https://coolestguidesontheplanet.com/redirecting-http-https-tomcat)
 * AuthenticationToken und AuthenticationUser umbenannt in AccessToken und CurrentUser
 * Navigation zwischen einzelnen Dokumenten ermöglicht (statt immer über die Liste gehen zu müssen)

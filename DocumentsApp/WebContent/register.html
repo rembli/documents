@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<script type="text/javascript" src="./js/rembli.js"></script>
+</head>
+<body>
+<include template="_header.html"></include>
+<div id="rembli-body" class="container" style="visibility:hidden">
+
+
+<h2><lang>register</lang></i> /documents</i></h2>
+<br><br>
+
+<div class="row">
+ 	<div class="col-md-12">
+		<div class="panel panel-default">
+ 			<div class="panel-heading"><lang>register</lang> E-Mail
+ 			</div>
+ 			<div class="panel-body">
+				<form name="loginForm">
+					<label>Username:</label> <input type="text" name="username" class="form-control" placeholder="jane.doe">
+					<label>E-mail:</label> <input type="email" name="email" class="form-control" placeholder="jane.doe@example.com">
+					<label><lang>Password</lang>:</label> <input type="password" name="password" class="form-control" placeholder="password">
+					<br>
+					<button type="button" class="btn btn-secondary" onClick="javascript:loadContent ('./login.html');"><lang>login</lang></button>
+					<button type="button" class="btn btn-primary" onClick="javascript:newUser();"><lang>new user</lang></button>
+				</form>
+ 			</div>
+ 			</div>
+ 		</div>
+	</div>
+ </div>
+</div>
+<include template="_footer.html"></include>
+</body>
+</html>
+
