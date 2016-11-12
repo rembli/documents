@@ -21,9 +21,10 @@
 "login_success": "Anmeldung erfolgreich für",
 "Please wait": "Bitte warten",
 "Import done!": "Import erfolgreich!",
-"You can import your mails sent to": "Hier können Sie die Mail importieren, die an diese Adresse geschickt wurden: ",
+"You can import your mails sent to": "Hier können Sie die Mails importieren, die an diese Adresse geschickt wurden: ",
 "date":"Datum",
 "from":"von",
 "to":"an",
-"subject":"Betreff"
+"subject":"Betreff",
+"preview":"Vorschau"
 }

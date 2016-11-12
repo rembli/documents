@@ -7,6 +7,7 @@ import lombok.Data;
 @Data
 @XmlRootElement
 public class MailMessage {
+	String messageID;
 	String from;
 	String to;
 	String subject;

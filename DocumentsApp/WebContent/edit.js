@@ -21,6 +21,7 @@ function refresh () {
 		prevID = currentDocumentList [currentDocumentPos-1];
 	
 	renderTemplate ('document-header-form-template', '/documents/api/documents/'+currentID,"document-header-form");
+	renderTemplate ('preview-section-template', '/documents/api/documents/'+currentID+"/files","preview-section");	
 	renderTemplate ('file-table-template', '/documents/api/documents/'+currentID+"/files","file-table");	
 	renderTemplate ('logEntry-table-template', '/documents/api/log?entity=DOCUMENT&entityid='+currentID,"logEntry-table");
 }

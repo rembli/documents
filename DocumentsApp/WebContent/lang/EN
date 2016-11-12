@@ -25,5 +25,6 @@
 "date":"date",
 "from":"from",
 "to":"to",
-"subject":"subject"
+"subject":"subject",
+"preview":"preview"
 }

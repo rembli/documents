@@ -3,10 +3,16 @@ package com.rembli.mail;
 import java.io.*;
 import java.util.*;
 import javax.ws.rs.NotAuthorizedException;
+import org.xhtmlrenderer.pdf.ITextRenderer;
+
+import javax.activation.DataHandler;
 import javax.mail.*;
+
+import com.google.common.io.ByteStreams;
 import com.rembli.dms.DocumentManagementSystem;
-import com.rembli.log.*;
+import com.rembli.dms.mimeparser.*;
 import com.rembli.ums.*;
+
 
 
 public class MailManagementSystem {
@@ -31,7 +37,7 @@ public class MailManagementSystem {
 
 		// get credentials to access mail
 		String mail_pop = props.getProperty("MAIL.POP");
-		String mail_host = props.getProperty("MAIL.HOST");		
+		String mail_domain = props.getProperty("MAIL.DOMAIN");		
 		String mail_username = props.getProperty("MAIL.USERNAME");
 		String mail_password = props.getProperty("MAIL.PASSWORD");
 		
@@ -49,17 +55,28 @@ public class MailManagementSystem {
 
 	    for (int i = 0; i < messages.length; i++) {
 	      String to = messages[i].getAllRecipients()[0].toString();
-	      if (to.equalsIgnoreCase(username+"@"+mail_host)) {
+	      if (to.equalsIgnoreCase(username+"@"+mail_domain)) {
 	    	 
 	    	  Message msg = messages[i];
 	    	  
 	  	      MailMessage mailMessage = new MailMessage();
 	    	  mailMessage = new MailMessage();
-	    	  mailMessage.setFrom(msg.getFrom()[0].toString());
-	    	  mailMessage.setTo(to);
-	    	  mailMessage.setSubject(msg.getSubject()); 
-	    	  mailMessage.setSendDate(msg.getSentDate().toLocaleString());
-	    	  mailMessageList.add(mailMessage);
+	    	  
+	    	  /*
+	    	  Enumeration e = msg.getAllHeaders();
+	    	  while (e.hasMoreElements()) {
+	    		  javax.mail.Header h =  (Header) e.nextElement();
+	    		  String name = h.getName();
+	    		  String value = h.getValue();
+	    		  System.out.println (name+": "+value);
+	    	  }
+	    	  */
+	    	  
+	    	  mailMessage.setFrom (msg.getFrom()[0].toString());
+	    	  mailMessage.setTo (to);
+	    	  mailMessage.setSubject (msg.getSubject()); 
+	    	  mailMessage.setSendDate (msg.getSentDate().toLocaleString());
+	    	  mailMessageList.add (mailMessage);
 	      }
 	    }
 	    
@@ -78,7 +95,7 @@ public class MailManagementSystem {
 
 		// get credentials to access mail
 		String mail_pop = props.getProperty("MAIL.POP");
-		String mail_host = props.getProperty("MAIL.HOST");		
+		String mail_domain = props.getProperty("MAIL.DOMAIN");		
 		String mail_username = props.getProperty("MAIL.USERNAME");
 		String mail_password = props.getProperty("MAIL.PASSWORD");
 		
@@ -92,27 +109,63 @@ public class MailManagementSystem {
 
 	    // get the list of inbox messages
 	    Message[] messages = inbox.getMessages();
-
+	    
 	    for (int i = 0; i < messages.length; i++) {
 	      String to = messages[i].getAllRecipients()[0].toString();
-	      if (to.equalsIgnoreCase(username+"@"+mail_host)) {
-	    	 
+	      if (to.equalsIgnoreCase(username+"@"+mail_domain)) {
+	    	  try {
+	    		  
+	    	  // get message meta data
 	    	  Message msg = messages[i];
-	    	  msg.setFlag(Flags.Flag.DELETED, true);
-       	   	  String fileName = com.rembli.util.text.TextTools.sanitizeString (msg.getSubject())+".eml";
-	    	  String fileType = "message/rfc822";
-	    	  
-			  ByteArrayOutputStream out = new ByteArrayOutputStream();	    	
-			   try {
-			       msg.writeTo(out);
-			   }
-			   finally {
-			       if (out != null) { out.flush(); out.close(); }
-			   }	    	  
-			   byte[] data = out.toByteArray();
-			   ByteArrayInputStream in = new ByteArrayInputStream(data);
-	    	  
-	    	   dms.createDocument(fileName, fileType, in);
+       	   	  String fileName = msg.getSubject();
+       	   	  String fileNameS = com.rembli.util.text.TextTools.sanitizeString(fileName);
+       	   	  long idDocument = dms.createDocument(fileName);
+
+			  // convert and attach pdf
+		      org.w3c.dom.Document document = MimeMessageConverter.convertToXHTML(msg);
+		      ByteArrayOutputStream out_pdf = new ByteArrayOutputStream ();
+			  ITextRenderer renderer = new ITextRenderer();
+			  renderer.setDocument(document, null);
+			  renderer.layout();
+			  renderer.createPDF(out_pdf) ;
+			  byte[] data = out_pdf.toByteArray();
+			  out_pdf.close();		    
+			  ByteArrayInputStream in_pdf = new ByteArrayInputStream(data);			    
+			  dms.attachFile(idDocument, "Preview.pdf", "application/pdf", in_pdf);    
+   	   	  
+       	   	  // attach eml
+       	   	  ByteArrayOutputStream out_eml = new ByteArrayOutputStream();	    	
+       	   	  try {
+       	   		  msg.writeTo(out_eml);
+       	   	  }
+       	   	  finally {
+       	   		  if (out_eml != null) { out_eml.flush(); out_eml.close(); }
+       	   	  }	    	  
+       	   	  data = out_eml.toByteArray();  
+    		  ByteArrayInputStream in_eml = new ByteArrayInputStream(data);
+       	   	  dms.attachFile(idDocument, fileNameS+".eml", "message/rfc822", in_eml);
+       	   	        	   	  
+       	   	  // save attachments
+     		  List<Part> attachmentParts = MimeMessageParser.getAttachments(msg);
+   			  for (int j = 0; j < attachmentParts.size(); j++) {
+      				Part part = attachmentParts.get(j);
+      				String attachmentFilename = null;
+      				String attachmentFileType = null;
+      				try {
+      					attachmentFilename = part.getFileName();
+      					attachmentFileType = part.getContentType();
+      				} catch (Exception e) {
+      					// ignore this error
+      				}
+      				dms.attachFile(idDocument, attachmentFilename, attachmentFileType, part.getInputStream());
+      			}
+   			  
+   			  	// delete message from inbox
+   			  	msg.setFlag(Flags.Flag.DELETED, true);
+	    	  }
+	    	  catch (Exception ignored) {
+	    		  ignored.printStackTrace();
+	    	  }
 	      }
 	    }
 	    
