@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.rembli.dms.mimeparser;
+package com.rembli.util.mimeparser;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;

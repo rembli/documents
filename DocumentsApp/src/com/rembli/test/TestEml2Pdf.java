@@ -8,7 +8,7 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import org.xhtmlrenderer.pdf.ITextRenderer;
 
-import com.rembli.dms.mimeparser.MimeMessageConverter;
+import com.rembli.util.mimeparser.MimeMessageConverter;
 
 public class TestEml2Pdf {
 

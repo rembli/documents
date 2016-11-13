@@ -14,7 +14,11 @@
  * limitations under the License.
  */
 
-package com.rembli.dms.mimeparser;
+package com.rembli.util.mimeparser;
+
+import static java.nio.charset.StandardCharsets.ISO_8859_1;
+import static java.nio.charset.StandardCharsets.UTF_8;
+import static java.nio.charset.StandardCharsets.US_ASCII;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -66,28 +70,30 @@ public class MimeMessageConverter {
 	public static org.w3c.dom.Document convertToXHTML (Message msg) throws Exception {
 		
 		/* ######### Convert to Mime Message Format ################ */
-		
+
 		ByteArrayOutputStream html_out = new ByteArrayOutputStream();
+		
 		try {
 		     msg.writeTo(html_out);
 		}
 		finally {
 		    if (html_out != null) { html_out.flush(); html_out.close(); }
 		}	    	  
-		byte[] data = html_out.toByteArray();
-		ByteArrayInputStream in = new ByteArrayInputStream(data);	
+		//byte[] data = html_out.toByteArray();
+		String data = html_out.toString("UTF-8");
+		  
+		ByteArrayInputStream in = new ByteArrayInputStream(data.getBytes());	
+
 		MimeMessage message = new MimeMessage(null, in);
-		
+
 		/* ######### Parse Header Fields ######### */
-		
-		Logger.debug("Read and decode header fields");
+
 		String subject = message.getSubject();
 
 		String from = message.getHeader("From", null);
 		if (from == null) {
 			from = message.getHeader("Sender", null);
 		}
-
 		try {
 			from = MimeUtility.decodeText(MimeUtility.unfold(from));
 		} catch (Exception e) {
@@ -176,11 +182,11 @@ public class MimeMessageConverter {
 		String headers = "";
 		
 		if (!Strings.isNullOrEmpty(from)) {
-			headers += String.format(HEADER_FIELD_TEMPLATE, "From", HtmlEscapers.htmlEscaper().escape(from));
+			headers += String.format(HEADER_FIELD_TEMPLATE, "From", from);
 		}
 		
 		if (!Strings.isNullOrEmpty(subject)) {
-			headers += String.format(HEADER_FIELD_TEMPLATE, "Subject", "<b>" + HtmlEscapers.htmlEscaper().escape(subject) + "<b>");
+			headers += String.format(HEADER_FIELD_TEMPLATE, "Subject", "<b>" + subject + "<b>");
 		}
 		
 		if (recipients.length > 0) {
@@ -190,19 +196,21 @@ public class MimeMessageConverter {
 		if (!Strings.isNullOrEmpty(sentDateStr)) {
 			headers += String.format(HEADER_FIELD_TEMPLATE, "Date", HtmlEscapers.htmlEscaper().escape(sentDateStr));
 		}
-		
+				
 		String html = String.format(htmlTemplate, headers, htmlBody);
+
 		
         //use jtidy to clean up the html 
         ByteArrayOutputStream xhtml_out = new ByteArrayOutputStream();
         InputStream html_in = IOUtils.toInputStream(html, StandardCharsets.UTF_8);
         
 	    final Tidy tidy = new Tidy();
-	    tidy.setQuiet(false);
+	    tidy.setQuiet(true);
 	    tidy.setXHTML(true);
 	    tidy.setMakeClean(true);
 	    tidy.setForceOutput(true);
-	    tidy.setOutputEncoding("UTF-8");
+	    tidy.setSmartIndent(true);
+	    tidy.setOutputEncoding("text/html; charset=UTF-8");
 	    org.w3c.dom.Document document = tidy.parseDOM(html_in, xhtml_out);	 
 
 		return document;

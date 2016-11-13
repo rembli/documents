@@ -1,7 +1,7 @@
 //# APP SETTINGS ##################################################
 
-var debug = true;
-var caching = false;
+var debug = false;
+var caching = true;
 var host = ".";
 var rembliLocation = null;
 

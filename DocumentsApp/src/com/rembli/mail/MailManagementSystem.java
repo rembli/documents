@@ -10,8 +10,8 @@ import javax.mail.*;
 
 import com.google.common.io.ByteStreams;
 import com.rembli.dms.DocumentManagementSystem;
-import com.rembli.dms.mimeparser.*;
 import com.rembli.ums.*;
+import com.rembli.util.mimeparser.*;
 
 
 
@@ -94,7 +94,7 @@ public class MailManagementSystem {
 		props.load(fis);
 
 		// get credentials to access mail
-		String mail_pop = props.getProperty("MAIL.POP");
+		String mail_imap = props.getProperty("MAIL.IMAP");
 		String mail_domain = props.getProperty("MAIL.DOMAIN");		
 		String mail_username = props.getProperty("MAIL.USERNAME");
 		String mail_password = props.getProperty("MAIL.PASSWORD");
@@ -102,8 +102,8 @@ public class MailManagementSystem {
 		// connect to pop-inbox
 	    Properties properties = System.getProperties();
 	    Session session = Session.getDefaultInstance(properties);
-	    Store store = session.getStore("pop3");
-	    store.connect(mail_pop, mail_username, mail_password);
+	    Store store = session.getStore("imaps");
+	    store.connect(mail_imap, mail_username, mail_password);
 	    Folder inbox = store.getFolder("Inbox");
 	    inbox.open(Folder.READ_WRITE);
 
@@ -114,54 +114,13 @@ public class MailManagementSystem {
 	      String to = messages[i].getAllRecipients()[0].toString();
 	      if (to.equalsIgnoreCase(username+"@"+mail_domain)) {
 	    	  try {
-	    		  
-	    	  // get message meta data
-	    	  Message msg = messages[i];
-       	   	  String fileName = msg.getSubject();
-       	   	  String fileNameS = com.rembli.util.text.TextTools.sanitizeString(fileName);
-       	   	  long idDocument = dms.createDocument(fileName);
-
-			  // convert and attach pdf
-		      org.w3c.dom.Document document = MimeMessageConverter.convertToXHTML(msg);
-		      ByteArrayOutputStream out_pdf = new ByteArrayOutputStream ();
-			  ITextRenderer renderer = new ITextRenderer();
-			  renderer.setDocument(document, null);
-			  renderer.layout();
-			  renderer.createPDF(out_pdf) ;
-			  byte[] data = out_pdf.toByteArray();
-			  out_pdf.close();		    
-			  ByteArrayInputStream in_pdf = new ByteArrayInputStream(data);			    
-			  dms.attachFile(idDocument, "Preview.pdf", "application/pdf", in_pdf);    
-   	   	  
-       	   	  // attach eml
-       	   	  ByteArrayOutputStream out_eml = new ByteArrayOutputStream();	    	
-       	   	  try {
-       	   		  msg.writeTo(out_eml);
-       	   	  }
-       	   	  finally {
-       	   		  if (out_eml != null) { out_eml.flush(); out_eml.close(); }
-       	   	  }	    	  
-       	   	  data = out_eml.toByteArray();  
-    		  ByteArrayInputStream in_eml = new ByteArrayInputStream(data);
-       	   	  dms.attachFile(idDocument, fileNameS+".eml", "message/rfc822", in_eml);
-       	   	        	   	  
-       	   	  // save attachments
-     		  List<Part> attachmentParts = MimeMessageParser.getAttachments(msg);
-   			  for (int j = 0; j < attachmentParts.size(); j++) {
-      				Part part = attachmentParts.get(j);
-      				String attachmentFilename = null;
-      				String attachmentFileType = null;
-      				try {
-      					attachmentFilename = part.getFileName();
-      					attachmentFileType = part.getContentType();
-      				} catch (Exception e) {
-      					// ignore this error
-      				}
-      				dms.attachFile(idDocument, attachmentFilename, attachmentFileType, part.getInputStream());
-      			}
-   			  
-   			  	// delete message from inbox
-   			  	msg.setFlag(Flags.Flag.DELETED, true);
+		    	  // get message meta data
+		    	  Message message = messages[i];
+	       	   	  String fileName = message.getSubject();
+	       	   	  dms.createDocumentFromMessage (fileName, message);
+	       	   	  
+	   			  // delete message from inbox
+	   			  message.setFlag(Flags.Flag.DELETED, true);
 	    	  }
 	    	  catch (Exception ignored) {
 	    		  ignored.printStackTrace();
@@ -171,10 +130,8 @@ public class MailManagementSystem {
 	    
 	    inbox.close(true);
 	    store.close();			
-		
 		// LogManagementSystem.log(username, LogEntry.ENTITY.DOCUMENT, id.toString(), LogEntry.ACTION.CREATE, "New document "+id.toString()+" imported from mail by user "+ username);   			
 	}
-	
 	
 	 private void saveMailToDisk (javax.mail.Message msg, String subject) throws MessagingException, IOException
 	 {

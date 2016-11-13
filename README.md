@@ -18,6 +18,7 @@ Demo web application which features:
 * Dedicated business layer
 * Database persistence using SQL2O
 * Import Mails from POP server
+* PDF Viewer (ViewerJS)
 
 ### Demo
 
@@ -49,6 +50,7 @@ Demo web application which features:
 
 ### Dev log
 
+* create thumbnail for pdf and eml-files 
 * integrated pdf view ViewJS
 * Added import of mails (send to rembli address: <username>@rembli.com)
 * Add SSL support at rembli.com (https://coolestguidesontheplanet.com/redirecting-http-https-tomcat)
@@ -110,7 +112,8 @@ Demo web application which features:
 * jQuery
 * Bootstrap - Responsive Layout
 * dust.js - Templating
-* dropzone.js
+* dropzone.js - Drag 'n Drop Upload
+* ViewerJS - PDF
 
 **Tools**
 

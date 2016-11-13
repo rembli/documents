@@ -14,16 +14,23 @@
 
 <div class="row">
 
-	<div class="col-xs-6 col-md-3" style="text-align:center;padding:5px;">
+	<div class="col-xs-9 col-md-11" style="text-align:center;padding:5px;">
 		<div id="my-dropzone" class="dropzone thumbnail" name="myDropzone" style="background-color:#eee">
 			<div class="dz-message">
-				<br><span class="glyphicon glyphicon-plus"></span><br><br>
+				<br><span class="glyphicon glyphicon-plus"></span><br>
 				<lang>dragNdrop</lang><br><br>
 			</div>
 		</div>
 	</div>
+	<div class="col-xs-3 col-md-1" style="text-align:center;padding:5px;">
+		<span class="input-group-btn">
+			<button id="prevButton" type="button" class="btn btn-default" onClick="setCache ('index-table-display','thumbnail'); refresh();"><span class="glyphicon glyphicon-th-large"></span></button>
+			<button id="nextButton" type="button" class="btn btn-default" onClick="setCache ('index-table-display','list'); refresh();"><span class="glyphicon glyphicon-th-list"></span></button>
+		</span>	
+	</div>	
 
-	<div id="document-thumbnail-table" style="display:inline"></div>
+	<div id="document-thumbnail-table" style="display:none"></div>
+	<div id="document-list-table" style="display:none"></div>	
 
 </div>
 
@@ -38,6 +45,20 @@
 			</div>
 		</div>
 		{/.}
+</script>
+
+<script type="text/dust" id="document-list-table-template">
+		<table class="table">
+
+		{#.}
+
+			<tr>
+				<td>{idDocument}</td>
+				<td><a href="javascript: loadContent('edit.html?id={idDocument}')">{note}</a></td>
+				<td>{createdBy}</td>
+		{/.}
+
+		</table>
 </script>
 
 </div>

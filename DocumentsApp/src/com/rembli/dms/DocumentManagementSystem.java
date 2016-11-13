@@ -1,14 +1,35 @@
 package com.rembli.dms;
+
 import java.io.*;
 import java.util.*;
+
 import javax.ws.rs.NotAuthorizedException;
+
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
+import org.jpedal.examples.images.*;
 import org.sql2o.*;
+import org.xhtmlrenderer.pdf.ITextRenderer;
+
+import com.lowagie.text.Image;
 import com.rembli.log.*;
 import com.rembli.ums.*;
 import com.rembli.util.db.*;
+import com.rembli.util.mimeparser.MimeMessageConverter;
+import com.rembli.util.mimeparser.MimeMessageParser;
+
 import net.coobird.thumbnailator.Thumbnails;
 
+import javax.imageio.ImageIO;
+import javax.mail.Message;
+import javax.mail.Part;
+import javax.mail.internet.MimeMessage;
+import static java.nio.charset.StandardCharsets.*;
+
+import java.awt.image.*;
+
 public class DocumentManagementSystem {
+
 	private boolean isAuthenticated = false;
 	private String username = null;
 
@@ -33,9 +54,65 @@ public class DocumentManagementSystem {
 		}
 	}
 	
-	public long createDocument (String fileName, String fileType, InputStream uploadedInputStream) throws Exception {
-		long idDocument = createDocument (fileName);
-   		attachFile (idDocument, fileName, fileType, uploadedInputStream);
+	public long createDocument (String fileName, String fileType, InputStream inputStream) throws Exception {
+		long idDocument = 0;
+		
+		if (fileType.equalsIgnoreCase("message/rfc822")) {
+			MimeMessage message = new MimeMessage (null, inputStream);	
+			byte ptext[] = fileName.getBytes(ISO_8859_1); 
+			fileName = new String(ptext, UTF_8);  
+			idDocument = createDocumentFromMessage (fileName, message);
+		}
+		else {
+			idDocument = createDocument (fileName);
+			attachFile (idDocument, fileName, fileType, inputStream);			
+		}
+
+	    return idDocument;	    		
+	}	
+
+	public long createDocumentFromMessage (String fileName, Message message) throws Exception {
+	
+	  long idDocument = createDocument(fileName);
+   	  
+	  // convert and attach pdf
+      org.w3c.dom.Document document = MimeMessageConverter.convertToXHTML(message);
+      ByteArrayOutputStream out_pdf = new ByteArrayOutputStream ();
+	  ITextRenderer renderer = new ITextRenderer();
+	  renderer.setDocument(document, null);
+	  renderer.layout();
+	  renderer.createPDF(out_pdf) ;
+	  byte[] data = out_pdf.toByteArray();
+	  out_pdf.close();		    
+	  ByteArrayInputStream in_pdf = new ByteArrayInputStream(data);			    
+	  attachFile(idDocument, "Preview.pdf", "application/pdf", in_pdf);    
+   	  
+   	  // attach eml
+   	  ByteArrayOutputStream out_eml = new ByteArrayOutputStream();	    	
+   	  try {
+   		message.writeTo(out_eml);
+   	  }
+   	  finally {
+   		  if (out_eml != null) { out_eml.flush(); out_eml.close(); }
+   	  }	    	  
+   	  data = out_eml.toByteArray();  
+	  ByteArrayInputStream in_eml = new ByteArrayInputStream(data);
+   	  attachFile(idDocument, fileName, "message/rfc822", in_eml);
+   	        	   	  
+   	  // save attachments
+	  List<Part> attachmentParts = MimeMessageParser.getAttachments(message);
+		  for (int j = 0; j < attachmentParts.size(); j++) {
+			Part part = attachmentParts.get(j);
+			String attachmentFilename = null;
+			String attachmentFileType = null;
+			try {
+				attachmentFilename = part.getFileName();
+				attachmentFileType = part.getContentType();
+			} catch (Exception e) {
+				// ignore this error
+			}
+			attachFile(idDocument, attachmentFilename, attachmentFileType, part.getInputStream());
+		}
 	    return idDocument;	    		
 	}	
 	
@@ -86,19 +163,41 @@ public class DocumentManagementSystem {
 						.executeAndFetchFirst (com.rembli.dms.File.class);
 				
 				// 2. Convert file to thumbnail, wenn dieses schon verfügbar ist
-				if (file != null && file.data != null) {
+				if (file != null && file.data != null && 
+					(	file.getFileType().startsWith("image") ||
+						file.getFileType().equalsIgnoreCase("application/pdf")	
+					)) 
+				{
 
-					ByteArrayInputStream bis = new ByteArrayInputStream(file.data);
-					ByteArrayOutputStream bos = new ByteArrayOutputStream();
+					ByteArrayInputStream bisT = null;
 					
-					Thumbnails.of(bis)
-			    	.size(200, 100)
-			    	.outputFormat("png")
-			    	.toOutputStream (bos);		
+					if (file.getFileType().startsWith("image")) {
+						ByteArrayInputStream bis = new ByteArrayInputStream(file.data);
+						ByteArrayOutputStream bos = new ByteArrayOutputStream();
+						
+						Thumbnails.of(bis)
+				    	.size(200, 100)
+				    	.outputFormat("png")
+				    	.toOutputStream (bos);
+
+						bisT = new ByteArrayInputStream(bos.toByteArray());
+					}
+
+					else if (file.getFileType().equalsIgnoreCase("application/pdf")) {
+						ConvertPagesToImages converter = new ConvertPagesToImages(file.data);
+						converter.setPageScaling(0.25f);
+						if (converter.openPDFFile()) {
+							BufferedImage bufImage = converter.getPageAsImage(1, true);
+
+						    java.io.File tmpImage = java.io.File.createTempFile ("tmp", ".png", new java.io.File(System.getProperty("java.io.tmpdir")));
+						    tmpImage.deleteOnExit();
+					        ImageIO.write(bufImage, "png", tmpImage);
+					        bisT = new ByteArrayInputStream(FileUtils.readFileToByteArray(tmpImage));
+						}
+						converter.closePDFfile();
+					}
 					
 					// 3. Write thumbnail to DB
-	
-					ByteArrayInputStream bisT = new ByteArrayInputStream(bos.toByteArray());
 		
 					sql = SqlStatements.get ("DMS.ATTACH_THUMBNAIL");
 				    con.createQuery(sql,true)
@@ -112,7 +211,7 @@ public class DocumentManagementSystem {
 			} 
 		}			
 	}
-
+	
 	public Document[] getDocuments () throws Exception {
 		try (Connection con = ConnectionPool.getConnection()) {
 			String sql = SqlStatements.get ("DMS.GET_DOCUMENTS");

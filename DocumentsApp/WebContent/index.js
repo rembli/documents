@@ -1,4 +1,6 @@
 $(function() {
+	if (getCache ("index-table-display") == null)
+		setCache ("index-table-display","thumbnail");
 	
 	// load and initialize dropzone
 	loadScript ("./js-lib/dropzone.js", function () {
@@ -47,11 +49,24 @@ $(function() {
 
 function refresh () {
 
-	renderTemplate ('document-thumbnail-table-template', '/documents/api/documents', 'document-thumbnail-table', function (response) {
-		var currentDocumentList = new Array();
-		for (i in response)
-			currentDocumentList [i] = ""+response[i].idDocument;
-		setCache ("currentDocumentList", currentDocumentList);
-	});
+	if (getCache ("index-table-display") == "thumbnail") {
+		renderTemplate ('document-thumbnail-table-template', '/documents/api/documents', 'document-thumbnail-table', function (response) {
+			var currentDocumentList = new Array();
+			for (i in response)	currentDocumentList [i] = ""+response[i].idDocument;
+			setCache ("currentDocumentList", currentDocumentList);
+		});
+		document.getElementById('document-list-table').style.display='none';
+		document.getElementById('document-thumbnail-table').style.display='block';	
+	}
+	else {
+		renderTemplate ('document-list-table-template', '/documents/api/documents', 'document-list-table', function (response) {
+			var currentDocumentList = new Array();
+			for (i in response) currentDocumentList [i] = ""+response[i].idDocument;
+			setCache ("currentDocumentList", currentDocumentList);
+		});
+		document.getElementById('document-thumbnail-table').style.display='none';	
+		document.getElementById('document-list-table').style.display='block';		
+		
+	}
 }
 

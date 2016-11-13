@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.rembli.dms.mimeparser;
+package com.rembli.util.mimeparser;
 import javax.mail.Part;
 
 /**
