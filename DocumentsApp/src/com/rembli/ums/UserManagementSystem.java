@@ -10,6 +10,8 @@ import org.sql2o.Connection;
 import org.sql2o.data.Table;
 import com.owlike.genson.Genson;
 import com.rembli.log.*;
+import com.rembli.mail.MailManagementSystem;
+import com.rembli.mail.MailServerPropertiesPath;
 import com.rembli.util.db.*;
 
 
@@ -81,6 +83,7 @@ public class UserManagementSystem {
 	
 	public long createUserInfo (String username, String email, String password) throws Exception {
 		username = com.rembli.util.text.TextTools.sanitizeString (username);
+		
 		if (username.length()==0 || email.length()==0 || password.length()==0)
 			return 0;
 		
@@ -178,7 +181,9 @@ public class UserManagementSystem {
 		  		
 			  	// 3. User ggf. anlegen (und prüfen, ob er nicht schon angelegt ist); wenn kein User angelegt wurde, liefert createUserInfo 0 zurück
 			  	String username = user.get("name")+"-"+user.get("id"); 
-			  	String email = ""; // leider steht die E-Mail Adresse bei FB im Standard nicht zur Verfügung
+				username = com.rembli.util.text.TextTools.sanitizeString (username);
+				
+			  	String email = username+"@"+MailManagementSystem.getMailDomain(); // leider steht die E-Mail Adresse bei FB im Standard nicht zur Verfügung
 			  	Random random = new SecureRandom();
 		        String password = new BigInteger(130, random).toString(10);	  	
 			  	createUserInfo(username, email, password);

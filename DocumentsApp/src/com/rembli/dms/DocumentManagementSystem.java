@@ -5,28 +5,23 @@ import java.util.*;
 
 import javax.ws.rs.NotAuthorizedException;
 
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
-import org.jpedal.examples.images.*;
-import org.sql2o.*;
-import org.xhtmlrenderer.pdf.ITextRenderer;
-
-import com.lowagie.text.Image;
 import com.rembli.log.*;
 import com.rembli.ums.*;
 import com.rembli.util.db.*;
-import com.rembli.util.mimeparser.MimeMessageConverter;
-import com.rembli.util.mimeparser.MimeMessageParser;
+import com.rembli.util.mimeparser.*;
+import org.sql2o.*;
 
+import org.apache.commons.io.FileUtils;
+import org.xhtmlrenderer.pdf.ITextRenderer;
+import org.jpedal.examples.images.*;
+import java.awt.image.*;
+import javax.imageio.ImageIO;
 import net.coobird.thumbnailator.Thumbnails;
 
-import javax.imageio.ImageIO;
 import javax.mail.Message;
 import javax.mail.Part;
 import javax.mail.internet.MimeMessage;
 import static java.nio.charset.StandardCharsets.*;
-
-import java.awt.image.*;
 
 public class DocumentManagementSystem {
 
@@ -78,13 +73,13 @@ public class DocumentManagementSystem {
 	  // convert and attach pdf
       org.w3c.dom.Document document = MimeMessageConverter.convertToXHTML(message);
       ByteArrayOutputStream out_pdf = new ByteArrayOutputStream ();
-	  ITextRenderer renderer = new ITextRenderer();
-	  renderer.setDocument(document, null);
-	  renderer.layout();
-	  renderer.createPDF(out_pdf) ;
-	  byte[] data = out_pdf.toByteArray();
-	  out_pdf.close();		    
-	  ByteArrayInputStream in_pdf = new ByteArrayInputStream(data);			    
+      ITextRenderer renderer = new ITextRenderer();
+      renderer.setDocument(document, null);
+      renderer.layout();
+      renderer.createPDF(out_pdf) ;
+      byte[] data = out_pdf.toByteArray();
+      out_pdf.close();      
+      ByteArrayInputStream in_pdf = new ByteArrayInputStream(data);
 	  attachFile(idDocument, "Preview.pdf", "application/pdf", in_pdf);    
    	  
    	  // attach eml
@@ -171,6 +166,7 @@ public class DocumentManagementSystem {
 
 					ByteArrayInputStream bisT = null;
 					
+					// Thumbnail for images
 					if (file.getFileType().startsWith("image")) {
 						ByteArrayInputStream bis = new ByteArrayInputStream(file.data);
 						ByteArrayOutputStream bos = new ByteArrayOutputStream();
@@ -183,6 +179,7 @@ public class DocumentManagementSystem {
 						bisT = new ByteArrayInputStream(bos.toByteArray());
 					}
 
+					// Thumbnail for PDF
 					else if (file.getFileType().equalsIgnoreCase("application/pdf")) {
 						ConvertPagesToImages converter = new ConvertPagesToImages(file.data);
 						converter.setPageScaling(0.25f);

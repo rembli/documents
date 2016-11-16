@@ -3,17 +3,10 @@ package com.rembli.mail;
 import java.io.*;
 import java.util.*;
 import javax.ws.rs.NotAuthorizedException;
-import org.xhtmlrenderer.pdf.ITextRenderer;
-
-import javax.activation.DataHandler;
 import javax.mail.*;
-
-import com.google.common.io.ByteStreams;
 import com.rembli.dms.DocumentManagementSystem;
+import com.rembli.log.*;
 import com.rembli.ums.*;
-import com.rembli.util.mimeparser.*;
-
-
 
 public class MailManagementSystem {
 	private boolean isAuthenticated = false;
@@ -28,6 +21,14 @@ public class MailManagementSystem {
 		dms = new DocumentManagementSystem (accessToken);
 	}
 	
+	public static String getMailDomain () throws IOException {
+		String mailServerPropertiesPath = (new MailServerPropertiesPath()).getPath();
+		FileInputStream fis = new FileInputStream(mailServerPropertiesPath);
+		Properties props = new Properties();
+		props.load(fis);
+		return props.getProperty("MAIL.DOMAIN");		
+	}
+	
 	public ArrayList<MailMessage> getMails () throws Exception {
 		
 		String mailServerPropertiesPath = (new MailServerPropertiesPath()).getPath();
@@ -36,7 +37,7 @@ public class MailManagementSystem {
 		props.load(fis);
 
 		// get credentials to access mail
-		String mail_pop = props.getProperty("MAIL.POP");
+		String mail_imap = props.getProperty("MAIL.IMAP");
 		String mail_domain = props.getProperty("MAIL.DOMAIN");		
 		String mail_username = props.getProperty("MAIL.USERNAME");
 		String mail_password = props.getProperty("MAIL.PASSWORD");
@@ -44,8 +45,8 @@ public class MailManagementSystem {
 		// connect to pop-inbox
 	    Properties properties = System.getProperties();
 	    Session session = Session.getDefaultInstance(properties);
-	    Store store = session.getStore("pop3");
-	    store.connect(mail_pop, mail_username, mail_password);
+	    Store store = session.getStore("imaps");
+	    store.connect(mail_imap, mail_username, mail_password);
 	    Folder inbox = store.getFolder("Inbox");
 	    inbox.open(Folder.READ_ONLY);
 
@@ -116,11 +117,14 @@ public class MailManagementSystem {
 	    	  try {
 		    	  // get message meta data
 		    	  Message message = messages[i];
-	       	   	  String fileName = message.getSubject();
-	       	   	  dms.createDocumentFromMessage (fileName, message);
-	       	   	  
+
 	   			  // delete message from inbox
 	   			  message.setFlag(Flags.Flag.DELETED, true);
+	   			  
+	   			  // import message
+		    	  String fileName = message.getSubject();
+		    	  long idDocument = dms.createDocumentFromMessage (fileName, message);
+	       	   	  LogManagementSystem.log(username, LogEntry.ENTITY.DOCUMENT, idDocument+"", LogEntry.ACTION.CREATE, "New document "+idDocument+" imported from mail by user "+ username);   			
 	    	  }
 	    	  catch (Exception ignored) {
 	    		  ignored.printStackTrace();
@@ -130,21 +134,6 @@ public class MailManagementSystem {
 	    
 	    inbox.close(true);
 	    store.close();			
-		// LogManagementSystem.log(username, LogEntry.ENTITY.DOCUMENT, id.toString(), LogEntry.ACTION.CREATE, "New document "+id.toString()+" imported from mail by user "+ username);   			
 	}
-	
-	 private void saveMailToDisk (javax.mail.Message msg, String subject) throws MessagingException, IOException
-	 {
-	   String whereToSave = "c:/temp/" + com.rembli.util.text.TextTools.sanitizeString(subject) + ".eml";
-	   OutputStream out = new FileOutputStream(new File(whereToSave));
-	   try {
-	       msg.writeTo(out);
-	   }
-	   finally {
-	       if (out != null) { out.flush(); out.close(); }
-	   }
-	 }	
-	
-
 	
 }

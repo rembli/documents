@@ -137,6 +137,15 @@ function loginWithEMail () {
 					// später müssen wir das bei jedem Request in den Authorization-Header schreiben
 					window.sessionStorage.setItem("accessToken",this.responseText);
 					
+					//user info abrufen
+					$.ajax({url: host+"/api/userInfo"}).then(function(userinfo) {
+						window.sessionStorage.setItem("currentUser",userinfo.username);
+						window.sessionStorage.setItem("currentUserEMail",userinfo.email);
+
+						// dann gibt es einen redirekt zur Startseite						
+						window.document.location.href = host+"/index.html";
+					});					
+					
 					// dann gibt es einen redirekt zur Startseite
 					window.document.location.href = host+"/index.html";
 				}
