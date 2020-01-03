@@ -1,4 +1,4 @@
-#rembli /documents
+# rembli /documents
 
 Demo web application which features:
 
@@ -20,16 +20,7 @@ Demo web application which features:
 * Import Mails from POP server
 * PDF Viewer (ViewerJS)
 
-### Demo
-
-* Demo deployment at [rembli.com](http://www.rembli.com)
-* Swagger-UI to [test API](http://www.rembli.com/swagger/index.html?url=/documents/api/swagger.json)
-* [Swagger-Spec](http://www.rembli.com/documents/api/swagger.json)
-* Application runs on [Jelastic](https://app.jelastic.dogado.eu/) 
-
-## Development
-
-### Localhost
+## Development Localhost
 
 * Application:	http://localhost:8080/documents
 * API: 		http://localhost:8080/documents/api/login
@@ -39,12 +30,12 @@ Demo web application which features:
 
 ### ToDos
 
-* Mehrmandantenfähigkeit (Org-ID)
-* Admin UI für User
+* MehrmandantenfÃ¤higkeit (Org-ID)
+* Admin UI fÃ¼r User
 * Tags/Properties
 * Suche
 * Asynchrone Thumbnails
-* Volltextsuche (Asprise für OCR +  + Lucene)
+* Volltextsuche (Asprise fÃ¼r OCR +  + Lucene)
 * Automatisches Nachladen (a la Facebook)
 * JS is authenticated: Gueltigkeit des tokens und Token wieder in der DB speichern, falls im Cluster-Betrieb
 
@@ -55,33 +46,33 @@ Demo web application which features:
 * Added import of mails (send to rembli address: <username>@rembli.com)
 * Add SSL support at rembli.com (https://coolestguidesontheplanet.com/redirecting-http-https-tomcat)
 * AuthenticationToken und AuthenticationUser umbenannt in AccessToken und CurrentUser
-* Navigation zwischen einzelnen Dokumenten ermöglicht (statt immer über die Liste gehen zu müssen)
+* Navigation zwischen einzelnen Dokumenten ermÃ¶glicht (statt immer Ã¼ber die Liste gehen zu mÃ¼ssen)
 * Fehler bei Ersatz des Bodies und Upload von Datein in der DropZone (nach Wechsel in Edit geht es nicht mehr, da Javascript fehlt und Initialisierung fehlerhaft)
-* Anpassen der Browser-History entsprechend der aktuell gewählten Seite
+* Anpassen der Browser-History entsprechend der aktuell gewÃ¤hlten Seite
 * Dynamisches Laden und Ersetzen von Teilen einer Seite (Single-Page-Application)
-* Caching für die Templates, Includes und Dictionaries
+* Caching fÃ¼r die Templates, Includes und Dictionaries
 * Swagger-UI auslagern
 * Dust.js-Templates, um HTML aus Javascript raus zu halten
-* Neues Tag <lang> für Übersetzungen / Mehrsprachigkeit
-* Neues Tag <include> als Ersatz für Server-seitige Includes
+* Neues Tag <lang> fÃ¼r Ãœbersetzungen / Mehrsprachigkeit
+* Neues Tag <include> als Ersatz fÃ¼r Server-seitige Includes
 * Login mit facebook
 * Scanner Ressourcen als separate web app
 * Erstellung von Thumbnails von Images
-* Links (bisher nur self) wird als Struktur zurück gegeben
-* _self Links über eigenen Datentyp FileInfoRessource abgebildet
-* Änderung von iddocument auf idDocument 
+* Links (bisher nur self) wird als Struktur zurÃ¼ck gegeben
+* _self Links Ã¼ber eigenen Datentyp FileInfoRessource abgebildet
+* Ã„nderung von iddocument auf idDocument 
 * Token kann auch als Query-Parameter "AuthorizationToken" mitgegeben werden
 * Log-API
 * UI Neuen Benutzer anlegen
-* API für User anlegen
-* API für Passwort ändern
-* es können nur noch die Dateien gesehen und bearbeitet werden, die man selber angelegt hat
-* Löschen von Dateien
-* 204 bei Löschen von Dokument
+* API fÃ¼r User anlegen
+* API fÃ¼r Passwort Ã¤ndern
+* es kÃ¶nnen nur noch die Dateien gesehen und bearbeitet werden, die man selber angelegt hat
+* LÃ¶schen von Dateien
+* 204 bei LÃ¶schen von Dokument
 * API Links aus WebApp raus
-* Upload Size auf 5 MB erhöhen
+* Upload Size auf 5 MB erhÃ¶hen
 * POST bei /logout
-* Anlegen eines neuen Dokuments gibt die ID zurück
+* Anlegen eines neuen Dokuments gibt die ID zurÃ¼ck
 * CORS Headers
 * JavaDoc
 * Scanner (Dynamic Web Twain)
@@ -97,14 +88,14 @@ Demo web application which features:
 
 **Java**
 
-* Jersey - als Implementierung von JAX-RS für REST
-* Swagger Core Jersey 2.X - zur Erzeugung der Swagger-Spec aus der JAX-RS-Annotation (Ab hier: MAVEN wegen massiver Abhängigkeiten)
+* Jersey - als Implementierung von JAX-RS fÃ¼r REST
+* Swagger Core Jersey 2.X - zur Erzeugung der Swagger-Spec aus der JAX-RS-Annotation (Ab hier: MAVEN wegen massiver AbhÃ¤ngigkeiten)
 * JAXB - XML aus Java Objekten erzeugen
 * Lombok - um sich viel "Boilerplate"-Code (v.a. Setter und Getter) zu sparen (https://projectlombok.org/)
 * Genson - um Java-Objekte in JSON zu konvertieren (sehr gut mit JAXB integriert!) http://owlike.github.io/genson/
-* SQL2O - als minimales Tool für DB-Queries und Mapping SQL-Result --> Java Objekt http://www.sql2o.org/
+* SQL2O - als minimales Tool fÃ¼r DB-Queries und Mapping SQL-Result --> Java Objekt http://www.sql2o.org/
 * Hikary - als "High-Performance" DB-Connection-Pool
-* mimepull - braucht man für MediaTypes, wenn man Dateien (Multi-part) hochladen/runterladen will
+* mimepull - braucht man fÃ¼r MediaTypes, wenn man Dateien (Multi-part) hochladen/runterladen will
 * thumbnailator - zur Erzeugung der Thumbnails 
 
 **Javascript**
